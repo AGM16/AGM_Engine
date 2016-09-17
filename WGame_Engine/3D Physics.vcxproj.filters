@@ -111,6 +111,9 @@
     <ClInclude Include="Imgui\stb_truetype.h">
       <Filter>Sources\Imgui</Filter>
     </ClInclude>
+    <ClInclude Include="Random.h">
+      <Filter>Sources\Tools</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="ModuleAudio.cpp">
@@ -181,6 +184,9 @@
     </ClCompile>
     <ClCompile Include="Imgui\imgui.cpp">
       <Filter>Sources\Imgui</Filter>
+    </ClCompile>
+    <ClCompile Include="Random.cpp">
+      <Filter>Sources\Tools</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

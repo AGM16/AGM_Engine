@@ -28,6 +28,7 @@ public:
 	void Create_Sphere_Bodys_World(float radius_a, float pos_x, float pos_y, float pos_z, Sphere primitive_cube[], PhysBody3D* PB_3D[], int PB_Num, float mass, bool num_primitive, int num_prim);
 
 public:
-
+	float random_number;
+	int random_number2;
 	
 };

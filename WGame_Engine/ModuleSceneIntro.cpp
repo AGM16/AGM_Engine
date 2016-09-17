@@ -4,6 +4,8 @@
 #include "Primitive.h"
 #include "PhysBody3D.h"
 #include "Imgui\imgui.h"
+#include "Random.h"
+
 
 ModuleSceneIntro::ModuleSceneIntro(Application* app, bool start_enabled) : Module(app, start_enabled)
 {
@@ -17,9 +19,18 @@ bool ModuleSceneIntro::Start()
 {
 	LOG("Loading Intro assets");
 
+	random_number = 0.0f;
+	random_number2 = 0;
+
 	//INITIALIZATION OF VARIABLES---------------------------------
 	bool ret = true;
-	
+
+	//Check Function F_Random and Min_Max_Random---------------
+	Random r_number;
+	random_number = r_number.F_Random();
+	random_number2 = r_number.Min_Max_Random(1,6);
+	//---------------------------------------------------------
+
 	return ret;
 }
 
@@ -55,6 +66,8 @@ update_status ModuleSceneIntro::Update(float dt)
 	p.axis = true;
 	p.Render();
 
+
+	
 	
 
 	return UPDATE_CONTINUE;

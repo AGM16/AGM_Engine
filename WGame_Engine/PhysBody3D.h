@@ -2,10 +2,11 @@
 #define __PhysBody3D_H__
 
 #include "p2List.h"
+#include "MathGeoLib\include\MathGeoLib.h"
 
 class btRigidBody;
 class Module;
-class vec3;
+
 
 
 // =================================================
@@ -24,7 +25,7 @@ public:
 	bool IsSensor() const;
 	void Stop_Motion();
 	void Set_Linear_Velocity(float x, float y, float z);
-	const vec3 GetPos() const;
+	const float3 GetPos() const;
 
 private:
 	btRigidBody* body = nullptr;

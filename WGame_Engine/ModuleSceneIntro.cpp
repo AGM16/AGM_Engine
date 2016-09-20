@@ -19,19 +19,9 @@ bool ModuleSceneIntro::Start()
 {
 	LOG("Loading Intro assets");
 
-	random_number = 0.0f;
-	random_number2 = 0;
+	show_test_window = false;
 
-	//INITIALIZATION OF VARIABLES---------------------------------
-	bool ret = true;
-
-	//Check Function F_Random and Min_Max_Random---------------
-	Random r_number;
-	random_number = r_number.F_Random();
-	random_number2 = r_number.Min_Max_Random(1,6);
-	//---------------------------------------------------------
-
-	return ret;
+	return true;
 }
 
 // Load assets
@@ -46,32 +36,51 @@ bool ModuleSceneIntro::CleanUp()
 update_status ModuleSceneIntro::Update(float dt)
 {
 	//ImGuiWindowFlags window_flags = 0;
-
+	
 	//Show the Test Window of ImGui
-	ImGui::ShowTestWindow();
+	//ImGui::ShowTestWindow();
 
-	//UI Elements
-	if (ImGui::BeginMenu("New Menu"))
+	if (ImGui::BeginMainMenuBar())
 	{
-		ImGui::Text("Hi!");
-		ImGui::EndMenu();
+		if(ImGui::BeginMenu("File"))
+		{
+			if (ImGui::MenuItem("Quit"))
+			{
+				return UPDATE_STOP;
+			}
+
+			ImGui::EndMenu();
+		}
+
+		if (ImGui::BeginMenu("Help"))
+		{
+			show_test_window = true;
+			ImGui::EndMenu();
+		}
+		
+
+
+		ImGui::EndMainMenuBar();
 	}
-	ImGui::BulletText("This is a bullet text");
-	ImGui::Button("Button");
-	ImGui::SmallButton("Small Button");
-	ImGui::Text("Hello");
+
+
+	if(show_test_window) 
+		ImGui::ShowTestWindow();
+
 	
 
 	Primitive_Plane p(0, 1, 0, 0);
 	p.axis = true;
 	p.Render();
-
+	
 	
 
-	/*Primitive_Cube cube(5, 5, 8);
+	Primitive_Cube cube(5, 5, 8);
 	cube.axis = true;
-	cube.SetPos(10.0f, 2.5f, 5.0f);
-	cube.Render();*/
+	cube.SetPos(x, y, z);
+	cube.Render();
+
+	
 
 	
 	

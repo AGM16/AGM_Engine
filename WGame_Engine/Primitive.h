@@ -1,6 +1,6 @@
 
 #pragma once
-//#include "glmath.h"
+
 #include "Color.h"
 #include "MathGeoLib\include\MathGeoLib.h"
 
@@ -26,6 +26,7 @@ public:
 	void			SetRotation(float angle, const float3 &u);
 	void			SetScale(float x, float y, float z);
 	PrimitiveTypes	GetType() const;
+	float3          GetPos()const;
 
 public:
 	

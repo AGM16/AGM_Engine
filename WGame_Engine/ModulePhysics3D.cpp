@@ -299,131 +299,11 @@ PhysVehicle3D* ModulePhysics3D::AddVehicle(const VehicleInfo& info)
 	trans3.setIdentity();
 	trans3.setOrigin(btVector3(0, info.chassis_offset.y + 2.3f, -2.5f));
 
-	//Mud guard front left
-	btCollisionShape* colShape4 = new btBoxShape(btVector3(0.6f, 0.1f, 0.8f));
-	shapes.add(colShape4);
-	btCollisionShape* colShape5 = new btBoxShape(btVector3(0.6f, 0.1f, 0.8f));
-	shapes.add(colShape5);
-	btCollisionShape* colShape6 = new btBoxShape(btVector3(0.6f, 0.1f, 0.8f));
-	shapes.add(colShape6);
-
-	btTransform trans4;
-	trans4.setIdentity();
-	trans4.setOrigin(btVector3(2.7f, info.chassis_offset.y + 1, 3.5f));
-
-	btTransform trans5;
-	trans5.setIdentity();
-	trans5.setOrigin(btVector3(2.7f, info.chassis_offset.y + 0.545f, 4.883f));
-	btQuaternion quat;
-	quat.setRotation(btVector3(1, 0, 0), M_1_PI * 2);
-	trans5.setRotation(quat);
-
-	btTransform trans6;
-	trans6.setIdentity();
-	trans6.setOrigin(btVector3(2.7f, info.chassis_offset.y + 0.545f, 2.116f));
-	btQuaternion quat2;
-	quat2.setRotation(btVector3(1, 0, 0), -M_1_PI * 2);
-	trans6.setRotation(quat2);
-
-	//Mud guard front right
-	btCollisionShape* colShape7 = new btBoxShape(btVector3(0.6f, 0.1f, 0.8f));
-	shapes.add(colShape7);
-	btCollisionShape* colShape8 = new btBoxShape(btVector3(0.6f, 0.1f, 0.8f));
-	shapes.add(colShape8);
-	btCollisionShape* colShape9 = new btBoxShape(btVector3(0.6f, 0.1f, 0.8f));
-	shapes.add(colShape9);
-
-	btTransform trans7;
-	trans7.setIdentity();
-	trans7.setOrigin(btVector3(-2.7f, info.chassis_offset.y + 1, 3.5f));
-
-	btTransform trans8;
-	trans8.setIdentity();
-	trans8.setOrigin(btVector3(-2.7f, info.chassis_offset.y + 0.545f, 4.883f));
-	btQuaternion quat3;
-	quat3.setRotation(btVector3(1, 0, 0), M_1_PI * 2);
-	trans8.setRotation(quat3);
-
-	btTransform trans9;
-	trans9.setIdentity();
-	trans9.setOrigin(btVector3(-2.7f, info.chassis_offset.y + 0.545f, 2.116f));
-	btQuaternion quat4;
-	quat4.setRotation(btVector3(1, 0, 0), -M_1_PI * 2);
-	trans9.setRotation(quat4);
-
-	//Mud guard back right
-	btCollisionShape* colShape10 = new btBoxShape(btVector3(0.6f, 0.1f, 0.8f));
-	shapes.add(colShape10);
-	btCollisionShape* colShape11 = new btBoxShape(btVector3(0.6f, 0.1f, 0.8f));
-	shapes.add(colShape11);
-	btCollisionShape* colShape12 = new btBoxShape(btVector3(0.6f, 0.1f, 0.8f));
-	shapes.add(colShape12);
-
-	btTransform trans10;
-	trans10.setIdentity();
-	trans10.setOrigin(btVector3(-2.7f, info.chassis_offset.y + 1, -3.5f));
-
-	btTransform trans11;
-	trans11.setIdentity();
-	trans11.setOrigin(btVector3(-2.7f, info.chassis_offset.y + 0.545f, -4.883f));
-	btQuaternion quat5;
-	quat5.setRotation(btVector3(1, 0, 0), -M_1_PI * 2);
-	trans11.setRotation(quat5);
-
-	btTransform trans12;
-	trans12.setIdentity();
-	trans12.setOrigin(btVector3(-2.7f, info.chassis_offset.y + 0.545f, -2.116f));
-	btQuaternion quat6;
-	quat6.setRotation(btVector3(1, 0, 0), M_1_PI * 2);
-	trans12.setRotation(quat6);
-
-	//Mud guard back left
-	btCollisionShape* colShape13 = new btBoxShape(btVector3(0.6f, 0.1f, 0.8f));
-	shapes.add(colShape13);
-	btCollisionShape* colShape14 = new btBoxShape(btVector3(0.6f, 0.1f, 0.8f));
-	shapes.add(colShape14);
-	btCollisionShape* colShape15 = new btBoxShape(btVector3(0.6f, 0.1f, 0.8f));
-	shapes.add(colShape15);
-
-	btTransform trans13;
-	trans13.setIdentity();
-	trans13.setOrigin(btVector3(2.7f, info.chassis_offset.y + 1, -3.5f));
-
-	btTransform trans14;
-	trans14.setIdentity();
-	trans14.setOrigin(btVector3(2.7f, info.chassis_offset.y + 0.545f, -4.883f));
-	btQuaternion quat7;
-	quat7.setRotation(btVector3(1, 0, 0), -M_1_PI * 2);
-	trans14.setRotation(quat7);
-
-	btTransform trans15;
-	trans15.setIdentity();
-	trans15.setOrigin(btVector3(2.7f, info.chassis_offset.y + 0.545f, -2.116f));
-	btQuaternion quat8;
-	quat8.setRotation(btVector3(1, 0, 0), pi * 2);
-	trans15.setRotation(quat8);
+	
 
 	comShape->addChildShape(trans, colShape);
-
 	comShape->addChildShape(trans2, colShape2);
 	comShape->addChildShape(trans3, colShape3);
-
-	comShape->addChildShape(trans4, colShape4);
-	comShape->addChildShape(trans5, colShape5);
-	comShape->addChildShape(trans6, colShape6);
-
-	comShape->addChildShape(trans7, colShape7);
-	comShape->addChildShape(trans8, colShape8);
-	comShape->addChildShape(trans9, colShape9);
-
-	comShape->addChildShape(trans10, colShape10);
-	comShape->addChildShape(trans11, colShape11);
-	comShape->addChildShape(trans12, colShape12);
-
-	comShape->addChildShape(trans13, colShape13);
-	comShape->addChildShape(trans14, colShape14);
-	comShape->addChildShape(trans15, colShape15);
-
 
 
 	btTransform startTransform;
@@ -471,7 +351,7 @@ PhysVehicle3D* ModulePhysics3D::AddVehicle(const VehicleInfo& info)
 }
 
 // ---------------------------------------------------------
-void ModulePhysics3D::AddConstraintP2P(PhysBody3D& bodyA, PhysBody3D& bodyB, const vec3& anchorA, const vec3& anchorB)
+void ModulePhysics3D::AddConstraintP2P(PhysBody3D& bodyA, PhysBody3D& bodyB, const float3& anchorA, const float3& anchorB)
 {
 	btTypedConstraint* p2p = new btPoint2PointConstraint(
 		*(bodyA.body),
@@ -484,7 +364,7 @@ void ModulePhysics3D::AddConstraintP2P(PhysBody3D& bodyA, PhysBody3D& bodyB, con
 	p2p->setDbgDrawSize(2.0f);
 }
 
-void ModulePhysics3D::AddConstraintHinge(PhysBody3D& bodyA, PhysBody3D& bodyB, const vec3& anchorA, const vec3& anchorB, const vec3& axisA, const vec3& axisB, bool disable_collision)
+void ModulePhysics3D::AddConstraintHinge(PhysBody3D& bodyA, PhysBody3D& bodyB, const float3& anchorA, const float3& anchorB, const float3& axisA, const float3& axisB, bool disable_collision)
 {
 	btHingeConstraint* hinge = new btHingeConstraint(
 		*(bodyA.body),

@@ -164,8 +164,27 @@ void ModuleRenderer3D::OnResize(int width, int height)
 
 	glMatrixMode(GL_PROJECTION);
 	glLoadIdentity();
-	ProjectionMatrix = perspective(60.0f, (float)width / (float)height, 0.125f, 512.0f);
-	glLoadMatrixf(&ProjectionMatrix);
+
+	//Perspective
+	float4x4 perspective;
+	perspective.SetIdentity();
+
+	float n = 0.125f;
+	float f = 512.0f;
+
+	float coty = 1.0f / tan(20.0f * pi / 360.0f);
+
+	//Matrix
+	perspective[0][0] = coty / ((float)width / (float)height);
+	perspective[1][1] = coty;
+	perspective[2][2] = (n + f) / (n - f);
+	perspective[2][3] = -1.0f;
+	perspective[3][2] = 2.0f * n * f / (n - f);
+	perspective[3][3] = 0.0f;
+	
+
+	ProjectionMatrix = perspective;
+	glLoadMatrixf(*ProjectionMatrix.v);
 
 	glMatrixMode(GL_MODELVIEW);
 	glLoadIdentity();

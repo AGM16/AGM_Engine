@@ -5,7 +5,6 @@
 #include "MathGeoLib\include\MathGeoLib.h"
 #include "Primitive.h"
 #include "glut/glut.h"
-#include "glmath.h"
 
 #pragma comment (lib, "glut/glut32.lib")
 
@@ -18,6 +17,11 @@ Primitive::Primitive() : transform(transform.identity), color(White), wire(false
 PrimitiveTypes Primitive::GetType() const
 {
 	return type;
+}
+
+float3  Primitive::GetPos()const
+{
+	return float3(transform.v[3][0], transform.v[3][1], transform.v[3][2]);
 }
 
 // ------------------------------------------------------------
@@ -96,7 +100,7 @@ void Primitive::SetPos(float x, float y, float z)
 // ------------------------------------------------------------
 void Primitive::SetRotation(float angle, const float3 &u)
 {
-	transform.SetRotatePart(u,angle);
+	transform.RotateAxisAngle(u,angle);
 }
 
 // ------------------------------------------------------------

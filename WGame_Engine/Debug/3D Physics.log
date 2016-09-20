@@ -1,21 +1,22 @@
 ﻿C:\Program Files (x86)\MSBuild\Microsoft.Cpp\v4.0\V140\Microsoft.CppBuild.targets(392,5): warning MSB8028: The intermediate directory (Debug\) contains files shared from another project (3D Physics - class6.vcxproj).  This can lead to incorrect clean and rebuild behavior.
   ModuleSceneIntro.cpp
-c:\users\pc1\desktop\wgame_engine\wgame_engine\modulesceneintro.cpp(95): warning C4244: 'argumento': conversión de 'int' a 'float'; posible pérdida de datos
-c:\users\pc1\desktop\wgame_engine\wgame_engine\modulesceneintro.cpp(130): warning C4244: 'inicializando': conversión de 'float' a 'int'; posible pérdida de datos
-c:\users\pc1\desktop\wgame_engine\wgame_engine\modulesceneintro.cpp(134): warning C4244: 'argumento': conversión de 'int' a 'float'; posible pérdida de datos
-c:\users\pc1\desktop\wgame_engine\wgame_engine\modulesceneintro.cpp(142): warning C4244: 'argumento': conversión de 'int' a 'float'; posible pérdida de datos
-c:\users\pc1\desktop\wgame_engine\wgame_engine\modulesceneintro.cpp(148): warning C4244: 'argumento': conversión de 'int' a 'float'; posible pérdida de datos
-c:\users\pc1\desktop\wgame_engine\wgame_engine\modulesceneintro.cpp(164): warning C4244: 'inicializando': conversión de 'float' a 'int'; posible pérdida de datos
-c:\users\pc1\desktop\wgame_engine\wgame_engine\modulesceneintro.cpp(170): warning C4244: '+=': conversión de 'float' a 'int'; posible pérdida de datos
-c:\users\pc1\desktop\wgame_engine\wgame_engine\modulesceneintro.cpp(171): warning C4244: '+=': conversión de 'float' a 'int'; posible pérdida de datos
-c:\users\pc1\desktop\wgame_engine\wgame_engine\modulesceneintro.cpp(176): warning C4244: '+=': conversión de 'float' a 'int'; posible pérdida de datos
-c:\users\pc1\desktop\wgame_engine\wgame_engine\modulesceneintro.cpp(177): warning C4244: '+=': conversión de 'float' a 'int'; posible pérdida de datos
-c:\users\pc1\desktop\wgame_engine\wgame_engine\modulesceneintro.cpp(182): warning C4244: '+=': conversión de 'float' a 'int'; posible pérdida de datos
-c:\users\pc1\desktop\wgame_engine\wgame_engine\modulesceneintro.cpp(183): warning C4244: '+=': conversión de 'float' a 'int'; posible pérdida de datos
-c:\users\pc1\desktop\wgame_engine\wgame_engine\modulesceneintro.cpp(188): warning C4244: '+=': conversión de 'float' a 'int'; posible pérdida de datos
-c:\users\pc1\desktop\wgame_engine\wgame_engine\modulesceneintro.cpp(189): warning C4244: '+=': conversión de 'float' a 'int'; posible pérdida de datos
-c:\users\pc1\desktop\wgame_engine\wgame_engine\modulesceneintro.cpp(194): warning C4244: '+=': conversión de 'float' a 'int'; posible pérdida de datos
-c:\users\pc1\desktop\wgame_engine\wgame_engine\modulesceneintro.cpp(195): warning C4244: '+=': conversión de 'float' a 'int'; posible pérdida de datos
-c:\users\pc1\desktop\wgame_engine\wgame_engine\modulesceneintro.cpp(198): warning C4244: 'argumento': conversión de 'int' a 'float'; posible pérdida de datos
+c:\users\pc1\desktop\wgame_engine\wgame_engine\modulesceneintro.cpp(80): warning C4244: 'argumento': conversión de 'int' a 'float'; posible pérdida de datos
+c:\users\pc1\desktop\wgame_engine\wgame_engine\modulesceneintro.cpp(104): warning C4244: 'argumento': conversión de 'int' a 'float'; posible pérdida de datos
+c:\users\pc1\desktop\wgame_engine\wgame_engine\modulesceneintro.cpp(139): warning C4244: 'inicializando': conversión de 'float' a 'int'; posible pérdida de datos
+c:\users\pc1\desktop\wgame_engine\wgame_engine\modulesceneintro.cpp(143): warning C4244: 'argumento': conversión de 'int' a 'float'; posible pérdida de datos
+c:\users\pc1\desktop\wgame_engine\wgame_engine\modulesceneintro.cpp(151): warning C4244: 'argumento': conversión de 'int' a 'float'; posible pérdida de datos
+c:\users\pc1\desktop\wgame_engine\wgame_engine\modulesceneintro.cpp(157): warning C4244: 'argumento': conversión de 'int' a 'float'; posible pérdida de datos
+c:\users\pc1\desktop\wgame_engine\wgame_engine\modulesceneintro.cpp(173): warning C4244: 'inicializando': conversión de 'float' a 'int'; posible pérdida de datos
+c:\users\pc1\desktop\wgame_engine\wgame_engine\modulesceneintro.cpp(179): warning C4244: '+=': conversión de 'float' a 'int'; posible pérdida de datos
+c:\users\pc1\desktop\wgame_engine\wgame_engine\modulesceneintro.cpp(180): warning C4244: '+=': conversión de 'float' a 'int'; posible pérdida de datos
+c:\users\pc1\desktop\wgame_engine\wgame_engine\modulesceneintro.cpp(185): warning C4244: '+=': conversión de 'float' a 'int'; posible pérdida de datos
+c:\users\pc1\desktop\wgame_engine\wgame_engine\modulesceneintro.cpp(186): warning C4244: '+=': conversión de 'float' a 'int'; posible pérdida de datos
+c:\users\pc1\desktop\wgame_engine\wgame_engine\modulesceneintro.cpp(191): warning C4244: '+=': conversión de 'float' a 'int'; posible pérdida de datos
+c:\users\pc1\desktop\wgame_engine\wgame_engine\modulesceneintro.cpp(192): warning C4244: '+=': conversión de 'float' a 'int'; posible pérdida de datos
+c:\users\pc1\desktop\wgame_engine\wgame_engine\modulesceneintro.cpp(197): warning C4244: '+=': conversión de 'float' a 'int'; posible pérdida de datos
+c:\users\pc1\desktop\wgame_engine\wgame_engine\modulesceneintro.cpp(198): warning C4244: '+=': conversión de 'float' a 'int'; posible pérdida de datos
+c:\users\pc1\desktop\wgame_engine\wgame_engine\modulesceneintro.cpp(203): warning C4244: '+=': conversión de 'float' a 'int'; posible pérdida de datos
+c:\users\pc1\desktop\wgame_engine\wgame_engine\modulesceneintro.cpp(204): warning C4244: '+=': conversión de 'float' a 'int'; posible pérdida de datos
+c:\users\pc1\desktop\wgame_engine\wgame_engine\modulesceneintro.cpp(207): warning C4244: 'argumento': conversión de 'int' a 'float'; posible pérdida de datos
   3D Physics.vcxproj -> C:\Users\PC1\Desktop\WGame_Engine\WGame_Engine\Debug\WGame_Engine.exe
   3D Physics.vcxproj -> C:\Users\PC1\Desktop\WGame_Engine\WGame_Engine\Debug\WGame_Engine.pdb (Full PDB)

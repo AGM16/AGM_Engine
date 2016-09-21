@@ -28,6 +28,9 @@
     <Filter Include="Sources\MathGeo\Include">
       <UniqueIdentifier>{3f20577d-dffa-472a-b06e-c2f796f52dfd}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Sources\Modules\Editor">
+      <UniqueIdentifier>{97e8e6a8-4bd8-4b1a-a2d2-2f608e79e2af}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Module.h">
@@ -89,9 +92,6 @@
     </ClInclude>
     <ClInclude Include="PhysVehicle3D.h">
       <Filter>Sources\Helpers</Filter>
-    </ClInclude>
-    <ClInclude Include="ModulePlayer.h">
-      <Filter>Sources\Modules\Game</Filter>
     </ClInclude>
     <ClInclude Include="Imgui\imconfig.h">
       <Filter>Sources\Imgui</Filter>
@@ -300,6 +300,9 @@
     <ClInclude Include="MathGeoLib\include\Time\Clock.h">
       <Filter>Sources\MathGeo\Include</Filter>
     </ClInclude>
+    <ClInclude Include="Editor.h">
+      <Filter>Sources\Modules\Editor</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="ModuleAudio.cpp">
@@ -352,9 +355,6 @@
     </ClCompile>
     <ClCompile Include="PhysVehicle3D.cpp">
       <Filter>Sources\Helpers</Filter>
-    </ClCompile>
-    <ClCompile Include="ModulePlayer.cpp">
-      <Filter>Sources\Modules\Game</Filter>
     </ClCompile>
     <ClCompile Include="Imgui\imgui_demo.cpp">
       <Filter>Sources\Imgui</Filter>
@@ -469,6 +469,9 @@
     </ClCompile>
     <ClCompile Include="MathGeoLib\include\Time\Clock.cpp">
       <Filter>Sources\MathGeo\Include</Filter>
+    </ClCompile>
+    <ClCompile Include="Editor.cpp">
+      <Filter>Sources\Modules\Editor</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

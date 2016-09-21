@@ -1,10 +1,12 @@
 #pragma once
 #include "Module.h"
 #include "Globals.h"
-#include "p2List.h"
 #include "Primitive.h"
+#include <list>
 
 #include "Bullet\include\btBulletDynamicsCommon.h"
+
+using namespace std;
 
 // Recommended scale is 1.0f == 1 meter, no less than 0.2 objects
 #define GRAVITY btVector3(0.0f, -10.0f, 0.0f) 
@@ -47,11 +49,11 @@ private:
 	btDefaultVehicleRaycaster*			vehicle_raycaster;
 	DebugDrawer*						debug_draw;
 
-	p2List<btCollisionShape*> shapes;
-	p2List<PhysBody3D*> bodies;
-	p2List<btDefaultMotionState*> motions;
-	p2List<btTypedConstraint*> constraints;
-	p2List<PhysVehicle3D*> vehicles;
+	list<btCollisionShape*> shapes;
+	list<PhysBody3D*> bodies;
+	list<btDefaultMotionState*> motions;
+	list<btTypedConstraint*> constraints;
+	list<PhysVehicle3D*> vehicles;
 };
 
 class DebugDrawer : public btIDebugDraw

@@ -2,6 +2,8 @@
 #include <random>
 #include <ctime>
 #include "MathGeoLib\include\MathGeoLib.h"
+#include "MathGeoLib\include\Algorithm\Random\LCG.h"
+
 
 using namespace std;
 
@@ -18,12 +20,25 @@ float Random::F_Random()
 }
 
 
-int Random::Min_Max_Random(int min_a, int max_b)
+float Random::Min_Max_Random(float min_a, float max_b)
 {
 	//Generator
 	mt19937 generator(time(NULL));
-	uniform_int_distribution<int> distributor(min_a, max_b);
+	uniform_real_distribution<float> distributor(min_a, max_b);
 	
 	//Generate Int Random Number
 	return distributor(generator);
+}
+
+float3 Random::Random_Float_Vector(float min_a, float max_b)
+{
+	float3 vector;
+	LCG random;
+
+	vector.x = random.Float(min_a, max_b);
+	vector.y = random.Float(min_a, max_b);
+	vector.z = random.Float(min_a, max_b);
+
+	return vector;
+
 }

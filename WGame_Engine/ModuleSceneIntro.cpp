@@ -69,9 +69,7 @@ update_status ModuleSceneIntro::Update(float dt)
 
 	
 
-	Primitive_Plane p(0, 1, 0, 0);
-	p.axis = true;
-	p.Render();
+
 	
 	
 
@@ -110,13 +108,13 @@ void  ModuleSceneIntro::Create_Bodys_World(float size_x, float size_y, float siz
 		{
           PB_3D[PB_Num + num_prim] = App->physics->AddBody(primitive_cube[PB_Num], mass);
 		  PB_3D[PB_Num + num_prim]->SetAsSensor(true);
-		  PB_3D[PB_Num + num_prim]->collision_listeners.add(this);
+		  PB_3D[PB_Num + num_prim]->collision_listeners.push_back(this);
 		}
 		else
 		{
 			PB_3D[PB_Num] = App->physics->AddBody(primitive_cube[PB_Num], mass);
 			PB_3D[PB_Num]->SetAsSensor(true);
-			PB_3D[PB_Num]->collision_listeners.add(this);
+			PB_3D[PB_Num]->collision_listeners.push_back(this);
 		}
 		
 	}

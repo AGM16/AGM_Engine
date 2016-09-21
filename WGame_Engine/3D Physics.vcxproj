@@ -75,6 +75,7 @@
   <ItemGroup>
     <ClInclude Include="Application.h" />
     <ClInclude Include="Color.h" />
+    <ClInclude Include="Editor.h" />
     <ClInclude Include="glmath.h" />
     <ClInclude Include="Globals.h" />
     <ClInclude Include="Imgui\imconfig.h" />
@@ -148,7 +149,6 @@
     <ClInclude Include="MathGeoLib\include\Time\Clock.h" />
     <ClInclude Include="ModuleCamera3D.h" />
     <ClInclude Include="ModulePhysics3D.h" />
-    <ClInclude Include="ModulePlayer.h" />
     <ClInclude Include="ModuleRenderer3D.h" />
     <ClInclude Include="p2List.h" />
     <ClInclude Include="Module.h" />
@@ -167,6 +167,7 @@
   <ItemGroup>
     <ClCompile Include="Application.cpp" />
     <ClCompile Include="Color.cpp" />
+    <ClCompile Include="Editor.cpp" />
     <ClCompile Include="glmath.cpp" />
     <ClCompile Include="Imgui\imgui.cpp" />
     <ClCompile Include="Imgui\imgui_demo.cpp" />
@@ -212,7 +213,6 @@
     <ClCompile Include="ModuleCamera3D.cpp" />
     <ClCompile Include="ModuleInput.cpp" />
     <ClCompile Include="ModulePhysics3D.cpp" />
-    <ClCompile Include="ModulePlayer.cpp" />
     <ClCompile Include="ModuleRenderer3D.cpp" />
     <ClCompile Include="ModuleSceneIntro.cpp" />
     <ClCompile Include="ModuleWindow.cpp" />

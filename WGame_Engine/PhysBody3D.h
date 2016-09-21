@@ -1,11 +1,14 @@
 #ifndef __PhysBody3D_H__
 #define __PhysBody3D_H__
 
-#include "p2List.h"
+
 #include "MathGeoLib\include\MathGeoLib.h"
+#include <list>
 
 class btRigidBody;
 class Module;
+
+using namespace std;
 
 
 
@@ -32,7 +35,7 @@ private:
 	bool is_sensor = false;
 
 public:
-	p2List<Module*> collision_listeners;
+	list<Module*> collision_listeners;
 };
 
 #endif // __PhysBody3D_H__

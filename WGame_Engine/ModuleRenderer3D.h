@@ -1,9 +1,12 @@
 #pragma once
 #include "Module.h"
 #include "Globals.h"
+#include "MathGeoLib\include\MathGeoLib.h"
 #include "Light.h"
 
 #define MAX_LIGHTS 8
+
+using namespace math;
 
 class ModuleRenderer3D : public Module
 {
@@ -16,7 +19,7 @@ public:
 	update_status PostUpdate(float dt);
 	bool CleanUp();
 
-	void OnResize(int width, int height);
+	void OnResize(int width, int height, float fovy);
 
 public:
 

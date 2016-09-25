@@ -13,9 +13,7 @@
 #include "ModulePhysics3D.h"
 #include "Editor.h"
 
-
-
-using namespace std;
+using namespace std; 
 
 class Application
 {
@@ -27,9 +25,7 @@ public:
 	ModuleRenderer3D* renderer3D;
 	ModuleCamera3D* camera;
 	ModulePhysics3D* physics;
-	Editor*  editor;
-
-
+	Editor*     editor;
 
 private:
 
@@ -45,6 +41,8 @@ public:
 	bool Init();
 	update_status Update();
 	bool CleanUp();
+
+	void RquestBrowser(const char* url);
 
 private:
 

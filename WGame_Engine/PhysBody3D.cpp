@@ -1,5 +1,4 @@
 #include "PhysBody3D.h"
-#include "MathGeoLib\include\MathGeoLib.h"
 #include "Bullet\include\btBulletDynamicsCommon.h"
 
 // =================================================
@@ -48,49 +47,50 @@ void PhysBody3D::SetPos(float x, float y, float z)
 	body->setWorldTransform(t);
 }
 
-// ---------------------------------------------------------
-void PhysBody3D::SetAsSensor(bool is_sensor)
+//----------------------------------------------------------
+void PhysBody3D::SetRotation(float x, float y, float z)
 {
-	if(this->is_sensor != is_sensor)
-	{
-		this->is_sensor = is_sensor;
-		if(is_sensor == true)
-			body->setCollisionFlags(body->getCollisionFlags() | btCollisionObject::CF_NO_CONTACT_RESPONSE);
-		else
-			body->setCollisionFlags(body->getCollisionFlags() &~ btCollisionObject::CF_NO_CONTACT_RESPONSE);
-	}
+	btTransform t = body->getWorldTransform();
+	btQuaternion q;
+	q.setEulerZYX(z, y, x);
+	t.setRotation(q);
+	body->setWorldTransform(t);
 }
 
 // ---------------------------------------------------------
-bool PhysBody3D::IsSensor() const
+void PhysBody3D::Stop()
 {
-	return is_sensor;
-}
-
-// ---------------------------------------------------------
-void PhysBody3D::Stop_Motion()
-{
-	body->setAngularVelocity(btVector3(0, 0, 0));
 	body->setLinearVelocity(btVector3(0, 0, 0));
+	body->setAngularVelocity(btVector3(0, 0, 0));
 	body->clearForces();
 }
 
-//-----------------------------------------------------------------------------
-const float3 PhysBody3D::GetPos() const
+// ---------------------------------------------------------
+btTransform PhysBody3D::GetRealTransform()const
 {
-	btTransform trans = body->getWorldTransform();
-	btVector3 vec = trans.getOrigin();
-	float3 ret;
-
-	ret.x = vec.getX();
-	ret.y = vec.getY();
-	ret.z = vec.getZ();
-
-	return ret;
+	return body->getWorldTransform();
 }
 
-
-void PhysBody3D::Set_Linear_Velocity(float x, float y, float z)
+//----------------------------------------------------------
+void PhysBody3D::ApplyCentralForce(btVector3& force)
 {
-	body->setLinearVelocity(btVector3(x, y, z));
+	body->applyCentralForce(force);
+}
+
+//---------------------------------------------------------
+void PhysBody3D::SetBounciness(float restitution, float friction)
+{
+	body->setFriction(friction);
+	body->setRestitution(restitution);
+}
+
+//----------------------------------------------------------
+math::vec PhysBody3D::GetPosition()const
+{
+	math::vec ret;
+	ret.x = body->getWorldTransform().getOrigin().getX();
+	ret.y = body->getWorldTransform().getOrigin().getY();
+	ret.z = body->getWorldTransform().getOrigin().getZ();
+
+	return ret;
 }

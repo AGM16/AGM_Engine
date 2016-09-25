@@ -1,11 +1,11 @@
 #include "Random.h"
-#include <random>
-#include <ctime>
-#include "MathGeoLib\include\MathGeoLib.h"
 #include "MathGeoLib\include\Algorithm\Random\LCG.h"
-
+#include "MathGeoLib\include\MathGeoLib.h"
+#include <random>
+#include <time.h>
 
 using namespace std;
+
 
 float Random::F_Random()
 {
@@ -15,7 +15,6 @@ float Random::F_Random()
 
 	//Generate Float Random Number
 	return distributor(generator);
-
 
 }
 

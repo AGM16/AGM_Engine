@@ -11,7 +11,6 @@ Application::Application()
 	physics = new ModulePhysics3D(this);
 	editor = new Editor(this);
 
-
 	// The order of calls is very important!
 	// Modules will Init() Start() and Update in this order
 	// They will CleanUp() in reverse order
@@ -27,19 +26,18 @@ Application::Application()
 	AddModule(scene_intro);
 	AddModule(editor);
 
-
 	// Renderer last!
 	AddModule(renderer3D);
 }
 
 Application::~Application()
 {
-	list<Module*>::reverse_iterator item = list_modules.rbegin();
+	list<Module*>::reverse_iterator i = list_modules.rbegin();
 
-	while(item != list_modules.rend())
+	while (i != list_modules.rend())
 	{
-		delete (*item);
-		++item;
+		delete (*i);
+		++i;
 	}
 }
 
@@ -48,22 +46,23 @@ bool Application::Init()
 	bool ret = true;
 
 	// Call Init() in all modules
-	list<Module*>::iterator item = list_modules.begin();
+	list<Module*>::iterator i = list_modules.begin();
 
-	while(item != list_modules.end() && ret == true)
+	while (i != list_modules.end() && ret == true)
 	{
-		ret = (*item)->Init();
-		++item;
+		ret = (*i)->Init();
+		++i;
 	}
+
 
 	// After all Init calls we call Start() in all modules
 	LOG("Application Start --------------");
-	item = list_modules.begin();
+	i = list_modules.begin();
 
-	while(item != list_modules.end() && ret == true)
+	while(i != list_modules.end() && ret == true)
 	{
-		ret = (*item)->Start();
-		++item;
+		ret = (*i)->Start();
+		++i;
 	}
 	
 	ms_timer.Start();
@@ -88,28 +87,28 @@ update_status Application::Update()
 	update_status ret = UPDATE_CONTINUE;
 	PrepareUpdate();
 	
-	list<Module*>::iterator item = list_modules.begin();
-	
-	while(item != list_modules.end() && ret == UPDATE_CONTINUE)
+	list<Module*>::iterator i = list_modules.begin();
+
+	while (i != list_modules.end() && ret == UPDATE_CONTINUE)
 	{
-		ret = (*item)->PreUpdate(dt);
-		++item;
+		ret = (*i)->PreUpdate(dt);
+		++i;
 	}
 
-	item = list_modules.begin();
+	i = list_modules.begin();
 
-	while(item != list_modules.end() && ret == UPDATE_CONTINUE)
+	while(i != list_modules.end() && ret == UPDATE_CONTINUE)
 	{
-		ret = (*item)->Update(dt);
-		++item;
+		ret = (*i)->Update(dt);
+		++i;
 	}
 
-	item = list_modules.begin();
+	i = list_modules.begin();
 
-	while(item != list_modules.end() && ret == UPDATE_CONTINUE)
+	while (i != list_modules.end() && ret == UPDATE_CONTINUE)
 	{
-		ret = (*item)->PostUpdate(dt);
-		item++;
+		ret = (*i)->PostUpdate(dt);
+		i++;
 	}
 
 	FinishUpdate();
@@ -119,17 +118,25 @@ update_status Application::Update()
 bool Application::CleanUp()
 {
 	bool ret = true;
-	list<Module*>::reverse_iterator item = list_modules.rbegin();
 
-	while(item != list_modules.rend() && ret == true)
+	list<Module*>::reverse_iterator i = list_modules.rbegin();
+
+	while (i != list_modules.rend() && ret == true)
 	{
-		ret = (*item)->CleanUp();
-		++item;
+		ret = (*i)->CleanUp();
+		++i;
 	}
+
+
 	return ret;
 }
 
 void Application::AddModule(Module* mod)
 {
 	list_modules.push_back(mod);
+}
+
+void Application::RquestBrowser(const char* url)
+{
+	ShellExecuteA(NULL, "open", url, NULL, NULL, SW_SHOWNORMAL);
 }

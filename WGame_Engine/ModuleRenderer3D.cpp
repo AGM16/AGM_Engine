@@ -6,13 +6,13 @@
 #include <gl/GL.h>
 #include <gl/GLU.h>
 
+#pragma comment (lib, "glu32.lib")    /* link OpenGL Utility lib     */
+#pragma comment (lib, "opengl32.lib") /* link Microsoft OpenGL lib   */
+#pragma comment (lib, "Glew/libx86/glew32.lib") 
+
 #include "Imgui\imgui.h"
 #include "Imgui\imgui_impl_sdl_gl3.h"
 
-
-#pragma comment (lib, "glu32.lib")    /* link OpenGL Utility lib     */
-#pragma comment (lib, "opengl32.lib") /* link Microsoft OpenGL lib   */
-#pragma comment (lib, "Glew/libx86/glew32.lib")
 
 ModuleRenderer3D::ModuleRenderer3D(Application* app, bool start_enabled) : Module(app, start_enabled)
 {
@@ -36,8 +36,12 @@ bool ModuleRenderer3D::Init()
 		ret = false;
 	}
 
-	//Initialize Glew
-	GLenum gl_init = glewInit();
+	GLenum gl_enum = glewInit();
+
+	if (GLEW_OK != gl_enum)
+	{
+		LOG("Glew failed");
+	}
 	
 	if(ret == true)
 	{
@@ -73,7 +77,7 @@ bool ModuleRenderer3D::Init()
 		glClearDepth(1.0f);
 		
 		//Initialize clear color
-		glClearColor(0.f, 0.f, 0.f, 1.f);
+		glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
 
 		//Check for error
 		error = glGetError();
@@ -106,11 +110,9 @@ bool ModuleRenderer3D::Init()
 	}
 
 	// Projection matrix for
-	OnResize(SCREEN_WIDTH, SCREEN_HEIGHT);
+	OnResize(SCREEN_WIDTH, SCREEN_HEIGHT, 20.0f);
 
-	//Initialize ImGui
 	ImGui_ImplSdlGL3_Init(App->window->window);
-	
 
 	return ret;
 }
@@ -118,8 +120,6 @@ bool ModuleRenderer3D::Init()
 // PreUpdate: clear buffer
 update_status ModuleRenderer3D::PreUpdate(float dt)
 {
-	
-	
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 	glLoadIdentity();
 
@@ -131,9 +131,6 @@ update_status ModuleRenderer3D::PreUpdate(float dt)
 
 	for(uint i = 0; i < MAX_LIGHTS; ++i)
 		lights[i].Render();
-	
-	//Start a new Frame to include UI elments
-	ImGui_ImplSdlGL3_NewFrame(App->window->window);
 
 	return UPDATE_CONTINUE;
 }
@@ -141,7 +138,6 @@ update_status ModuleRenderer3D::PreUpdate(float dt)
 // PostUpdate present buffer to screen
 update_status ModuleRenderer3D::PostUpdate(float dt)
 {
-	//Render the UI Elements
 	ImGui::Render();
 	SDL_GL_SwapWindow(App->window->window);
 	return UPDATE_CONTINUE;
@@ -158,30 +154,27 @@ bool ModuleRenderer3D::CleanUp()
 }
 
 
-void ModuleRenderer3D::OnResize(int width, int height)
+void ModuleRenderer3D::OnResize(int width, int height, float fovy)
 {
 	glViewport(0, 0, width, height);
 
 	glMatrixMode(GL_PROJECTION);
 	glLoadIdentity();
 
-	//Perspective
+	//Calculate perspective
 	float4x4 perspective;
+	float _near = 0.125f;
+	float _far = 512.0f;
+
 	perspective.SetIdentity();
+	float tan_theta_over2 = tan(fovy * pi / 360.0f);
 
-	float n = 0.125f;
-	float f = 512.0f;
-
-	float coty = 1.0f / tan(20.0f * pi / 360.0f);
-
-	//Matrix
-	perspective[0][0] = coty / ((float)width / (float)height);
-	perspective[1][1] = coty;
-	perspective[2][2] = (n + f) / (n - f);
-	perspective[2][3] = -1.0f;
-	perspective[3][2] = 2.0f * n * f / (n - f);
-	perspective[3][3] = 0.0f;
-	
+	perspective[0][0] = 1.0f / tan_theta_over2;
+	perspective[1][1] = ((float)width / (float)height) / tan_theta_over2;
+	perspective[2][2] = (_near + _far) / (_near - _far);
+	perspective[3][2] = 2 * _near * _far / (_near - _far);
+	perspective[2][3] = -1;
+	perspective[3][3] = 0;
 
 	ProjectionMatrix = perspective;
 	glLoadMatrixf(*ProjectionMatrix.v);

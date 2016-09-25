@@ -3,6 +3,8 @@
 #include "Color.h"
 #include "MathGeoLib\include\MathGeoLib.h"
 
+using namespace math;
+
 struct Light
 {
 	Light();
@@ -14,7 +16,7 @@ struct Light
 
 	Color ambient;
 	Color diffuse;
-	float3 position;
+	vec position;
 
 	int ref;
 	bool on;

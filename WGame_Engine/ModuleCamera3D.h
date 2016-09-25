@@ -1,7 +1,23 @@
 #pragma once
 #include "Module.h"
 #include "Globals.h"
+#include "MathGeoLib\include\MathGeoLib.h"
+#include <list>
+#include "p2Point.h"
 
+#define PIXELS_PER_METER 50.0f // if touched change METER_PER_PIXEL too
+#define METER_PER_PIXEL 0.02f // this is 1 / PIXELS_PER_METER !
+
+#define METERS_TO_PIXELS(m) ((int) floor(PIXELS_PER_METER * m))
+#define PIXEL_TO_METERS(p)  ((float) METER_PER_PIXEL * p)
+
+enum Direction
+{
+	GO_RIGHT,
+	GO_LEFT,
+	GO_UP,
+	GO_DOWN
+};
 
 class ModuleCamera3D : public Module
 {
@@ -13,11 +29,17 @@ public:
 	update_status Update(float dt);
 	bool CleanUp();
 
-	void Look(const float3 &Position, const float3 &Reference, bool RotateAroundReference = false);
-	void LookAt(const float3 &Spot);
-	void Move(const float3 &Movement);
+	void Look(const vec &Position, const vec &Reference, bool RotateAroundReference = false);
+	void LookAt(const vec &Spot);
+	void Move(const vec &Movement);
+	void Move(Direction d, float speed);
 	float* GetViewMatrix();
 
+	void Rotate(float x, float y);
+
+
+	//Transform a 3D point to a point of the screen
+	void From3Dto2D(vec point, int& x, int& y); 
 
 private:
 
@@ -25,7 +47,7 @@ private:
 
 public:
 	
-	float3 X, Y, Z, Position, Reference;
+	vec X, Y, Z, Position, Reference;
 
 private:
 

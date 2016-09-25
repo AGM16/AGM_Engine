@@ -2,6 +2,7 @@
 #include "Application.h"
 #include "Editor.h"
 #include "MathGeoLib\include\Algorithm\Random\LCG.h"
+#include "Imgui\imgui.h"
 
 using namespace std;
 
@@ -19,11 +20,15 @@ bool Editor::Start()
 
 	App->camera->Move(float3(5.0f, 6.0f, 15.0f));
 	App->camera->LookAt(float3(0, 0, 0));
+
+
 	render_aabb = false;
+	render_bounding_sphere = false;
+	show_test_window = false;
 
 	plane.axis = true;
-    Create_Points(6);
 	Create_AABB_Box();
+	Sphere_Bounding_Box();
 	return true;
 }
 
@@ -33,6 +38,71 @@ update_status Editor::Update(float dt)
 {
 	
 	plane.Render();
+
+	//Menu Bar ---------------------------
+	if (ImGui::BeginMainMenuBar())
+	{
+		if (ImGui::BeginMenu("File"))
+		{
+			if (ImGui::MenuItem("Quit"))
+			{
+				return UPDATE_STOP;
+			}
+
+			ImGui::EndMenu();
+		}
+
+		if (ImGui::BeginMenu("Help"))
+		{
+
+			if (ImGui::MenuItem("Test Window"))
+			{
+				show_test_window = !show_test_window;
+			}
+
+			if (ImGui::MenuItem("MathGeoLib Documentation"))
+			{
+				App->RquestBrowser("http://clb.demon.fi/MathGeoLib/");
+			}
+
+
+			ImGui::EndMenu();
+		}
+
+
+		if (ImGui::BeginMenu("Tools"))
+		{
+
+			if (ImGui::MenuItem("Create Random Points"))
+			{
+				Create_Points(6);
+			}
+
+			if (ImGui::MenuItem("Create AABB"))
+			{
+				Create_AABB_Box();
+			}
+
+			if (ImGui::MenuItem("Create Bounding Sphere"))
+			{
+				Sphere_Bounding_Box();
+			}
+			if (ImGui::MenuItem("Clear"))
+			{
+				s_points.clear();
+				aabb_bounding_box.transform.identity;
+				bounding_sphere.transform.identity;
+				render_aabb = false;
+				render_bounding_sphere = false;
+			}
+
+
+			ImGui::EndMenu();
+		}
+
+		ImGui::EndMainMenuBar();
+	}
+
 
 	Render();
 
@@ -52,15 +122,12 @@ bool Editor::CleanUp()
 void  Editor::Create_Points(int amount)
 {
 	float3 pos_vector;
-	Random rand;
+	LCG rand;
 
 	for (int num = 0; amount > num; num++)
 	{
-		pos_vector = rand.Random_Float_Vector(1, 5);
-
 		Primitive_Sphere spheres(0.3f);
-		spheres.SetPos(pos_vector.x, pos_vector.y, pos_vector.z);
-		spheres.GetPos();
+		spheres.SetPos(rand.Float(1, 5), rand.Float(1, 5), rand.Float(1, 5));
 		spheres.color.g = 255.0f;
 	    spheres.axis = true;
 
@@ -72,11 +139,19 @@ void Editor::Render()
 {
 	for (list<Primitive_Sphere>::iterator points = s_points.begin(); points != s_points.end(); ++points)
 	{
+		(*points).GetPos();
 		(*points).Render();
 	}
 
 	if (render_aabb)
 		aabb_bounding_box.Render();
+
+	if (render_bounding_sphere)
+		bounding_sphere.Render();
+
+	if (show_test_window)
+		ImGui::ShowTestWindow();
+
 }
 
 void Editor::Create_AABB_Box()
@@ -141,7 +216,6 @@ void Editor::Create_AABB_Box()
 
 
 		aabb_bounding_box.SetPos(position.x, position.y, position.z);
-
 		aabb_bounding_box.wire = true;
 		render_aabb = true;
 
@@ -149,3 +223,41 @@ void Editor::Create_AABB_Box()
 	}
 }
 
+
+void Editor::Rotate_Bounding_Box(float x, float y, float z)
+{
+	Quat quaternion;
+
+	quaternion = quaternion.FromEulerXYZ(x, y, z);
+
+	aabb_bounding_box.transform = quaternion * aabb_bounding_box.transform;
+}
+
+void Editor::Sphere_Bounding_Box()
+{
+	if (render_aabb)
+	{
+		OBB oobb_box;
+		oobb_box.pos = aabb_bounding_box.GetPos();
+		oobb_box.r = float3(aabb_bounding_box.size.x / 2, aabb_bounding_box.size.y / 2, aabb_bounding_box.size.z / 2);
+		
+
+		//Axis z,y,z
+		float3x3 rotation_matrix = aabb_bounding_box.transform.RotatePart();
+
+		oobb_box.axis[0] = rotation_matrix * float3(1.0f, 0.0f, 0.0f);
+		oobb_box.axis[1] = rotation_matrix * float3(0.0f, 1.0f, 0.0f);
+		oobb_box.axis[2] = rotation_matrix * float3(0.0f, 0.0f, 1.0f);
+
+
+		Sphere math_sphere = oobb_box.MinimalEnclosingSphere();
+
+		bounding_sphere.SetPos(oobb_box.pos.x, oobb_box.pos.y, oobb_box.pos.z);
+		bounding_sphere.radius = math_sphere.r;
+		bounding_sphere.wire = true;	
+		
+		render_bounding_sphere = true;
+
+	}	
+
+}

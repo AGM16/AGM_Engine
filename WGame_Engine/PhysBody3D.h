@@ -1,16 +1,15 @@
 #ifndef __PhysBody3D_H__
 #define __PhysBody3D_H__
 
-
-#include "MathGeoLib\include\MathGeoLib.h"
 #include <list>
-
-class btRigidBody;
-class Module;
+#include "MathGeoLib\include\MathGeoLib.h"
 
 using namespace std;
 
-
+class btRigidBody;
+class btTransform;
+class btVector3;
+class Module;
 
 // =================================================
 struct PhysBody3D
@@ -24,15 +23,17 @@ public:
 	void GetTransform(float* matrix) const;
 	void SetTransform(const float* matrix) const;
 	void SetPos(float x, float y, float z);
-	void SetAsSensor(bool is_sensor);
-	bool IsSensor() const;
-	void Stop_Motion();
-	void Set_Linear_Velocity(float x, float y, float z);
-	const float3 GetPos() const;
+	void Stop();
+	void SetRotation(float x, float y, float z);
+	math::vec GetPosition()const;
+
+	btTransform GetRealTransform()const;
+	void ApplyCentralForce(btVector3& force);
+
+	void SetBounciness(const float restitution,const float friction);
 
 private:
 	btRigidBody* body = nullptr;
-	bool is_sensor = false;
 
 public:
 	list<Module*> collision_listeners;

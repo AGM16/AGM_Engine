@@ -1,13 +1,10 @@
 #pragma once
 #include "Module.h"
 #include "Globals.h"
-#include "Primitive.h"
 #include <list>
+#include "Primitive.h"
 
 #include "Bullet\include\btBulletDynamicsCommon.h"
-
-using namespace std;
-
 // Recommended scale is 1.0f == 1 meter, no less than 0.2 objects
 #define GRAVITY btVector3(0.0f, -10.0f, 0.0f) 
 
@@ -29,13 +26,13 @@ public:
 	update_status PostUpdate(float dt);
 	bool CleanUp();
 
-	PhysBody3D* AddBody(const Primitive_Sphere& sphere, float mass = 1.0f);
-	PhysBody3D* AddBody(const Primitive_Cube& cube, float mass = 1.0f);
-	PhysBody3D* AddBody(const Primitive_Cylinder& cylinder, float mass = 1.0f);
+	PhysBody3D* AddBody(const Primitive_Sphere& sphere, float mass = 1.0f, bool isSensor = false);
+	PhysBody3D* AddBody(const Primitive_Cube& cube, float mass = 1.0f, bool isSensor = false);
+	PhysBody3D* AddBody(const Primitive_Cylinder& cylinder, float mass = 1.0f, bool isSensor = false);
 	PhysVehicle3D* AddVehicle(const VehicleInfo& info);
 
-	void AddConstraintP2P(PhysBody3D& bodyA, PhysBody3D& bodyB, const float3& anchorA, const float3& anchorB);
-	void AddConstraintHinge(PhysBody3D& bodyA, PhysBody3D& bodyB, const float3& anchorA, const float3& anchorB, const float3& axisS, const float3& axisB, bool disable_collision = false);
+	void AddConstraintP2P(PhysBody3D& bodyA, PhysBody3D& bodyB, const vec& anchorA, const vec& anchorB);
+	void AddConstraintHinge(PhysBody3D& bodyA, PhysBody3D& bodyB, const vec& anchorA, const vec& anchorB, const vec& axisS, const vec& axisB, bool disable_collision = false);
 
 private:
 
@@ -59,7 +56,7 @@ private:
 class DebugDrawer : public btIDebugDraw
 {
 public:
-	DebugDrawer() : line(0, 0, 0)
+	DebugDrawer() : line(0,0,0)
 	{}
 
 	void drawLine(const btVector3& from, const btVector3& to, const btVector3& color);

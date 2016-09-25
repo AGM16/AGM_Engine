@@ -1,15 +1,19 @@
 #pragma once
 
 #include "PhysBody3D.h"
+#include "MathGeoLib\include\MathGeoLib.h"
+#include "Primitive.h"
 
 class btRaycastVehicle;
 struct PhysBody3D;
 
+using namespace math;
+
 struct Wheel
 {
-	float3 connection; // origin of the ray. Must come from within the chassis
-	float3 direction;
-	float3 axis;
+	vec connection; // origin of the ray. Must come from within the chassis
+	vec direction; 
+	vec axis;
 	float suspensionRestLength; // max length for suspension in meters
 	float radius;
 	float width;
@@ -22,9 +26,11 @@ struct Wheel
 struct VehicleInfo
 {
 	~VehicleInfo();
-
-	float3 chassis_size;
-	float3 chassis_offset;
+	
+	vec chassis_size;
+	vec chassis_offset;
+	vec nose_size;
+	vec nose_offset;
 	float mass;
 	float suspensionStiffness; // default to 5.88 / 10.0 offroad / 50.0 sports car / 200.0 F1 car
 	float suspensionCompression; // default to 0.83
@@ -48,12 +54,11 @@ public:
 	void ApplyEngineForce(float force);
 	void Brake(float force);
 	void Turn(float degrees);
-	float3 GetRefVehicle() const;
 	float GetKmh() const;
-	void Orient(float rot_angle);
-	float3 GetForwardVector() const;
+	vec GetPos()const;
 public:
 
 	VehicleInfo info;
 	btRaycastVehicle* vehicle;
+	Color	color = White;
 };

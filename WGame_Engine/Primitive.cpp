@@ -2,12 +2,10 @@
 #include "Globals.h"
 #include <gl/GL.h>
 #include <gl/GLU.h>
-#include "MathGeoLib\include\MathGeoLib.h"
 #include "Primitive.h"
 #include "glut/glut.h"
 
 #pragma comment (lib, "glut/glut32.lib")
-
 
 // ------------------------------------------------------------
 Primitive::Primitive() : transform(transform.identity), color(White), wire(false), axis(false), type(PrimitiveTypes::Primitive_Point_Type)
@@ -17,11 +15,6 @@ Primitive::Primitive() : transform(transform.identity), color(White), wire(false
 PrimitiveTypes Primitive::GetType() const
 {
 	return type;
-}
-
-float3  Primitive::GetPos()const
-{
-	return float3(transform.v[3][0], transform.v[3][1], transform.v[3][2]);
 }
 
 // ------------------------------------------------------------
@@ -94,25 +87,29 @@ void Primitive::SetPos(float x, float y, float z)
 	transform.v[3][0] = x;
 	transform.v[3][1] = y;
 	transform.v[3][2] = z;
-	//transform.Translate(x,y,z);
 }
 
 // ------------------------------------------------------------
-void Primitive::SetRotation(float angle, const float3 &u)
+void Primitive::SetRotation(float angle, const vec &u)
 {
-	transform.RotateAxisAngle(u,angle);
+	transform.SetRotatePart(u, angle);
 }
 
 // ------------------------------------------------------------
-void Primitive::SetScale(float x, float y, float z)
+void Primitive::Scale(float x, float y, float z)
 {
-	transform.Scale(x, y, z);
+	transform.Scale(x, y, z); //TODO: check if this implementation is correct. It may create a new matrix just with the new scale. Make sure old data of the matrix is conserved.
+}
+
+// ------------------------------------------------------------
+float3 Primitive::GetPos()const
+{
+	return float3(transform.v[3][0], transform.v[3][1], transform.v[3][2]);
 }
 
 // CUBE ============================================
-Primitive_Cube::Primitive_Cube() : Primitive()
+Primitive_Cube::Primitive_Cube() : Primitive(), size(1.0f, 1.0f, 1.0f)
 {
-	size.one;
 	type = PrimitiveTypes::Primitive_Cube_Type;
 }
 
@@ -166,12 +163,6 @@ void Primitive_Cube::InnerRender() const
 	glVertex3f(-sx, -sy,  sz);
 
 	glEnd();
-}
-
-void Primitive_Cube::Create_Cube(float sizeX, float sizeY, float sizeZ, float pos_x, float pos_y, float pos_z)
-{
-	size.Set(sizeX, sizeY, sizeZ);
-	SetPos(pos_x, pos_y, pos_z);
 }
 
 // SPHERE ============================================
@@ -239,16 +230,13 @@ void Primitive_Cylinder::InnerRender() const
 }
 
 // LINE ==================================================
-Primitive_Line::Primitive_Line() : Primitive() 
+Primitive_Line::Primitive_Line() : Primitive(), origin(0, 0, 0), destination(1, 1, 1)
 {
-	origin.zero;
-	destination.one;
 	type = PrimitiveTypes::Primitive_Line_Type;
 }
 
-Primitive_Line::Primitive_Line(float x, float y, float z) : Primitive(), destination(x,y,z)
+Primitive_Line::Primitive_Line(float x, float y, float z) : Primitive(), origin(0, 0, 0), destination(x, y, z)
 {
-	origin.zero; 
 	type = PrimitiveTypes::Primitive_Line_Type;
 }
 
@@ -267,12 +255,12 @@ void Primitive_Line::InnerRender() const
 }
 
 // PLANE ==================================================
-Primitive_Plane::Primitive_Plane() : Primitive(), constant(1), normal(0.0f, 1.0f, 0.0f)
+Primitive_Plane::Primitive_Plane() : Primitive(), normal(0, 1, 0), constant(1)
 {
 	type = PrimitiveTypes::Primitive_Plane_Type;
 }
 
-Primitive_Plane::Primitive_Plane(float x, float y, float z, float d) : Primitive(), normal(x,y,z), constant(d)
+Primitive_Plane::Primitive_Plane(float x, float y, float z, float d) : Primitive(), normal(x, y, z), constant(d)
 {
 	type = PrimitiveTypes::Primitive_Plane_Type;
 }

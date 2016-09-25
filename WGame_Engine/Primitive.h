@@ -1,8 +1,9 @@
 
 #pragma once
-
-#include "Color.h"
 #include "MathGeoLib\include\MathGeoLib.h"
+#include "Color.h"
+
+using namespace math;
 
 enum PrimitiveTypes
 {
@@ -23,11 +24,10 @@ public:
 	virtual void	Render() const;
 	virtual void	InnerRender() const;
 	void			SetPos(float x, float y, float z);
-	void			SetRotation(float angle, const float3 &u);
-	void			SetScale(float x, float y, float z);
+	void			SetRotation(float angle, const vec &u);
+	void			Scale(float x, float y, float z);
 	PrimitiveTypes	GetType() const;
-	float3          GetPos()const;
-
+	float3				GetPos()const;
 public:
 	
 	Color color;
@@ -45,8 +45,6 @@ public :
 	Primitive_Cube();
 	Primitive_Cube(float sizeX, float sizeY, float sizeZ);
 	void InnerRender() const;
-	void Create_Cube(float sizeX, float sizeY, float sizeZ, float pos_x, float pos_y, float pos_z);
-
 public:
 	float3 size;
 };

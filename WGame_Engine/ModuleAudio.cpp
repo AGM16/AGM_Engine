@@ -54,11 +54,12 @@ bool ModuleAudio::CleanUp()
 		Mix_FreeMusic(music);
 	}
 
-	list<Mix_Chunk*>::iterator item;
+	list<Mix_Chunk*>::iterator i = fx.begin();
 
-	for(item = fx.begin(); item != fx.end(); ++item)
+	while (i != fx.end())
 	{
-		Mix_FreeChunk(*item);
+		Mix_FreeChunk(*i);
+		++i;
 	}
 
 	fx.clear();
@@ -146,10 +147,9 @@ bool ModuleAudio::PlayFx(unsigned int id, int repeat)
 
 	list<Mix_Chunk*>::iterator chunk = fx.begin();
 
-	//Advance positions in the list until arrive to the position we put
 	advance(chunk, id - 1);
-
-	if (chunk != fx.end())
+	
+	if(chunk != fx.end())
 	{
 		Mix_PlayChannel(-1, *chunk, repeat);
 		ret = true;

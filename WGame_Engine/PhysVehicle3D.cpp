@@ -1,13 +1,12 @@
 #include "PhysVehicle3D.h"
 #include "Primitive.h"
 #include "Bullet\include\btBulletDynamicsCommon.h"
-#include "MathGeoLib\include\MathGeoLib.h"
 
 // ----------------------------------------------------------------------------
 VehicleInfo::~VehicleInfo()
 {
 	//if(wheels != NULL)
-	//delete wheels;
+		//delete wheels;
 }
 
 // ----------------------------------------------------------------------------
@@ -26,9 +25,9 @@ void PhysVehicle3D::Render()
 {
 	Primitive_Cylinder wheel;
 
-	wheel.color = Green;
+	wheel.color = color;
 
-	for (int i = 0; i < vehicle->getNumWheels(); ++i)
+	for(int i = 0; i < vehicle->getNumWheels(); ++i)
 	{
 		wheel.radius = info.wheels[0].radius;
 		wheel.height = info.wheels[0].width;
@@ -41,42 +40,34 @@ void PhysVehicle3D::Render()
 
 	Primitive_Cube chassis(info.chassis_size.x, info.chassis_size.y, info.chassis_size.z);
 	vehicle->getChassisWorldTransform().getOpenGLMatrix(*chassis.transform.v);
+	chassis.color = color;
 	btQuaternion q = vehicle->getChassisWorldTransform().getRotation();
 	btVector3 offset(info.chassis_offset.x, info.chassis_offset.y, info.chassis_offset.z);
 	offset = offset.rotate(q.getAxis(), q.getAngle());
 
-	chassis.SetPos(offset.getX(), offset.getY(), offset.getZ());
-
-	/*chassis.transform.M[12] += offset.getX();
-	chassis.transform.M[13] += offset.getY();
-	chassis.transform.M[14] += offset.getZ();*/
+	chassis.transform.SetTranslatePart(offset.getX(), offset.getY(), offset.getZ());
 
 	chassis.Render();
 
-	//--------------------------------------------------------------------------------
+	Primitive_Cube nose(info.nose_size.x, info.nose_size.y, info.nose_size.z);
+	vehicle->getChassisWorldTransform().getOpenGLMatrix(*nose.transform.v);
+	nose.color = color;
+	btQuaternion q_n = vehicle->getChassisWorldTransform().getRotation();
+	btVector3 offset_n(info.nose_offset.x, info.nose_offset.y, info.nose_offset.z);
+	offset_n = offset_n.rotate(q_n.getAxis(), q_n.getAngle());
 
-	Primitive_Cube chassis2(1, 1, 2);
-	vehicle->getChassisWorldTransform().getOpenGLMatrix(*chassis2.transform.v);
-	btQuaternion q2 = vehicle->getChassisWorldTransform().getRotation();
-	btVector3 offset2(0, info.chassis_offset.y + 1.7f, -2.5f);
-	offset2 = offset2.rotate(q2.getAxis(), q2.getAngle());
+	nose.transform.SetTranslatePart(offset_n.getX(), offset_n.getY(), offset_n.getZ());
 
-	chassis2.SetPos(offset2.getX(), offset2.getY(), offset2.getZ());
-
-	/*chassis2.transform.M[12] += offset2.getX();
-	chassis2.transform.M[13] += offset2.getY();
-	chassis2.transform.M[14] += offset2.getZ();*/
-
-	chassis2.Render();
-
+	nose.Render();
+	
 }
 
 // ----------------------------------------------------------------------------
 void PhysVehicle3D::ApplyEngineForce(float force)
 {
-	for (int i = 0; i < vehicle->getNumWheels(); ++i)
+	for(int i = 0; i < vehicle->getNumWheels(); ++i)
 	{
-		if (info.wheels[i].drive == true)
+		if(info.wheels[i].drive == true)
 		{
 			vehicle->applyEngineForce(force, i);
 		}
@@ -86,9 +77,9 @@ void PhysVehicle3D::ApplyEngineForce(float force)
 // ----------------------------------------------------------------------------
 void PhysVehicle3D::Brake(float force)
 {
-	for (int i = 0; i < vehicle->getNumWheels(); ++i)
+	for(int i = 0; i < vehicle->getNumWheels(); ++i)
 	{
-		if (info.wheels[i].brake == true)
+		if(info.wheels[i].brake == true)
 		{
 			vehicle->setBrake(force, i);
 		}
@@ -98,22 +89,13 @@ void PhysVehicle3D::Brake(float force)
 // ----------------------------------------------------------------------------
 void PhysVehicle3D::Turn(float degrees)
 {
-	for (int i = 0; i < vehicle->getNumWheels(); ++i)
+	for(int i = 0; i < vehicle->getNumWheels(); ++i)
 	{
-		if (info.wheels[i].steering == true)
+		if(info.wheels[i].steering == true)
 		{
 			vehicle->setSteeringValue(degrees, i);
 		}
 	}
-}
-
-// ----------------------------------------------------------------------------
-float3 PhysVehicle3D::GetForwardVector() const
-{
-	btVector3 h = vehicle->getForwardVector();
-	float3 ret;
-	ret.Set(h.getX(), h.getY(), h.getZ());
-	return ret;
 }
 
 // ----------------------------------------------------------------------------
@@ -122,35 +104,12 @@ float PhysVehicle3D::GetKmh() const
 	return vehicle->getCurrentSpeedKmHour();
 }
 
-float3 PhysVehicle3D::GetRefVehicle() const
+// ----------------------------------------------------------------------------
+vec PhysVehicle3D::GetPos()const
 {
-	float3 pos;
-	btTransform trans = vehicle->getChassisWorldTransform();
-	btMatrix3x3 mat = trans.getBasis();
-	pos.x = mat.getColumn(0).getX();
-	pos.y = mat.getColumn(1).getY();
-	pos.z = mat.getColumn(2).getZ();
-
-	return pos;
-}
-
-void PhysVehicle3D::Orient(float rot_angle)
-{
-	float matrix[16];
-	memset(matrix, 0.0f, sizeof(matrix));
-
-	float3 p = GetPos();
-	matrix[12] = p.x;
-	matrix[13] = p.y;
-	matrix[14] = p.z;
-	matrix[15] = 1;
-
-	matrix[0] = cos(rot_angle);
-	matrix[2] = -sin(rot_angle);
-	matrix[5] = 1;
-	matrix[8] = sin(rot_angle);
-	matrix[10] = cos(rot_angle);
-
-	SetTransform(matrix);
-
+	vec ret;
+	ret.x = vehicle->getChassisWorldTransform().getOrigin().getX();
+	ret.y = vehicle->getChassisWorldTransform().getOrigin().getY();
+	ret.z = vehicle->getChassisWorldTransform().getOrigin().getZ();
+	return ret;
 }

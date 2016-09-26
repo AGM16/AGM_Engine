@@ -23,5 +23,6 @@ public:
 	list<Primitive_Cylinder> spheres;
 	list<PhysBody3D*> bodies;
 	bool show_test_window;
+	vector<float3> vertex;
 
 };

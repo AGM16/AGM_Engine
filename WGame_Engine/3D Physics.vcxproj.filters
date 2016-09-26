@@ -300,6 +300,12 @@
     <ClInclude Include="Editor.h">
       <Filter>Sources\Editor</Filter>
     </ClInclude>
+    <ClInclude Include="ModuleInfoWindow.h">
+      <Filter>Sources\Tools</Filter>
+    </ClInclude>
+    <ClInclude Include="FPS.h">
+      <Filter>Sources\Modules</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="ModuleAudio.cpp">
@@ -475,6 +481,12 @@
     </ClCompile>
     <ClCompile Include="Editor.cpp">
       <Filter>Sources\Editor</Filter>
+    </ClCompile>
+    <ClCompile Include="ModuleInfoWindow.cpp">
+      <Filter>Sources\Tools</Filter>
+    </ClCompile>
+    <ClCompile Include="FPS.cpp">
+      <Filter>Sources\Modules</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

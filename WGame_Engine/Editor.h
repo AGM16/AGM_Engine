@@ -38,6 +38,7 @@ private:
 
 	bool render_aabb;
 	bool render_bounding_sphere;
+	bool open_window;
 
 
 

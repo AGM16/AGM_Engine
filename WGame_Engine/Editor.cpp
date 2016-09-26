@@ -25,6 +25,7 @@ bool Editor::Start()
 	render_aabb = false;
 	render_bounding_sphere = false;
 	show_test_window = false;
+	open_window = true;
 
 	plane.axis = true;
 	Create_AABB_Box();
@@ -70,7 +71,7 @@ update_status Editor::Update(float dt)
 		}
 
 
-		if (ImGui::BeginMenu("Tools"))
+		if (ImGui::BeginMenu(" MathGeoLib Tools"))
 		{
 
 			if (ImGui::MenuItem("Create Random Points"))
@@ -102,6 +103,14 @@ update_status Editor::Update(float dt)
 
 		ImGui::EndMainMenuBar();
 	}
+
+	
+	if(ImGui::Begin("Application", &open_window))
+	{
+
+	}
+
+	ImGui::End();
 
 
 	Render();

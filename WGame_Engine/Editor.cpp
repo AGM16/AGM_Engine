@@ -21,11 +21,14 @@ bool Editor::Start()
 	App->camera->Move(float3(5.0f, 6.0f, 15.0f));
 	App->camera->LookAt(float3(0, 0, 0));
 
+	open_application = false;
+
+
 
 	render_aabb = false;
 	render_bounding_sphere = false;
 	show_test_window = false;
-	open_window = true;
+	
 
 	plane.axis = true;
 	Create_AABB_Box();
@@ -101,16 +104,38 @@ update_status Editor::Update(float dt)
 			ImGui::EndMenu();
 		}
 
+		if (ImGui::BeginMenu("Computer_Info"))
+		{
+
+			if (ImGui::MenuItem("Application"))
+			{
+				if (ImGui::Begin("FPS"))
+				{
+					open_application = !open_application;
+				}
+
+				ImGui::End();
+			}
+
+			ImGui::EndMenu();
+		}
+
+
+
 		ImGui::EndMainMenuBar();
 	}
 
+	if (open_application)
+	{
+		Application_Window();
+	}
 	
-	if(ImGui::Begin("Application", &open_window))
+	/*if(ImGui::Begin("Application", &open_window))
 	{
 
 	}
 
-	ImGui::End();
+	ImGui::End();*/
 
 
 	Render();
@@ -268,5 +293,36 @@ void Editor::Sphere_Bounding_Box()
 		render_bounding_sphere = true;
 
 	}	
+
+}
+
+
+void Editor::Application_Window()
+{
+	ImGui::Begin("Computer");
+
+	if (ImGui::CollapsingHeader("FPS"))
+	{
+		char title[25];
+		sprintf_s(title, 25, "Framerate %.1f", App->fps_info->frames[App->fps_info->frames.size() - 1]);
+		ImGui::PlotHistogram("##framerate", &App->fps_info->frames[0], App->fps_info->frames.size(), 0, title, 0.0f, 100.0f, ImVec2(310, 100));
+
+		char title2[25];
+		sprintf_s(title2, 25, "Milliseconds %0.1f", App->fps_info->ms[App->fps_info->ms.size() - 1]);
+		ImGui::PlotHistogram("##milliseconds", &App->fps_info->ms[0], App->fps_info->ms.size(), 0, title2, 0.0f, 40.0f, ImVec2(310, 100));
+
+
+		if (ImGui::SliderInt("Max FPS", &App->fps_info->max_frames, 0, 100))
+		{
+			App->Set_Limit_Frames(App->fps_info->max_frames);
+		}
+	}
+
+	if (ImGui::Button("Close"))
+	{
+		open_application = false;
+	}
+
+	ImGui::End();
 
 }

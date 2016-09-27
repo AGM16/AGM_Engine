@@ -23,6 +23,8 @@ public:
 	void Rotate_Bounding_Box(float x, float y, float z);
 	void Sphere_Bounding_Box();
 
+	void Application_Window();
+
 
 private:
 
@@ -38,7 +40,10 @@ private:
 
 	bool render_aabb;
 	bool render_bounding_sphere;
-	bool open_window;
+	bool open_application;
+
+
+
 
 
 

@@ -1,5 +1,6 @@
 #include "Application.h"
 
+
 Application::Application()
 {
 	window = new ModuleWindow(this);
@@ -10,6 +11,7 @@ Application::Application()
 	camera = new ModuleCamera3D(this);
 	physics = new ModulePhysics3D(this);
 	editor = new Editor(this);
+	fps_info = new FPS_Info(this);
 
 	// The order of calls is very important!
 	// Modules will Init() Start() and Update in this order
@@ -17,17 +19,30 @@ Application::Application()
 
 	// Main Modules
 	AddModule(window);
+
+	//FPS
+	AddModule(fps_info);
+
 	AddModule(camera);
 	AddModule(input);
 	AddModule(audio);
 	AddModule(physics);
-	
+
+
 	// Scenes
 	AddModule(scene_intro);
 	AddModule(editor);
+	
 
 	// Renderer last!
 	AddModule(renderer3D);
+
+
+	//FPS Info
+	prev_frames_per_sec = 0; 
+	frames_per_sec = 0;
+	max_frames = 60; 
+	time_per_frame = 1000 / 60;
 }
 
 Application::~Application()
@@ -65,6 +80,7 @@ bool Application::Init()
 		++i;
 	}
 	
+	last_sec_frame.Start();
 	ms_timer.Start();
 	return ret;
 }
@@ -72,6 +88,7 @@ bool Application::Init()
 // ---------------------------------------------
 void Application::PrepareUpdate()
 {
+	frames_per_sec++;
 	dt = (float)ms_timer.Read() / 1000.0f;
 	ms_timer.Start();
 }
@@ -79,6 +96,17 @@ void Application::PrepareUpdate()
 // ---------------------------------------------
 void Application::FinishUpdate()
 {
+	if (Sec_Counter(last_sec_frame.Read()))
+	{
+		LOG("FPS: %d", prev_frames_per_sec);
+	}
+
+	double ms_time = ms_timer.Read();
+
+	time_last_frame = ms_time;
+
+	Delay(ms_time, time_per_frame);
+
 }
 
 // Call PreUpdate, Update and PostUpdate on all modules
@@ -139,4 +167,50 @@ void Application::AddModule(Module* mod)
 void Application::RquestBrowser(const char* url)
 {
 	ShellExecuteA(NULL, "open", url, NULL, NULL, SW_SHOWNORMAL);
+}
+
+bool Application::Sec_Counter(double time)
+{
+	if (time > 1000)
+	{
+		last_sec_frame.Start();
+		prev_frames_per_sec = frames_per_sec;
+		frames_per_sec = 0;
+
+		return true;
+	}
+
+	return false;
+}
+
+void Application::Delay(double ms_time, double time_per_frame)
+{
+
+	if (time_per_frame > 0 && ms_time < time_per_frame)
+	{
+		SDL_Delay(time_per_frame - ms_time);
+	}
+}
+
+int Application::Get_Last_FPS()const
+{
+	return prev_frames_per_sec;
+}
+
+double Application::Get_Last_Frame_Time()const
+{
+	return time_last_frame;
+}
+
+int Application::Get_Limit_Frames()const
+{
+	return max_frames;
+}
+
+void Application::Set_Limit_Frames(int max_fps)
+{
+	if(max_fps != 0)
+	      time_per_frame = 1000 / max_fps;
+	else
+		  time_per_frame = 1000 / 60;
 }

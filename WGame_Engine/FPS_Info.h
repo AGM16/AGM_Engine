@@ -9,7 +9,6 @@ class FPS_Info : public Module
 {
 public:
 	FPS_Info(Application* app, bool start_enabled = true);
-	FPS_Info();
 	~FPS_Info();
 
 	bool Start();

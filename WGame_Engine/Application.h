@@ -13,6 +13,7 @@
 #include "ModulePhysics3D.h"
 #include "Editor.h"
 #include "FPS_Info.h"
+#include "Console.h"
 
 using namespace std; 
 
@@ -28,6 +29,7 @@ public:
 	ModulePhysics3D* physics;
 	Editor*     editor;
 	FPS_Info*        fps_info;
+	Console*        console;
 
 private:
 
@@ -39,6 +41,7 @@ private:
 	int     max_frames;
 	double     time_per_frame;
 	double     time_last_frame;
+	bool       console_exists;
 
 	
 
@@ -64,6 +67,8 @@ public:
 	double Get_Last_Frame_Time()const;
 	int Get_Limit_Frames()const;
 	void Set_Limit_Frames(int max_fps);
+	bool Consoler_Exist();
+	bool Set_Console(bool exist);
 
 private:
 
@@ -73,3 +78,5 @@ private:
 
 	
 };
+
+extern Application* App;

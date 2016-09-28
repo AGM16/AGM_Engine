@@ -12,6 +12,7 @@ Application::Application()
 	physics = new ModulePhysics3D(this);
 	editor = new Editor(this);
 	fps_info = new FPS_Info(this);
+	console = new Console(this);
 
 	// The order of calls is very important!
 	// Modules will Init() Start() and Update in this order
@@ -21,8 +22,8 @@ Application::Application()
 	AddModule(window);
 
 	//FPS
+	
 	AddModule(fps_info);
-
 	AddModule(camera);
 	AddModule(input);
 	AddModule(audio);
@@ -32,7 +33,7 @@ Application::Application()
 	// Scenes
 	AddModule(scene_intro);
 	AddModule(editor);
-	
+	AddModule(console);
 
 	// Renderer last!
 	AddModule(renderer3D);
@@ -43,6 +44,9 @@ Application::Application()
 	frames_per_sec = 0;
 	max_frames = 60; 
 	time_per_frame = 1000 / 60;
+
+	//Console
+	console_exists = false;
 }
 
 Application::~Application()
@@ -62,7 +66,7 @@ bool Application::Init()
 
 	// Call Init() in all modules
 	list<Module*>::iterator i = list_modules.begin();
-
+    console_exists = true;
 	while (i != list_modules.end() && ret == true)
 	{
 		ret = (*i)->Init();
@@ -73,6 +77,8 @@ bool Application::Init()
 	// After all Init calls we call Start() in all modules
 	LOG("Application Start --------------");
 	i = list_modules.begin();
+
+	
 
 	while(i != list_modules.end() && ret == true)
 	{
@@ -155,7 +161,6 @@ bool Application::CleanUp()
 		++i;
 	}
 
-
 	return ret;
 }
 
@@ -213,4 +218,14 @@ void Application::Set_Limit_Frames(int max_fps)
 	      time_per_frame = 1000 / max_fps;
 	else
 		  time_per_frame = 1000 / 60;
+}
+
+bool  Application::Consoler_Exist()
+{
+	return console_exists;
+}
+
+bool Application::Set_Console(bool exist)
+{
+	return (console_exists = exist);
 }

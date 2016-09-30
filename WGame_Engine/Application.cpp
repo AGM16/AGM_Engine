@@ -66,7 +66,9 @@ bool Application::Init()
 
 	// Call Init() in all modules
 	list<Module*>::iterator i = list_modules.begin();
+
     console_exists = true;
+
 	while (i != list_modules.end() && ret == true)
 	{
 		ret = (*i)->Init();
@@ -151,6 +153,9 @@ update_status Application::Update()
 
 bool Application::CleanUp()
 {
+	//Console
+	console_exists = false;
+
 	bool ret = true;
 
 	list<Module*>::reverse_iterator i = list_modules.rbegin();
@@ -228,4 +233,14 @@ bool  Application::Consoler_Exist()
 bool Application::Set_Console(bool exist)
 {
 	return (console_exists = exist);
+}
+
+void Application::Log_Console(const char* text)
+{
+	if (console_exists == true)
+	{
+		if (console != NULL)
+			console->Save_Log(text);
+	}
+
 }

@@ -15,7 +15,7 @@ Console::~Console()
 
 bool Console::Start()
 {
-	App->Set_Console(true);
+	
 	return true;
 }
 
@@ -28,7 +28,7 @@ update_status Console::Update(float dt)
 
 bool Console::CleanUp()
 {
-	//App->Set_Console(false);
+	
 	text_console.clear();
 	return true;
 }

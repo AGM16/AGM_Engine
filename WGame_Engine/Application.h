@@ -67,8 +67,10 @@ public:
 	double Get_Last_Frame_Time()const;
 	int Get_Limit_Frames()const;
 	void Set_Limit_Frames(int max_fps);
+
 	bool Consoler_Exist();
 	bool Set_Console(bool exist);
+	void Log_Console(const char* text);
 
 private:
 

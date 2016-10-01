@@ -11,9 +11,11 @@
 #include "ModuleRenderer3D.h"
 #include "ModuleCamera3D.h"
 #include "ModulePhysics3D.h"
+#include "ModuleGeometry.h"
 #include "Editor.h"
 #include "FPS_Info.h"
 #include "Console.h"
+
 
 using namespace std; 
 
@@ -30,6 +32,7 @@ public:
 	Editor*     editor;
 	FPS_Info*        fps_info;
 	Console*        console;
+	ModuleGeometry*  geometry;
 
 private:
 

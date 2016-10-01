@@ -13,6 +13,7 @@ Application::Application()
 	editor = new Editor(this);
 	fps_info = new FPS_Info(this);
 	console = new Console(this);
+	geometry = new ModuleGeometry(this);
 
 	// The order of calls is very important!
 	// Modules will Init() Start() and Update in this order
@@ -33,6 +34,7 @@ Application::Application()
 	// Scenes
 	AddModule(scene_intro);
 	AddModule(editor);
+	AddModule(geometry);
 	AddModule(console);
 
 	// Renderer last!
@@ -87,6 +89,8 @@ bool Application::Init()
 		ret = (*i)->Start();
 		++i;
 	}
+
+	
 	
 	last_sec_frame.Start();
 	ms_timer.Start();
@@ -146,6 +150,8 @@ update_status Application::Update()
 		ret = (*i)->PostUpdate(dt);
 		i++;
 	}
+
+	
 
 	FinishUpdate();
 	return ret;

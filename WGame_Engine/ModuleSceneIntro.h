@@ -2,7 +2,9 @@
 #include "Module.h"
 #include "Globals.h"
 #include "Primitive.h"
+#include "ModuleGeometry.h"
 #include <list>
+#include <vector>
 
 
 class ModuleSceneIntro : public Module
@@ -34,5 +36,9 @@ public:
 	//Vectex Indices
 	vector<uint> indices;
 	uint my_indices = 0;
+
+	//FBX
+	vector<Mesh> geometry_object;
+	
 
 };

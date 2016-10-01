@@ -20,6 +20,7 @@ public:
 	bool CleanUp();
 
 	void OnResize(int width, int height, float fovy);
+	void Draw_Geometry(uint id, uint size);
 
 public:
 

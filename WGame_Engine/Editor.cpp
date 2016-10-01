@@ -129,13 +129,6 @@ update_status Editor::Update(float dt)
 	{
 		Application_Window();
 	}
-	
-	/*if(ImGui::Begin("Application", &open_window))
-	{
-
-	}
-
-	ImGui::End();*/
 
 
 	Render();
@@ -173,7 +166,6 @@ void Editor::Render()
 {
 	for (list<Primitive_Sphere>::iterator points = s_points.begin(); points != s_points.end(); ++points)
 	{
-		(*points).GetPos();
 		(*points).Render();
 	}
 

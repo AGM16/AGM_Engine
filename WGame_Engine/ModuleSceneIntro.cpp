@@ -10,6 +10,7 @@
 #include <gl/GL.h>
 #include "glut/glut.h"
 
+using namespace std;
 
 ModuleSceneIntro::ModuleSceneIntro(Application* app, bool start_enabled) : Module(app, start_enabled)
 {
@@ -30,7 +31,7 @@ bool ModuleSceneIntro::Start()
 	show_test_window = false;
 	Cube_Indice_OPENGL();
 	
-
+	geometry_object = App->geometry->Load_Geometry("cube.fbx");
 	return ret;
 }
 
@@ -47,7 +48,15 @@ bool ModuleSceneIntro::CleanUp()
 update_status ModuleSceneIntro::Update(float dt)
 {
 	
-	Draw_Indices_Vertex(indices, my_indices);
+	//Draw_Indices_Vertex(indices, my_indices);
+
+		vector<Mesh>::iterator array_mesh = geometry_object.begin();
+		while (array_mesh != geometry_object.end())
+		{
+			App->renderer3D->Draw_Geometry((*array_mesh).id_indices, (*array_mesh).num_indices);
+			++array_mesh;
+		}
+	
 	
 	return UPDATE_CONTINUE;
 }
@@ -308,6 +317,7 @@ void ModuleSceneIntro::Draw_Array_Vertex(vector<float3> &vertices, uint id)
 
 void ModuleSceneIntro::Draw_Indices_Vertex(vector<uint> &vertices, uint id)
 {
+	glColor4f(1.0f, 1.0f, 1.0f, 1.0f);
 	//DRAW Indice ARRAY
 	glEnableClientState(GL_VERTEX_ARRAY);
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, id);

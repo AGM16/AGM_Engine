@@ -183,8 +183,14 @@ void ModuleRenderer3D::OnResize(int width, int height, float fovy)
 	glLoadIdentity();
 }
 
-void ModuleRenderer3D::Draw_Geometry(uint id, uint size)
+void ModuleRenderer3D::Draw_Geometry(uint id, uint size, bool wire)
 {
+	
+	if (wire == true)
+	{
+       glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+	}
+
 	glColor4f(1.0f, 1.0f, 1.0f, 1.0f);
 	//DRAW Mesh
 	glEnableClientState(GL_VERTEX_ARRAY);
@@ -192,4 +198,5 @@ void ModuleRenderer3D::Draw_Geometry(uint id, uint size)
 	glVertexPointer(3, GL_FLOAT, 0, NULL);
 	glDrawElements(GL_TRIANGLES, size, GL_UNSIGNED_INT, NULL);
 	glDisableClientState(GL_VERTEX_ARRAY);
+	
 }

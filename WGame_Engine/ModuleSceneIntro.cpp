@@ -25,13 +25,13 @@ bool ModuleSceneIntro::Start()
 	LOG("Loading Intro assets");
 	bool ret = true;
 
-	App->camera->Move(vec(1.0f, 1.0f, 0.0f));
+	App->camera->Move(vec(10.0f, 10.0f, 0.0f));
 	App->camera->LookAt(vec(0, 0, 0));	
 	
 	show_test_window = false;
 	Cube_Indice_OPENGL();
 	
-	geometry_object = App->geometry->Load_Geometry("cube.fbx");
+	geometry_object = App->geometry->Load_Geometry("Game/cube.fbx");
 	return ret;
 }
 
@@ -53,7 +53,7 @@ update_status ModuleSceneIntro::Update(float dt)
 		vector<Mesh>::iterator array_mesh = geometry_object.begin();
 		while (array_mesh != geometry_object.end())
 		{
-			App->renderer3D->Draw_Geometry((*array_mesh).id_indices, (*array_mesh).num_indices);
+			App->renderer3D->Draw_Geometry((*array_mesh).id_indices, (*array_mesh).num_indices, false);
 			++array_mesh;
 		}
 	

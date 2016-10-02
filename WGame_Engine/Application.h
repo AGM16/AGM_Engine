@@ -12,6 +12,7 @@
 #include "ModuleCamera3D.h"
 #include "ModulePhysics3D.h"
 #include "ModuleGeometry.h"
+#include "ModuleFileSystem.h"
 #include "Editor.h"
 #include "FPS_Info.h"
 #include "Console.h"
@@ -33,6 +34,7 @@ public:
 	FPS_Info*        fps_info;
 	Console*        console;
 	ModuleGeometry*  geometry;
+	ModuleFileSystem* filesystem;
 
 private:
 

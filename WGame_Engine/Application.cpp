@@ -14,6 +14,7 @@ Application::Application()
 	fps_info = new FPS_Info(this);
 	console = new Console(this);
 	geometry = new ModuleGeometry(this);
+	filesystem = new ModuleFileSystem(this);
 
 	// The order of calls is very important!
 	// Modules will Init() Start() and Update in this order
@@ -23,7 +24,7 @@ Application::Application()
 	AddModule(window);
 
 	//FPS
-	
+	AddModule(filesystem);
 	AddModule(fps_info);
 	AddModule(camera);
 	AddModule(input);
@@ -90,7 +91,7 @@ bool Application::Init()
 		++i;
 	}
 
-	
+	const char* dir = filesystem->Get_Base_Dir();
 	
 	last_sec_frame.Start();
 	ms_timer.Start();

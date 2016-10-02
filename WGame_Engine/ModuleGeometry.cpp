@@ -44,10 +44,20 @@ bool ModuleGeometry::CleanUp()
 
 vector<Mesh>  ModuleGeometry::Load_Geometry(const char* path)
 {
-	vector<Mesh> meshes;
+	char* buff;
+	uint size = App->filesystem->Load(path, &buff);
+    vector<Mesh> meshes;
+
+	if (size == 0)
+	{
+		LOG("Error loading %s", path);
+		return meshes;
+	}
+
+	
 
 	//Import Geometry File
-	const aiScene* scene = aiImportFile(path, aiProcessPreset_TargetRealtime_MaxQuality);
+	const aiScene* scene = aiImportFileFromMemory(buff,size, aiProcessPreset_TargetRealtime_MaxQuality,NULL);
 
 	//Check the state of the import
 	if (scene != nullptr && scene->HasMeshes() == true)
@@ -93,8 +103,8 @@ vector<Mesh>  ModuleGeometry::Load_Geometry(const char* path)
 
 		   //Indices Buffer
 		   glGenBuffers(1, (GLuint*) &(m.id_indices));//Generate the buffer
-		   glBindBuffer(GL_ARRAY_BUFFER, m.id_indices);//Start using that buffer
-		   glBufferData(GL_ARRAY_BUFFER, sizeof(float) * m.num_indices * 3, m.indices, GL_STATIC_DRAW);
+		   glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m.id_indices);//Start using that buffer
+		   glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(uint) *  m.num_indices, m.indices, GL_STATIC_DRAW);
 
 
 		   meshes.push_back(m);
@@ -108,7 +118,7 @@ vector<Mesh>  ModuleGeometry::Load_Geometry(const char* path)
 		
 	}
 
-
+	delete[] buff;
 	return meshes;
 
 }

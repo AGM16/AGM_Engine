@@ -31,7 +31,30 @@ bool ModuleSceneIntro::Start()
 	show_test_window = false;
 	Cube_Indice_OPENGL();
 	
-	geometry_object = App->geometry->Load_Geometry("Game/cube.fbx");
+	geometry_object = App->geometry->Load_Geometry("cube.fbx");
+	GLubyte checkImage[2][2][4];
+	for (int i = 0; i < 2; i++) {
+		for (int j = 0; j < 2; j++) {
+			int c = ((((i & 0x8) == 0) ^ (((j & 0x8)) == 0))) * 255;
+			checkImage[i][j][0] = (GLubyte)c;
+			checkImage[i][j][1] = (GLubyte)c;
+			checkImage[i][j][2] = (GLubyte)c;
+			checkImage[i][j][3] = (GLubyte)255;
+		}
+	}
+
+	
+	glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
+	glGenTextures(1, &image_name);
+	
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, 2, 2,
+		0, GL_RGBA, GL_UNSIGNED_BYTE, checkImage);
+
+
 	return ret;
 }
 
@@ -56,7 +79,7 @@ update_status ModuleSceneIntro::Update(float dt)
 			App->renderer3D->Draw_Geometry((*array_mesh).id_indices, (*array_mesh).num_indices, false);
 			++array_mesh;
 		}
-	
+	//Cube_Direct_OPENGL();
 	
 	return UPDATE_CONTINUE;
 }
@@ -65,22 +88,39 @@ update_status ModuleSceneIntro::Update(float dt)
 void ModuleSceneIntro::Cube_Direct_OPENGL()
 {
 	glLineWidth(2.0f);
-
+	glEnable(GL_TEXTURE_2D);
+	glBindTexture(GL_TEXTURE_2D, image_name);
 	glBegin(GL_TRIANGLES);
+	
+
+	//glBindTexture(GL_TEXTURE_2D, 0);	
 	glColor4f(1.0f, 1.0f, 1.0f, 1.0f);
 
+
 	//----------------FRONT--------------------
+	//Generating Uvs 
+	glTexCoord2f(0.f, 0.f);
 	glVertex3f(0.f, 0.f, 0.f);//A
+	glTexCoord2f(1.f, 0.f);
 	glVertex3f(5.f, 0.f, 0.f);//B
+	glTexCoord2f(1.f, 1.f);
 	glVertex3f(5.f, 5.f, 0.f);//C
-
-
+	glTexCoord2f(1.f, 1.f);	
 	glVertex3f(5.f, 5.f, 0.f);//C
+	glTexCoord2f(0.f, 1.f);
 	glVertex3f(0.f, 5.f, 0.f);//D
+	glTexCoord2f(0.f, 0.f);
 	glVertex3f(0.f, 0.f, 0.f);//A
 
 
-	//----------------RIGHT_SIDE--------------------
+	/*//----------------RIGHT_SIDE--------------------
+	//Generating Uvs 
+	glTexCoord2f(5.f, 0.f);
+	glTexCoord2f(0.f, 0.f);
+	glTexCoord2f(0.f, 5.f);
+	glTexCoord2f(0.f, 5.f);
+	glTexCoord2f(5.f, 5.f);
+	glTexCoord2f(5.f, 0.f);
 
 	glVertex3f(5.f, 0.f, 0.f);//B
 	glVertex3f(5.f, 0.f, -10.f);//E
@@ -92,6 +132,14 @@ void ModuleSceneIntro::Cube_Direct_OPENGL()
 	glVertex3f(5.f, 0.f, 0.f);//B
 
 	//-----------------Back_Side-------------------
+
+	//Generating Uvs 
+	glTexCoord2f(0.f, 0.f);
+	glTexCoord2f(5.f, 0.f);
+	glTexCoord2f(5.f, 5.f);
+	glTexCoord2f(5.f, 5.f);
+	glTexCoord2f(0.f, 5.f);
+	glTexCoord2f(0.f, 0.f);
 
 	glVertex3f(5.f, 0.f, -10.f);//E
 	glVertex3f(0.f, 0.f, -10.f);//G
@@ -105,6 +153,14 @@ void ModuleSceneIntro::Cube_Direct_OPENGL()
 
 	//-------------LEFT_SIDE-----------------------
 
+	//Generating Uvs 
+	glTexCoord2f(5.f, 0.f);
+	glTexCoord2f(0.f, 0.f);
+	glTexCoord2f(0.f, 5.f);
+	glTexCoord2f(0.f, 5.f);
+	glTexCoord2f(5.f, 5.f);
+	glTexCoord2f(5.f, 0.f);
+
 	glVertex3f(0.f, 0.f, -10.f);//G
 	glVertex3f(0.f, 0.f, 0.f);//A
 	glVertex3f(0.f, 5.f, 0.f);//D
@@ -116,6 +172,14 @@ void ModuleSceneIntro::Cube_Direct_OPENGL()
 
 	//--------------TOP----------------------
 
+	//Generating Uvs 
+	glTexCoord2f(5.f, 5.f);
+	glTexCoord2f(0.f, 5.f);
+	glTexCoord2f(5.f, 5.f);
+	glTexCoord2f(5.f, 5.f);
+	glTexCoord2f(0.f, 5.f);
+	glTexCoord2f(5.f, 5.f);
+
 	glVertex3f(5.f, 5.f, 0.f);//C
 	glVertex3f(5.f, 5.f, -10.f);//F
 	glVertex3f(0.f, 5.f, -10.f);//H
@@ -126,6 +190,13 @@ void ModuleSceneIntro::Cube_Direct_OPENGL()
 
 
 	//---------------BASE---------------------
+	//Generating Uvs 
+	glTexCoord2f(0.f, 5.f);
+	glTexCoord2f(0.f, 0.f);
+	glTexCoord2f(5.f, 0.f);
+	glTexCoord2f(5.f, 0.f);
+	glTexCoord2f(0.f, 0.f);
+	glTexCoord2f(5.f, 0.f);
 
 	glVertex3f(5.f, 0.f, 0.f);//B
 	glVertex3f(0.f, 0.f, 0.f);//A
@@ -134,12 +205,13 @@ void ModuleSceneIntro::Cube_Direct_OPENGL()
 
 	glVertex3f(0.f, 0.f, -10.f);//G
 	glVertex3f(5.f, 0.f, -10.f);//E
-	glVertex3f(5.f, 0.f, 0.f);//B
-
+	glVertex3f(5.f, 0.f, 0.f);//B*/
 
 	glEnd();
-
 	glLineWidth(1.0f);
+	//glFlush();
+	glDisable(GL_TEXTURE_2D);
+
 }
 
 void ModuleSceneIntro::Cube_Vertex_Arrays_OPENGL()

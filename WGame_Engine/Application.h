@@ -44,7 +44,7 @@ private:
 	int     prev_frames_per_sec;
 	int     frames_per_sec;
 	int     max_frames;
-	double     time_per_frame;
+	float     time_per_frame;
 	double     time_last_frame;
 	bool       console_exists;
 

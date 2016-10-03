@@ -39,6 +39,8 @@ public:
 
 	//FBX
 	vector<Mesh> geometry_object;
-	
+
+	//Texture
+	uint image_name;
 
 };

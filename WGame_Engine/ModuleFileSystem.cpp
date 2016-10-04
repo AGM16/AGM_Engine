@@ -45,6 +45,7 @@ bool ModuleFileSystem::Init()
 		// We add the writing directory as a reading directory too with speacial mount point
 		LOG("Writing directory is %s\n", write_path);
 		AddPath(write_path, GetSaveDirectory());
+		AddPath("Asstes", "Assets");
 	}
 
 	SDL_free(write_path);

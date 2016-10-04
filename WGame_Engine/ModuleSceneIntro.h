@@ -13,6 +13,7 @@ public:
 	ModuleSceneIntro(Application* app, bool start_enabled = true);
 	~ModuleSceneIntro();
 
+	bool Init();
 	bool Start();
 	update_status Update(float dt);
 	bool CleanUp();
@@ -23,6 +24,7 @@ public:
 	void Cube_Indice_OPENGL();
 	void Draw_Array_Vertex(vector<float3> &vertices, uint id);
 	void Draw_Indices_Vertex(vector<uint> &vertices, uint id);
+	void Draw_Indices_UVS(vector<uint> vec_indices, uint indices, uint vertex_id, uint uvs_id, uint texture);
 
 public:
 	list<Primitive_Cylinder> spheres;
@@ -37,10 +39,18 @@ public:
 	vector<uint> indices;
 	uint my_indices = 0;
 
+	//Vertex Uvs
+	vector<float2> uvs;
+	uint my_uvs = 0;
+
 	//FBX
 	vector<Mesh> geometry_object;
 
-	//Texture
+	//Texture Check Image
 	uint image_name;
+
+	//Texture Elena
+	uint  lena_image;
+
 
 };

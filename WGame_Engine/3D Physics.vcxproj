@@ -120,6 +120,7 @@
     <ClInclude Include="Editor.h" />
     <ClInclude Include="FPS_Info.h" />
     <ClInclude Include="Globals.h" />
+    <ClInclude Include="Hardware_Info.h" />
     <ClInclude Include="Imgui\imconfig.h" />
     <ClInclude Include="Imgui\imgui.h" />
     <ClInclude Include="Imgui\imgui_impl_sdl_gl3.h" />
@@ -216,6 +217,7 @@
     <ClCompile Include="Console.cpp" />
     <ClCompile Include="Editor.cpp" />
     <ClCompile Include="FPS_Info.cpp" />
+    <ClCompile Include="Hardware_Info.cpp" />
     <ClCompile Include="Imgui\imgui.cpp" />
     <ClCompile Include="Imgui\imgui_demo.cpp" />
     <ClCompile Include="Imgui\imgui_draw.cpp" />

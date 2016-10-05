@@ -2,6 +2,14 @@
 #include "Application.h"
 #include "ModuleWindow.h"
 
+#pragma comment (lib, "Devil/libx86/DevIL.lib")    /* link OpenGL Utility lib     */
+#pragma comment (lib, "Devil/libx86/ILU.lib") /* link Microsoft OpenGL lib   */
+#pragma comment (lib, "Devil/libx86/ILUT.lib") 
+
+#include "Devil\include\il.h"
+#include "Devil\include\ilu.h"
+#include "Devil\include\ilut.h"
+
 ModuleWindow::ModuleWindow(Application* app, bool start_enabled) : Module(app, start_enabled)
 {
 	window = NULL;
@@ -68,6 +76,14 @@ bool ModuleWindow::Init()
 			screen_surface = SDL_GetWindowSurface(window);
 		}
 	}
+
+	//Init IL,ILU and ULUT
+	ilInit();
+	iluInit();
+	ilutInit();
+
+
+	ilutRenderer(ILUT_OPENGL);
 
 	return ret;
 }

@@ -109,21 +109,24 @@ update_status Editor::Update(float dt)
 
 			if (ImGui::MenuItem("Application"))
 			{
-				if (ImGui::Begin("FPS"))
-				{
-					open_application = !open_application;
-				}
+			
+			  open_application = !open_application;
+	
+			}
 
-				ImGui::End();
+			if (ImGui::MenuItem("Console"))
+			{
+                App->console->Set_Open_Window(true);
 			}
 
 			ImGui::EndMenu();
 		}
 
 
-
 		ImGui::EndMainMenuBar();
 	}
+
+	
 
 	if (open_application)
 	{
@@ -303,12 +306,15 @@ void Editor::Application_Window()
 		sprintf_s(title2, 25, "Milliseconds %0.1f", App->fps_info->ms[App->fps_info->ms.size() - 1]);
 		ImGui::PlotHistogram("##milliseconds", &App->fps_info->ms[0], App->fps_info->ms.size(), 0, title2, 0.0f, 40.0f, ImVec2(310, 100));
 
+		App->hardware->Render_Hardware_Info();
 
 		if (ImGui::SliderInt("Max FPS", &App->fps_info->max_frames, 0, 100))
 		{
 			App->Set_Limit_Frames(App->fps_info->max_frames);
 		}
 	}
+
+	
 
 	if (ImGui::Button("Close"))
 	{

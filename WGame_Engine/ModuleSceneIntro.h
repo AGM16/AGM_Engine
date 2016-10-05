@@ -51,7 +51,7 @@ public:
 	//Texture Elena
 	uint  lena_image;
 
-	vector<float3> normals;
+	
 
 
 };

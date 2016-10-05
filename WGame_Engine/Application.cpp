@@ -15,6 +15,7 @@ Application::Application()
 	console = new Console(this);
 	geometry = new ModuleGeometry(this);
 	filesystem = new ModuleFileSystem(this);
+	hardware = new Hardware_Info(this);
 
 	// The order of calls is very important!
 	// Modules will Init() Start() and Update in this order
@@ -25,6 +26,7 @@ Application::Application()
 
 	//FPS
 	AddModule(filesystem);
+	AddModule(hardware);
 	AddModule(fps_info);
 	AddModule(camera);
 	AddModule(input);

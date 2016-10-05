@@ -16,6 +16,7 @@
 #include "Editor.h"
 #include "FPS_Info.h"
 #include "Console.h"
+#include "Hardware_Info.h"
 
 
 using namespace std; 
@@ -35,6 +36,7 @@ public:
 	Console*        console;
 	ModuleGeometry*  geometry;
 	ModuleFileSystem* filesystem;
+	Hardware_Info*    hardware;
 
 private:
 

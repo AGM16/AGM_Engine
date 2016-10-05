@@ -11,13 +11,10 @@
 #include <gl/GL.h>
 #include "glut/glut.h"
 
-#pragma comment (lib, "Devil/libx86/DevIL.lib")    /* link OpenGL Utility lib     */
-#pragma comment (lib, "Devil/libx86/ILU.lib") /* link Microsoft OpenGL lib   */
-#pragma comment (lib, "Devil/libx86/ILUT.lib") 
-
 #include "Devil\include\il.h"
 #include "Devil\include\ilu.h"
 #include "Devil\include\ilut.h"
+
 
 using namespace std;
 
@@ -30,12 +27,6 @@ ModuleSceneIntro::~ModuleSceneIntro()
 
 bool ModuleSceneIntro::Init()
 {
-	ilInit();
-	iluInit();
-	ilutInit();
-
-	
-	ilutRenderer(ILUT_OPENGL);
 	return true;
 }
 
@@ -51,7 +42,7 @@ bool ModuleSceneIntro::Start()
 	show_test_window = false;
 	
 	//Load 3D model
-	geometry_object = App->geometry->Load_Geometry("Assets/cube.fbx");
+	geometry_object = App->geometry->Load_Geometry("Assets/Empire_Walker.fbx");
 
 	//Create Checker Image
 	GLubyte checkImage[30][30][4];
@@ -80,7 +71,6 @@ bool ModuleSceneIntro::Start()
     lena_image = ilutGLLoadImage("Assets/Lenna.png");
 
 	Cube_Indice_OPENGL();
-	
 
 	return ret;
 }
@@ -231,7 +221,7 @@ void ModuleSceneIntro::Cube_Vertex_Arrays_OPENGL()
 	
 	
 	//----------------FRONT--------------------
-	glNormal3f(0.0f, 0.0f, 1.0f);
+
 
 	vertexs.push_back(float3(0.f, 0.f, 0.f));//A
 	vertexs.push_back(float3(5.f, 0.f, 0.f));//B
@@ -244,7 +234,7 @@ void ModuleSceneIntro::Cube_Vertex_Arrays_OPENGL()
 
 
 	//----------------RIGHT_SIDE--------------------
-	glNormal3f(1.0f, 0.0f, 0.0f);
+	
 
 	vertexs.push_back(float3(5.f, 0.f, 0.f));//B
 	vertexs.push_back(float3(5.f, 0.f, -10.f));//E
@@ -256,8 +246,7 @@ void ModuleSceneIntro::Cube_Vertex_Arrays_OPENGL()
 	vertexs.push_back(float3(5.f, 0.f, 0.f));//B
 
 	//-----------------Back_Side-------------------
-    glNormal3f(0.0f, 0.0f, -1.0f);
-
+   
 	vertexs.push_back(float3(5.f, 0.f, -10.f));//E
 	vertexs.push_back(float3(0.f, 0.f, -10.f));//G
 	vertexs.push_back(float3(0.f, 5.f, -10.f));//H
@@ -269,7 +258,7 @@ void ModuleSceneIntro::Cube_Vertex_Arrays_OPENGL()
 
 
 	//-------------LEFT_SIDE-----------------------
-	glNormal3f(-1.0f, 0.0f, 0.0f);
+
 
 	vertexs.push_back(float3(0.f, 0.f, -10.f));//G
 	vertexs.push_back(float3(0.f, 0.f, 0.f));//A
@@ -281,7 +270,6 @@ void ModuleSceneIntro::Cube_Vertex_Arrays_OPENGL()
 	vertexs.push_back(float3(0.f, 0.f, -10.f));//G
 
 	//--------------TOP----------------------
-	glNormal3f(0.0f, 1.0f, 0.0f);
 
 	vertexs.push_back(float3(5.f, 5.f, 0.f));//C
 	vertexs.push_back(float3(5.f, 5.f, -10.f));//F
@@ -293,7 +281,7 @@ void ModuleSceneIntro::Cube_Vertex_Arrays_OPENGL()
 
 
 	//---------------BASE---------------------
-	glNormal3f(0.0f, -1.0f, 0.0f);
+
 	vertexs.push_back(float3(5.f, 0.f, 0.f));//B
 	vertexs.push_back(float3(0.f, 0.f, 0.f));//A
 	vertexs.push_back(float3(0.f, 0.f, -10.f));//G

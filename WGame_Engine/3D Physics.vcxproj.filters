@@ -456,6 +456,9 @@
     <ClInclude Include="Devil\include\ilut_config.h">
       <Filter>Sources\Library_Resources\Devil</Filter>
     </ClInclude>
+    <ClInclude Include="Hardware_Info.h">
+      <Filter>Sources\Modules</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="ModuleAudio.cpp">
@@ -642,6 +645,9 @@
       <Filter>Sources\Modules</Filter>
     </ClCompile>
     <ClCompile Include="ModuleFileSystem.cpp">
+      <Filter>Sources\Modules</Filter>
+    </ClCompile>
+    <ClCompile Include="Hardware_Info.cpp">
       <Filter>Sources\Modules</Filter>
     </ClCompile>
   </ItemGroup>

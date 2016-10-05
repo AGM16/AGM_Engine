@@ -16,6 +16,7 @@ public:
 
 	void Render_Console();
 	void Save_Log(const char* text);
+	void Set_Open_Window(bool on);
 
     ImGuiTextBuffer text_console;
 

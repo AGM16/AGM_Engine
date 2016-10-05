@@ -50,10 +50,10 @@ bool ModuleSceneIntro::Start()
 	
 	show_test_window = false;
 	
-	
-	//geometry_object = App->geometry->Load_Geometry("Assets/cube.fbx");
+	//Load 3D model
+	geometry_object = App->geometry->Load_Geometry("Assets/cube.fbx");
 
-	//Debug
+	//Create Checker Image
 	GLubyte checkImage[30][30][4];
 	for (int i = 0; i < 30; i++) {
 		for (int j = 0; j < 30; j++) {
@@ -65,9 +65,8 @@ bool ModuleSceneIntro::Start()
 		}
 	}
 
-	lena_image = ilutGLLoadImage("Assets/Lenna.png");
 
-	
+	//Load Image 
 	glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
 	glGenTextures(1, &image_name);
 	glBindTexture(GL_TEXTURE_2D, image_name);
@@ -77,7 +76,11 @@ bool ModuleSceneIntro::Start()
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
 	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, 0, 30, 0, GL_RGBA, GL_UNSIGNED_BYTE, checkImage);
 
-    Cube_Indice_OPENGL();
+	//Load Image
+    lena_image = ilutGLLoadImage("Assets/Lenna.png");
+
+	Cube_Indice_OPENGL();
+	
 
 	return ret;
 }
@@ -95,12 +98,10 @@ bool ModuleSceneIntro::CleanUp()
 update_status ModuleSceneIntro::Update(float dt)
 {
 	
-	//Draw_Indices_Vertex(indices, my_indices);
-    //Cube_Direct_OPENGL();
 		vector<Mesh>::iterator array_mesh = geometry_object.begin();
 		while (array_mesh != geometry_object.end())
 		{
-			App->renderer3D->Draw_Geometry((*array_mesh).id_indices, (*array_mesh).num_indices, false);
+			App->renderer3D->Draw_Geometry(&(*array_mesh), lena_image);
 			++array_mesh;
 		}
 
@@ -221,7 +222,6 @@ void ModuleSceneIntro::Cube_Direct_OPENGL()
 
 	glEnd();
 	glLineWidth(1.0f);
-	//glFlush();
 	glDisable(GL_TEXTURE_2D);
 
 }
@@ -231,6 +231,8 @@ void ModuleSceneIntro::Cube_Vertex_Arrays_OPENGL()
 	
 	
 	//----------------FRONT--------------------
+	glNormal3f(0.0f, 0.0f, 1.0f);
+
 	vertexs.push_back(float3(0.f, 0.f, 0.f));//A
 	vertexs.push_back(float3(5.f, 0.f, 0.f));//B
 	vertexs.push_back(float3(5.f, 5.f, 0.f));//C
@@ -242,6 +244,7 @@ void ModuleSceneIntro::Cube_Vertex_Arrays_OPENGL()
 
 
 	//----------------RIGHT_SIDE--------------------
+	glNormal3f(1.0f, 0.0f, 0.0f);
 
 	vertexs.push_back(float3(5.f, 0.f, 0.f));//B
 	vertexs.push_back(float3(5.f, 0.f, -10.f));//E
@@ -253,6 +256,7 @@ void ModuleSceneIntro::Cube_Vertex_Arrays_OPENGL()
 	vertexs.push_back(float3(5.f, 0.f, 0.f));//B
 
 	//-----------------Back_Side-------------------
+    glNormal3f(0.0f, 0.0f, -1.0f);
 
 	vertexs.push_back(float3(5.f, 0.f, -10.f));//E
 	vertexs.push_back(float3(0.f, 0.f, -10.f));//G
@@ -265,6 +269,7 @@ void ModuleSceneIntro::Cube_Vertex_Arrays_OPENGL()
 
 
 	//-------------LEFT_SIDE-----------------------
+	glNormal3f(-1.0f, 0.0f, 0.0f);
 
 	vertexs.push_back(float3(0.f, 0.f, -10.f));//G
 	vertexs.push_back(float3(0.f, 0.f, 0.f));//A
@@ -276,6 +281,7 @@ void ModuleSceneIntro::Cube_Vertex_Arrays_OPENGL()
 	vertexs.push_back(float3(0.f, 0.f, -10.f));//G
 
 	//--------------TOP----------------------
+	glNormal3f(0.0f, 1.0f, 0.0f);
 
 	vertexs.push_back(float3(5.f, 5.f, 0.f));//C
 	vertexs.push_back(float3(5.f, 5.f, -10.f));//F
@@ -287,7 +293,7 @@ void ModuleSceneIntro::Cube_Vertex_Arrays_OPENGL()
 
 
 	//---------------BASE---------------------
-
+	glNormal3f(0.0f, -1.0f, 0.0f);
 	vertexs.push_back(float3(5.f, 0.f, 0.f));//B
 	vertexs.push_back(float3(0.f, 0.f, 0.f));//A
 	vertexs.push_back(float3(0.f, 0.f, -10.f));//G
@@ -309,22 +315,22 @@ void ModuleSceneIntro::Cube_Indice_OPENGL()
 {
 	vector<float3> ver;
 
-	ver.push_back(vec(0.0f, 5.0f, 0.0f)); //0
-	ver.push_back(vec(5.0f, 5.0f, 5.0f)); //1
-	ver.push_back(vec(5.0f, 5.0f, 5.0f)); //2
-	ver.push_back(vec(0.0f, 5.0f, 5.0f)); //3
-	ver.push_back(vec(0.0f, 5.0f, 5.0f)); //4
-	ver.push_back(vec(5.0f, 5.0f, 0.0f)); //5
-	ver.push_back(vec(5.0f, 0.0f, 5.0f)); //6
-	ver.push_back(vec(5.0f, 0.0f, 5.0f)); //7
-	ver.push_back(vec(0.0f, 0.0f, 5.0f)); //8
-	ver.push_back(vec(0.0f, 0.0f, 5.0f)); //9
-	ver.push_back(vec(5.0f, 0.0f, 0.0f)); //10
-	ver.push_back(vec(5.0f, 0.0f, 0.0f)); //11
-	ver.push_back(vec(5.0f, 0.0f, 0.0f)); //12
-	ver.push_back(vec(0.0f, 0.0f, 0.0f)); //13
-	ver.push_back(vec(0.0f, 0.0f, 0.0f)); //14
-	ver.push_back(vec(0.0f, 0.0f, 0.0f)); //15
+	ver.push_back(vec(10.0f, 5.0f, 0.0f)); //0
+	ver.push_back(vec(15.0f, 5.0f, 5.0f)); //1
+	ver.push_back(vec(15.0f, 5.0f, 5.0f)); //2
+	ver.push_back(vec(10.0f, 5.0f, 5.0f)); //3
+	ver.push_back(vec(10.0f, 5.0f, 5.0f)); //4
+	ver.push_back(vec(15.0f, 5.0f, 0.0f)); //5
+	ver.push_back(vec(15.0f, 0.0f, 5.0f)); //6
+	ver.push_back(vec(15.0f, 0.0f, 5.0f)); //7
+	ver.push_back(vec(10.0f, 0.0f, 5.0f)); //8
+	ver.push_back(vec(10.0f, 0.0f, 5.0f)); //9
+	ver.push_back(vec(15.0f, 0.0f, 0.0f)); //10
+	ver.push_back(vec(15.0f, 0.0f, 0.0f)); //11
+	ver.push_back(vec(15.0f, 0.0f, 0.0f)); //12
+	ver.push_back(vec(10.0f, 0.0f, 0.0f)); //13
+	ver.push_back(vec(10.0f, 0.0f, 0.0f)); //14
+	ver.push_back(vec(10.0f, 0.0f, 0.0f)); //15
 
 
 	glGenBuffers(1, (GLuint*) &(my_id));//Generate the buffer
@@ -408,64 +414,6 @@ void ModuleSceneIntro::Cube_Indice_OPENGL()
 	indices.push_back(15);
 	indices.push_back(7);
 	indices.push_back(9);
-
-	/*
-	//FRONT
-	indices.push_back(0);
-	indices.push_back(1);
-	indices.push_back(2);
-
-	
-	indices.push_back(2);
-	indices.push_back(3);
-	indices.push_back(0);
-	
-	//RIGHT_SIDE
-	indices.push_back(1);
-	indices.push_back(4);
-	indices.push_back(5);
-
-	indices.push_back(5);
-	indices.push_back(2);
-	indices.push_back(1);
-
-	//Back_Side
-	indices.push_back(4);
-	indices.push_back(6);
-	indices.push_back(7);
-
-	indices.push_back(7);
-	indices.push_back(5);
-	indices.push_back(4);
-
-
-	//LEFT_SIDE
-	indices.push_back(6);
-	indices.push_back(0);
-	indices.push_back(3);
-
-	indices.push_back(3);
-	indices.push_back(7);
-	indices.push_back(6);
-
-	//TOP
-	indices.push_back(2);
-	indices.push_back(5);
-	indices.push_back(7);
-
-	indices.push_back(7);
-	indices.push_back(3);
-	indices.push_back(2);
-
-	//Base
-	indices.push_back(1);
-	indices.push_back(0);
-	indices.push_back(6);
-
-	indices.push_back(6);
-	indices.push_back(4);
-	indices.push_back(1);*/
-
 	
 
 	//Indices
@@ -488,21 +436,10 @@ void ModuleSceneIntro::Draw_Array_Vertex(vector<float3> &vertices, uint id)
 	glDisableClientState(GL_VERTEX_ARRAY);
 }
 
-void ModuleSceneIntro::Draw_Indices_Vertex(vector<uint> &vertices, uint id)
-{
-	glColor4f(1.0f, 1.0f, 1.0f, 1.0f);
-	//DRAW Indice ARRAY
-
-	glEnableClientState(GL_VERTEX_ARRAY);
-	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, id);
-	glVertexPointer(3, GL_FLOAT, 0, NULL);
-	glDrawElements(GL_TRIANGLES, vertices.size(), GL_UNSIGNED_INT,NULL);
-	glDisableClientState(GL_VERTEX_ARRAY);
-}
-
 void ModuleSceneIntro::Draw_Indices_UVS(vector<uint> vec_indices, uint indices, uint vertex_id, uint uvs_id, uint texture)
 {
 	glColor4f(1.0f, 1.0f, 1.0f, 1.0f);
+
 	//Vertexs
 	glEnableClientState(GL_VERTEX_ARRAY);
 	glBindBuffer(GL_ARRAY_BUFFER, vertex_id);
@@ -520,6 +457,8 @@ void ModuleSceneIntro::Draw_Indices_UVS(vector<uint> vec_indices, uint indices, 
 	glBindTexture(GL_TEXTURE_2D, texture);
 
 	glDrawElements(GL_TRIANGLES, vec_indices.size(), GL_UNSIGNED_INT, NULL);
+
+	//Disable
 	glDisableClientState(GL_VERTEX_ARRAY);
 	glDisableClientState(GL_TEXTURE_COORD_ARRAY);
 	glBindTexture(GL_TEXTURE_2D, 0);

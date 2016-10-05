@@ -23,7 +23,6 @@ public:
 	void Cube_Vertex_Arrays_OPENGL();
 	void Cube_Indice_OPENGL();
 	void Draw_Array_Vertex(vector<float3> &vertices, uint id);
-	void Draw_Indices_Vertex(vector<uint> &vertices, uint id);
 	void Draw_Indices_UVS(vector<uint> vec_indices, uint indices, uint vertex_id, uint uvs_id, uint texture);
 
 public:
@@ -51,6 +50,8 @@ public:
 
 	//Texture Elena
 	uint  lena_image;
+
+	vector<float3> normals;
 
 
 };

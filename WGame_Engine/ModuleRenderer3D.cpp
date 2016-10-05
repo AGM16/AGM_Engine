@@ -184,20 +184,45 @@ void ModuleRenderer3D::OnResize(int width, int height, float fovy)
 	glLoadIdentity();
 }
 
-void ModuleRenderer3D::Draw_Geometry(uint id, uint size, bool wire)
+void ModuleRenderer3D::Draw_Geometry(const Mesh* mesh, uint texture)
 {
 	
-	if (wire == true)
+	/*if (wire == true)
 	{
        glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
-	}
+	}*/
 
 	glColor4f(1.0f, 1.0f, 1.0f, 1.0f);
-	//DRAW Mesh
+	
+	//Enables
 	glEnableClientState(GL_VERTEX_ARRAY);
-	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, id);
+    glEnableClientState(GL_TEXTURE_COORD_ARRAY);
+	glEnableClientState(GL_NORMAL_ARRAY);
+
+	//Vertexs
+	glBindBuffer(GL_ARRAY_BUFFER, mesh->id_vertices);
 	glVertexPointer(3, GL_FLOAT, 0, NULL);
-	glDrawElements(GL_TRIANGLES, size, GL_UNSIGNED_INT, NULL);
+
+	//Normals
+	glBindBuffer(GL_ARRAY_BUFFER, mesh->id_normals);
+	glNormalPointer(GL_FLOAT, 0, NULL);
+
+	//Uvs
+	glBindBuffer(GL_ARRAY_BUFFER, mesh->id_uvs_texture_coords);
+	glTexCoordPointer(2, GL_FLOAT, 0, NULL);
+
+    //Put Texture in buffer
+	glBindTexture(GL_TEXTURE_2D, texture);
+
+	//Index
+	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, mesh->id_indices);
+	glDrawElements(GL_TRIANGLES, mesh->num_indices, GL_UNSIGNED_INT, NULL);
+
+    glBindTexture(GL_TEXTURE_2D, 0); 
+    
+
 	glDisableClientState(GL_VERTEX_ARRAY);
+	glDisableClientState(GL_TEXTURE_COORD_ARRAY);
+	glDisableClientState(GL_NORMAL_ARRAY);
 	
 }

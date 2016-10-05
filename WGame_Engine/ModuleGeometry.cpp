@@ -75,6 +75,31 @@ vector<Mesh>  ModuleGeometry::Load_Geometry(const char* path)
 		   memcpy(m.vertices, new_mesh->mVertices, sizeof(float) * m.num_vertices*3);
 		   LOG("New mesh with %d vertices", m.num_vertices);
 
+		   //Check if our mesh have normals
+		   if (new_mesh->HasNormals())
+		   {
+			   m.num_normals = new_mesh->mNumVertices;
+			   m.normals = new float[m.num_normals * 3];
+			   memcpy(m.normals, new_mesh->mNormals, sizeof(float) * m.num_normals * 3);
+			   LOG("New mesh with %d normals", m.num_normals);
+		   }
+
+		   //Check if the mesh have uvs coordenates
+		   if (new_mesh->HasTextureCoords(m.uvs_index_texture_coords))
+		   {
+			   m.num_uvs_texture_coords = new_mesh->mNumVertices;
+			   m.uvs_texture_coords = new float2[m.num_uvs_texture_coords];
+
+			   for (int i = 0; i < m.num_uvs_texture_coords; i++)
+			   {
+				   //Assign uv to the uvs_array<float2>
+				   m.uvs_texture_coords[i].x = new_mesh->mTextureCoords[m.uvs_index_texture_coords][i].x;
+				   m.uvs_texture_coords[i].y = new_mesh->mTextureCoords[m.uvs_index_texture_coords][i].y;
+			   }
+
+			   LOG("New mesh with %d uvs_texture_coords", m.num_uvs_texture_coords);
+		   }
+
 		   //Faces
 		   if (new_mesh->HasFaces())
 		   {
@@ -95,15 +120,24 @@ vector<Mesh>  ModuleGeometry::Load_Geometry(const char* path)
 		   }
 
 		   //Load Mesh buffer to the VRAM
-
 		   //Vertices Buffer
 		   glGenBuffers(1, (GLuint*) &(m.id_vertices));//Generate the buffer
 		   glBindBuffer(GL_ARRAY_BUFFER, m.id_vertices);//Start using that buffer
 		   glBufferData(GL_ARRAY_BUFFER, sizeof(float) * m.num_vertices * 3, m.vertices, GL_STATIC_DRAW);
 
+		   //Texture_coords Buffer
+		   glGenBuffers(1, (GLuint*) &(m.id_normals));
+		   glBindBuffer(GL_ARRAY_BUFFER, m.id_normals);
+		   glBufferData(GL_ARRAY_BUFFER, sizeof(float) * m.num_normals * 3, m.normals, GL_STATIC_DRAW);
+
+		   //Texture_coords Buffer
+		   glGenBuffers(1, (GLuint*) &(m.id_uvs_texture_coords));
+		   glBindBuffer(GL_ARRAY_BUFFER, m.id_uvs_texture_coords);
+		   glBufferData(GL_ARRAY_BUFFER, sizeof(float) * m.num_uvs_texture_coords * 2, m.uvs_texture_coords, GL_STATIC_DRAW);
+
 		   //Indices Buffer
-		   glGenBuffers(1, (GLuint*) &(m.id_indices));//Generate the buffer
-		   glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m.id_indices);//Start using that buffer
+		   glGenBuffers(1, (GLuint*) &(m.id_indices));
+		   glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m.id_indices);
 		   glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(uint) *  m.num_indices, m.indices, GL_STATIC_DRAW);
 
 

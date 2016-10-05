@@ -19,15 +19,15 @@ public:
 	bool CleanUp();
 
 	void Render_Hardware_Info();
+	void Open_Window(bool active);
 
 private:
 
-	bool open_window_hardware;
+	bool window_active;
 	ImVec4 color;
 	int cpu;
 	int cpu_cache;
 	int ram;
-
 	string caps;
 	
 

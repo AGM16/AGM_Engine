@@ -1,4 +1,3 @@
-#pragma once
 
 #ifndef __P2DEFS_H__
 #define __P2DEFS_H__

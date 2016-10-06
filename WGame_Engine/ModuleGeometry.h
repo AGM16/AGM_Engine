@@ -1,5 +1,5 @@
-#ifndef _GEOMETRY_
-#define _GEOMETRY_
+#ifndef _MODULEGEOMETRY_H
+#define _MODULEGEOMETRY_H
 #include "Globals.h"
 #include "Module.h"
 

@@ -1,7 +1,10 @@
-#pragma once
+#ifndef _CONSOLE_H_
+#define _CONSOLE_H_
+
 #include "Module.h"
 #include "Globals.h"
 #include "Imgui\imgui.h"
+#include "Editor.h"
 
 class Console : public Module
 {
@@ -24,6 +27,8 @@ private:
 
 	bool open_window;
 };
+
+#endif
 
 
 

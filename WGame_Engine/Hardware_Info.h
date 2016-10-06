@@ -1,5 +1,5 @@
-#ifndef _HARDWARE_INFO_
-#define _HARDWARE_INFO_
+#ifndef _HARDWARE_INFO_H_
+#define _HARDWARE_INFO_H_
 
 
 #include "Module.h"

@@ -1,7 +1,10 @@
-#pragma once
+#ifndef _EDITOR_H_
+#define _EDITOR_H_
+
 #include "Module.h"
 #include "Globals.h"
 #include "Random.h"
+#include "Panel_Windows.h"
 
 
 class Editor : public Module
@@ -23,6 +26,7 @@ public:
 	void Rotate_Bounding_Box(float x, float y, float z);
 	void Sphere_Bounding_Box();
 
+	//Window ImGui
 	void Application_Window();
 
 
@@ -42,9 +46,8 @@ private:
 	bool render_bounding_sphere;
 	bool open_application;
 
-
-
-
-
+	
 
 };
+
+#endif

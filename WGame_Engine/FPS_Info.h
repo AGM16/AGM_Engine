@@ -1,5 +1,5 @@
-#ifndef _FPS_INFO_
-#define _FPS_INFO_
+#ifndef _FPS_INFO_H_
+#define _FPS_INFO_H_
 
 #include "Module.h"
 #include "Globals.h"

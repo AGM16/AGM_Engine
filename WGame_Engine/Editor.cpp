@@ -110,7 +110,7 @@ update_status Editor::Update(float dt)
 			if (ImGui::MenuItem("Application"))
 			{
 			
-			  open_application = !open_application;
+			  //open_application = !open_application;
 	
 			}
 
@@ -128,10 +128,10 @@ update_status Editor::Update(float dt)
 
 	
 
-	if (open_application)
+	/*if (open_application)
 	{
 		Application_Window();
-	}
+	}*/
 
 
 	Render();

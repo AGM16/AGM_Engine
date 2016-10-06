@@ -51,6 +51,7 @@ bool Hardware_Info::Init()
 
 update_status Hardware_Info::Update(float dt)
 {
+	caps.clear();
 	return UPDATE_CONTINUE;
 }
 

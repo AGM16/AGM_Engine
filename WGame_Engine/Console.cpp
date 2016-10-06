@@ -28,8 +28,7 @@ update_status Console::Update(float dt)
 }
 
 bool Console::CleanUp()
-{
-	
+{	
 	text_console.clear();
 	return true;
 }

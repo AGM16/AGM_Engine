@@ -48,7 +48,7 @@ Application::Application()
 	prev_frames_per_sec = 0; 
 	frames_per_sec = 0;
 	max_frames = 60; 
-	time_per_frame = 1000 / 60;
+	
 
 	//Console
 	console_exists = false;
@@ -106,21 +106,22 @@ void Application::PrepareUpdate()
 	frames_per_sec++;
 	dt = (float)ms_timer.Read() / 1000.0f;
 	ms_timer.Start();
+	time_per_frame = 1000 / max_frames;
 }
 
 // ---------------------------------------------
 void Application::FinishUpdate()
-{
+{	
+
+	Delay(ms_timer.Read(), time_per_frame);
+	
+	time_last_frame = ms_timer.Read();
+	
+	//Check if have passed 1sec
 	if (Sec_Counter(last_sec_frame.Read()))
 	{
 		LOG("FPS: %d", prev_frames_per_sec);
 	}
-
-	double ms_time = ms_timer.Read();
-
-	time_last_frame = ms_time;
-
-	Delay(ms_time, time_per_frame);
 
 }
 
@@ -229,9 +230,9 @@ int Application::Get_Limit_Frames()const
 void Application::Set_Limit_Frames(int max_fps)
 {
 	if(max_fps != 0)
-	      time_per_frame = 1000 / max_fps;
+	      max_frames = max_fps;
 	else
-		  time_per_frame = 1000 / 60;
+		  max_frames = 60;
 }
 
 bool  Application::Consoler_Exist()

@@ -1,4 +1,6 @@
-#pragma once
+#ifndef _FPS_INFO_
+#define _FPS_INFO_
+
 #include "Module.h"
 #include "Globals.h"
 #include <list>
@@ -26,5 +28,7 @@ public:
 	bool open_window;
 
 };
+
+#endif
 
 

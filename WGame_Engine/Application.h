@@ -37,7 +37,7 @@ public:
 	ModuleGeometry*  geometry;
 	ModuleFileSystem* filesystem;
 	Hardware_Info*    hardware;
-
+    int     max_frames;
 private:
 
 	//FPS Info
@@ -45,7 +45,7 @@ private:
 	Timer	last_sec_frame;
 	int     prev_frames_per_sec;
 	int     frames_per_sec;
-	int     max_frames;
+	
 	float     time_per_frame;
 	double     time_last_frame;
 	bool       console_exists;

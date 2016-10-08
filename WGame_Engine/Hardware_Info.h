@@ -15,7 +15,6 @@ public:
 	~Hardware_Info();
 
 	bool Init();
-	update_status Update(float dt);
 	bool CleanUp();
 
 	void Render_Hardware_Info();

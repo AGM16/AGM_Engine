@@ -31,6 +31,7 @@ float Random::Min_Max_Random(float min_a, float max_b)
 
 float3 Random::Random_Float_Vector(float min_a, float max_b)
 {
+	//Generate a random with opengl LCG
 	float3 vector;
 	LCG random;
 

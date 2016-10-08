@@ -49,14 +49,9 @@ bool Hardware_Info::Init()
 	return true;
 }
 
-update_status Hardware_Info::Update(float dt)
-{
-	caps.clear();
-	return UPDATE_CONTINUE;
-}
-
 bool Hardware_Info::CleanUp()
 {
+	caps.clear();
 	return true;
 }
 

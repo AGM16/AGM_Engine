@@ -1,9 +1,9 @@
 #ifndef _EDITOR_H_
 #define _EDITOR_H_
 
+
 #include "Module.h"
 #include "Globals.h"
-#include "Random.h"
 #include "Panel_Windows.h"
 
 
@@ -17,34 +17,15 @@ public:
 	update_status Update(float dt);
 	bool CleanUp();
 
-	//Primitive Function
-	void Create_Points(int amount);
-	void Render();
-
-	//Bounding Box
-	void Create_AABB_Box();
-	void Rotate_Bounding_Box(float x, float y, float z);
-	void Sphere_Bounding_Box();
-
-	//Window ImGui
-	void Application_Window();
-
-
 private:
 
 	//ImGUi Variable
 	bool show_test_window;
-
-	//MathGeolib Variables
-	list<Primitive_Sphere> s_points;
-
 	Primitive_Plane plane;
-	Primitive_Cube aabb_bounding_box;
-	Primitive_Sphere bounding_sphere;
 
-	bool render_aabb;
-	bool render_bounding_sphere;
-	bool open_application;
+	//Panels
+	Panel_Windows panels;
+
 
 	
 

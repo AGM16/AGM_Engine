@@ -39,10 +39,10 @@ bool ModuleSceneIntro::Start()
 	App->camera->Move(vec(10.0f, 10.0f, 0.0f));
 	App->camera->LookAt(vec(0, 0, 0));	
 	
-	show_test_window = false;
 	
 	//Load 3D model
 	geometry_object = App->geometry->Load_Geometry("Assets/Empire_Walker.fbx");
+
 
 	//Create Checker Image
 	GLubyte checkImage[30][30][4];
@@ -87,7 +87,6 @@ bool ModuleSceneIntro::CleanUp()
 // Update
 update_status ModuleSceneIntro::Update(float dt)
 {
-	
 		vector<Mesh>::iterator array_mesh = geometry_object.begin();
 		while (array_mesh != geometry_object.end())
 		{

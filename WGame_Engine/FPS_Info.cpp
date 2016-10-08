@@ -16,7 +16,7 @@ FPS_Info::~FPS_Info()
 // Load assets
 bool FPS_Info::Start()
 {
-	LOG("Loading Intro assets");
+	LOG("Loading FPS assets");
 	bool ret = true;
 	max_frames = App->Get_Limit_Frames();
 	open_window = false;
@@ -27,10 +27,7 @@ bool FPS_Info::Start()
 // Load assets
 bool FPS_Info::CleanUp()
 {
-	LOG("Unloading Intro scene");
-
-	
-
+	LOG("Unloading FPS scene");
 
 	return true;
 }

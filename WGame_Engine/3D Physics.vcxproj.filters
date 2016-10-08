@@ -468,6 +468,9 @@
     <ClInclude Include="Panel_Application.h">
       <Filter>Sources\Panel_Windows</Filter>
     </ClInclude>
+    <ClInclude Include="Panel_MathGeolib_Tools.h">
+      <Filter>Sources\Panel_Windows</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="ModuleAudio.cpp">
@@ -659,10 +662,10 @@
     <ClCompile Include="Hardware_Info.cpp">
       <Filter>Sources\Modules</Filter>
     </ClCompile>
-    <ClCompile Include="Panel_Windows.cpp">
+    <ClCompile Include="Panel_Application.cpp">
       <Filter>Sources\Panel_Windows</Filter>
     </ClCompile>
-    <ClCompile Include="Panel_Application.cpp">
+    <ClCompile Include="Panel_MathGeolib_Tools.cpp">
       <Filter>Sources\Panel_Windows</Filter>
     </ClCompile>
   </ItemGroup>

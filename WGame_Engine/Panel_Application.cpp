@@ -3,7 +3,7 @@
 #include "Imgui\imgui.h"
 
 
-Panel_Application::Panel_Application()
+Panel_Application::Panel_Application() : active_window(false)
 {
 
 }
@@ -11,6 +11,16 @@ Panel_Application::Panel_Application()
 Panel_Application::~Panel_Application()
 {
 
+}
+
+void Panel_Application::Visualizate_Window()
+{
+	active_window = !active_window;
+}
+
+bool Panel_Application::Is_Active()
+{
+	return active_window;
 }
 
 bool Panel_Application::Draw_Panel_Application()
@@ -44,7 +54,7 @@ bool Panel_Application::Draw_Panel_Application()
 
 		if (ImGui::Button("Close"))
 		{
-			Visualizate_Window(false);
+			Visualizate_Window();
 		}
 
 		ImGui::End();

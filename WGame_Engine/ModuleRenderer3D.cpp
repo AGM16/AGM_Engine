@@ -184,7 +184,7 @@ void ModuleRenderer3D::OnResize(int width, int height, float fovy)
 	glLoadIdentity();
 }
 
-void ModuleRenderer3D::Draw_Geometry(const Mesh* mesh, uint texture)
+void ModuleRenderer3D::Draw_Geometry(const Mesh* mesh, uint texture, float3 position)
 {
 	
 	/*if (wire == true)
@@ -193,6 +193,10 @@ void ModuleRenderer3D::Draw_Geometry(const Mesh* mesh, uint texture)
 	}*/
 
 	glColor4f(1.0f, 1.0f, 1.0f, 1.0f);
+	glPushMatrix();
+	glTranslatef(position.x, position.y, position.z);
+	//glRotatef(90, 0.f, 1.f, 0.f);
+	//glScalef(0.5f, 0.3f, 0.5f);
 	
 	//Enables
 	glEnableClientState(GL_VERTEX_ARRAY);
@@ -224,5 +228,7 @@ void ModuleRenderer3D::Draw_Geometry(const Mesh* mesh, uint texture)
 	glDisableClientState(GL_VERTEX_ARRAY);
 	glDisableClientState(GL_TEXTURE_COORD_ARRAY);
 	glDisableClientState(GL_NORMAL_ARRAY);
+
+	glPopMatrix();
 	
 }

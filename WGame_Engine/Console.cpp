@@ -37,7 +37,7 @@ void Console::Render_Console()
 {
 	if (open_window)
 	{
-		ImGui::SetNextWindowSize(ImVec2(1200.f, 400.f));
+		ImGui::SetNextWindowSize(ImVec2(1200.f, 300.f));
 		ImGui::Begin("Console", &open_window);
 
 		ImGui::TextUnformatted(text_console.begin());

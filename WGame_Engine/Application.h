@@ -17,6 +17,7 @@
 #include "FPS_Info.h"
 #include "Console.h"
 #include "Hardware_Info.h"
+#include "GameObject_Manager.h"
 
 
 using namespace std; 
@@ -37,7 +38,9 @@ public:
 	ModuleGeometry*  geometry;
 	ModuleFileSystem* filesystem;
 	Hardware_Info*    hardware;
-    int     max_frames;
+	GameObject_Manager* gameobj_manager;
+
+    
 private:
 
 	//FPS Info
@@ -49,7 +52,7 @@ private:
 	float     time_per_frame;
 	double     time_last_frame;
 	bool       console_exists;
-
+	int     max_frames;
 	
 
 

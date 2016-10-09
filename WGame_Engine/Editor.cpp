@@ -62,6 +62,11 @@ update_status Editor::Update(float dt)
 				App->RquestBrowser("http://clb.demon.fi/MathGeoLib/");
 			}
 
+			if (ImGui::MenuItem("Assimp Documentation"))
+			{
+				App->RquestBrowser("http://www.assimp.org/lib_html/classes.html");
+			}
+
 
 			ImGui::EndMenu();
 		}

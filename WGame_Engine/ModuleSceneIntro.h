@@ -6,6 +6,8 @@
 #include <list>
 #include <vector>
 
+class GameObject;
+
 
 class ModuleSceneIntro : public Module
 {
@@ -50,7 +52,8 @@ public:
 	//Texture Elena
 	uint  lena_image;
 
-	
+	GameObject* go;
+
 
 
 };

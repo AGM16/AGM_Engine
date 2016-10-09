@@ -15,6 +15,10 @@
 #include "Devil\include\ilu.h"
 #include "Devil\include\ilut.h"
 
+#include "GameObject.h"
+#include "Components.h"
+#include "Component_Transformation.h"
+
 
 using namespace std;
 
@@ -33,19 +37,20 @@ bool ModuleSceneIntro::Init()
 // Load assets
 bool ModuleSceneIntro::Start()
 {
+
 	LOG("Loading Intro assets");
 	bool ret = true;
 
-	App->camera->Move(vec(10.0f, 10.0f, 0.0f));
+	App->camera->Move(vec(40.0f, 40.0f, 0.0f));
 	App->camera->LookAt(vec(0, 0, 0));	
 	
 	
 	//Load 3D model
-	geometry_object = App->geometry->Load_Geometry("Assets/Empire_Walker.fbx");
-
+	geometry_object = App->geometry->Load_Geometry("Assets/Brutus.fbx");
+	App->gameobj_manager->Create_Game_Object(geometry_object[0]);
 
 	//Create Checker Image
-	GLubyte checkImage[30][30][4];
+	/*GLubyte checkImage[30][30][4];
 	for (int i = 0; i < 30; i++) {
 		for (int j = 0; j < 30; j++) {
 			int c = ((((i & 0x8) == 0) ^ (((j & 0x8)) == 0))) * 255;
@@ -65,12 +70,15 @@ bool ModuleSceneIntro::Start()
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
-	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, 0, 30, 0, GL_RGBA, GL_UNSIGNED_BYTE, checkImage);
+	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, 0, 30, 0, GL_RGBA, GL_UNSIGNED_BYTE, checkImage);*/
 
 	//Load Image
     lena_image = ilutGLLoadImage("Assets/Lenna.png");
 
 	Cube_Indice_OPENGL();
+
+	go = new GameObject();
+	go = App->gameobj_manager->Get_Root_Node();
 
 	return ret;
 }
@@ -90,12 +98,23 @@ update_status ModuleSceneIntro::Update(float dt)
 		vector<Mesh>::iterator array_mesh = geometry_object.begin();
 		while (array_mesh != geometry_object.end())
 		{
-			App->renderer3D->Draw_Geometry(&(*array_mesh), lena_image);
+			App->renderer3D->Draw_Geometry(&(*array_mesh), lena_image, (*array_mesh).translation);
 			++array_mesh;
 		}
 
 		Draw_Indices_UVS(indices, my_indices, my_id, my_uvs, lena_image);
-	
+
+        //Components Transform
+		/*array_mesh = geometry_object.begin();
+		ImGui::Begin("Components");
+
+			if (ImGui::CollapsingHeader("Local Transform"))
+			{
+				ImGui::InputFloat3("Postion", (*array_mesh).translation.ptr());
+			}
+
+       ImGui::End();*/
+
 	
 	return UPDATE_CONTINUE;
 }

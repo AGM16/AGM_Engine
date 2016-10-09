@@ -49,6 +49,12 @@
     <Filter Include="Sources\Panel_Windows">
       <UniqueIdentifier>{19744cfd-fb0e-4a93-a6e6-75e0d3875e8f}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Sources\GameObject">
+      <UniqueIdentifier>{5afa5f85-ac41-4bef-94bf-54d10117a233}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Sources\GameObject\Components">
+      <UniqueIdentifier>{e1e44849-9fe1-4d7d-90f7-0f5ccb84a536}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Module.h">
@@ -471,6 +477,21 @@
     <ClInclude Include="Panel_MathGeolib_Tools.h">
       <Filter>Sources\Panel_Windows</Filter>
     </ClInclude>
+    <ClInclude Include="Component_Transformation.h">
+      <Filter>Sources\GameObject\Components</Filter>
+    </ClInclude>
+    <ClInclude Include="Components.h">
+      <Filter>Sources\GameObject\Components</Filter>
+    </ClInclude>
+    <ClInclude Include="GameObject.h">
+      <Filter>Sources\GameObject</Filter>
+    </ClInclude>
+    <ClInclude Include="GameObject_Manager.h">
+      <Filter>Sources\GameObject</Filter>
+    </ClInclude>
+    <ClInclude Include="Component_Mesh.h">
+      <Filter>Sources\GameObject\Components</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="ModuleAudio.cpp">
@@ -667,6 +688,21 @@
     </ClCompile>
     <ClCompile Include="Panel_MathGeolib_Tools.cpp">
       <Filter>Sources\Panel_Windows</Filter>
+    </ClCompile>
+    <ClCompile Include="Components.cpp">
+      <Filter>Sources\GameObject\Components</Filter>
+    </ClCompile>
+    <ClCompile Include="Component_Transformation.cpp">
+      <Filter>Sources\GameObject\Components</Filter>
+    </ClCompile>
+    <ClCompile Include="GameObject.cpp">
+      <Filter>Sources\GameObject</Filter>
+    </ClCompile>
+    <ClCompile Include="GameObject_Manager.cpp">
+      <Filter>Sources\GameObject</Filter>
+    </ClCompile>
+    <ClCompile Include="Component_Mesh.cpp">
+      <Filter>Sources\GameObject\Components</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

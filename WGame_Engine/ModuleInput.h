@@ -10,48 +10,12 @@
 
 using namespace std;
 
-enum JOY_BUTTON		//For XBOX controller!!
-{
-	DPAD_UP = 0,
-	DPAD_DOWN,
-	DPAD_LEFT,
-	DPAD_RIGHT,
-	START,
-	SELECT,
-	L3,
-	R3,
-	LB,
-	RB,
-	A,
-	B,
-	X,
-	Y,
-	HOME
-};
-
-enum JOY_AXIS
-{
-	LEFT_STICK_X = 0,
-	LEFT_STICK_Y,
-	RIGHT_STICK_X,
-	RIGHT_STICK_Y,
-	LEFT_TRIGGER,
-	RIGHT_TRIGGER
-};
-
 enum KEY_STATE
 {
 	KEY_IDLE = 0,
 	KEY_DOWN,
 	KEY_REPEAT,
 	KEY_UP
-};
-
-struct JOYSTICK
-{
-	SDL_Joystick* sdl_joystick;
-	KEY_STATE*		button;
-	Sint16*		axis;
 };
 
 class ModuleInput : public Module
@@ -100,25 +64,6 @@ public:
 		return mouse_y_motion;
 	}
 
-	KEY_STATE GetJoystickButton(int joy, JOY_BUTTON id) const
-	{
-		return joysticks[joy]->button[id];
-	}
-
-	float GetJoystickAxis(int joy, JOY_AXIS id) const //From -1.0f to 1.0f
-	{
-		float ret = (float)joysticks[joy]->axis[id] / 32768;
-		
-		if (ret < TOLERANCE && ret > TOLERANCE) ret = 0;
-
-		return ret;
-	}
-
-	int GetNumberJoysticks() const
-	{
-		return num_joysticks;
-	}
-
 
 private:
 	KEY_STATE* keyboard;
@@ -129,9 +74,6 @@ private:
 	int mouse_x_motion;
 	int mouse_y_motion;
 	//int mouse_z_motion;
-
-	int num_joysticks = 0;
-	vector<JOYSTICK*>	joysticks;
 };
 
 #endif

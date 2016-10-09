@@ -3,8 +3,6 @@
 
 
 #include "Module.h"
-#include "Globals.h"
-#include <vector>
 
 
 class Hardware_Info : public Module

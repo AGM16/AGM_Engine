@@ -16,6 +16,7 @@ Application::Application()
 	geometry = new ModuleGeometry(this);
 	filesystem = new ModuleFileSystem(this);
 	hardware = new Hardware_Info(this);
+	gameobj_manager = new GameObject_Manager(this);
 
 	// The order of calls is very important!
 	// Modules will Init() Start() and Update in this order
@@ -26,19 +27,23 @@ Application::Application()
 
 	//FPS
 	AddModule(filesystem);
+	AddModule(console);
 	AddModule(hardware);
 	AddModule(fps_info);
+	AddModule(geometry);
 	AddModule(camera);
 	AddModule(input);
 	AddModule(audio);
-	AddModule(physics);
+	AddModule(physics);	
+	AddModule(gameobj_manager);
 
 
 	// Scenes
-	AddModule(scene_intro);
+	
 	AddModule(editor);
-	AddModule(geometry);
-	AddModule(console);
+	AddModule(scene_intro);
+	
+
 
 	// Renderer last!
 	AddModule(renderer3D);

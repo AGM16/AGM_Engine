@@ -55,13 +55,24 @@ vector<Mesh>  ModuleGeometry::Load_Geometry(const char* path)
 
 		//Check the state of the import
 		if (scene != nullptr && scene->HasMeshes() == true)
-		{
+		{	
+			//RootNode of the scene
+			aiNode* parent = scene->mRootNode;//At the begining this will be the RootNode 
+			aiNode** child;
+			
+			if (parent->mNumChildren > 0)
+			{
+				child = parent->mChildren;
+			}
+			
+
 			//Iterate Meshes
 			for (int i = 0; i < scene->mNumMeshes; i++)
 			{
 				//Variables where we will store the information
 				aiMesh* new_mesh = scene->mMeshes[i];
 				Mesh  m;
+				
 
 				//Vertices
 				m.num_vertices = new_mesh->mNumVertices;
@@ -72,6 +83,7 @@ vector<Mesh>  ModuleGeometry::Load_Geometry(const char* path)
 				//Check if our mesh have normals
 				if (new_mesh->HasNormals())
 				{
+					
 					m.num_normals = new_mesh->mNumVertices;
 					m.normals = new float[m.num_normals * 3];
 					memcpy(m.normals, new_mesh->mNormals, sizeof(float) * m.num_normals * 3);
@@ -113,13 +125,14 @@ vector<Mesh>  ModuleGeometry::Load_Geometry(const char* path)
 					}
 				}
 
+
 				//Load Mesh buffer to the VRAM
 				//Vertices Buffer
 				glGenBuffers(1, (GLuint*) &(m.id_vertices));//Generate the buffer
 				glBindBuffer(GL_ARRAY_BUFFER, m.id_vertices);//Start using that buffer
 				glBufferData(GL_ARRAY_BUFFER, sizeof(float) * m.num_vertices * 3, m.vertices, GL_STATIC_DRAW);
 
-				//Texture_coords Buffer
+				//Normals Buffer
 				glGenBuffers(1, (GLuint*) &(m.id_normals));
 				glBindBuffer(GL_ARRAY_BUFFER, m.id_normals);
 				glBufferData(GL_ARRAY_BUFFER, sizeof(float) * m.num_normals * 3, m.normals, GL_STATIC_DRAW);
@@ -135,9 +148,58 @@ vector<Mesh>  ModuleGeometry::Load_Geometry(const char* path)
 				glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(uint) *  m.num_indices, m.indices, GL_STATIC_DRAW);
 
 
-				meshes.push_back(m);
+				//Check Hierarchy and local transform of every mesh
+				if (new_mesh->HasPositions() == true)
+				{		
+					//Hierarchy
+					if ((*child)->mParent == parent)//If child parent is RootNode
+					{
+						m.parent = NULL;
+						m.num_children = (*child)->mNumChildren;
+						m.name_node = (*child)->mName.data;
+						LOG("The %s mesh is the rootnode of the scene %s", m.name_node, path);
+					}
+					else
+					{
+						parent = (*child)->mParent;
+						m.parent = parent->mName.data;
+						m.num_children = (*child)->mNumChildren;
+						m.name_node = (*child)->mName.data;
+						LOG("The %s mesh is the child of the gameobject %s", m.name_node, m.parent);
+					}
+					
+					aiVector3D translation;
+					aiVector3D scaling;
+					aiQuaternion rotation;
+					(*child)->mTransformation.Decompose(scaling, rotation, translation);
+					
+					//Position
+					m.translation.x = translation.x;
+					m.translation.y = translation.y;
+					m.translation.z = translation.z;
 
+					//Scale
+					m.scaling.x = scaling.x;
+					m.scaling.y = scaling.y;
+					m.scaling.z = scaling.z;
+
+					//Rotation
+					m.rotation.x = rotation.x;
+					m.rotation.y = rotation.y;
+					m.rotation.z = rotation.z;
+					m.rotation.w = rotation.w;
+
+					if ((*child)->mNumChildren > 0)
+					{
+                       child = (*child)->mChildren;
+					}
+					
+				}
+
+				meshes.push_back(m);
 			}
+			
+
 			aiReleaseImport(scene);
 		}
 		else

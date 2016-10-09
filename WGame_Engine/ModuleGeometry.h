@@ -5,7 +5,6 @@
 
 
 
-
 struct Mesh
 {
    //Faces Variables
@@ -28,6 +27,18 @@ struct Mesh
 	uint id_normals = 0;
 	uint num_normals = 0;
 	float* normals = nullptr;
+
+
+	//Local Transform
+	float3 translation;
+	float3 scaling;
+	Quat rotation;
+
+	//Hierarchy
+	int num_children = 0;
+	const char* parent = NULL;
+	const char* name_node;
+
 };
 
 
@@ -42,6 +53,9 @@ class ModuleGeometry : public Module
 	   bool CleanUp();
 
 	   vector<Mesh> Load_Geometry(const char* path);
+
+	   
+	   
 
 
 

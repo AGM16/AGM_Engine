@@ -22,7 +22,7 @@ public:
 	bool CleanUp();
 
 	void OnResize(int width, int height, float fovy);
-	void Draw_Geometry(const Mesh* mesh, uint texture);
+	void Draw_Geometry(const Mesh* mesh, uint texture, float3 position);
 
 public:
 

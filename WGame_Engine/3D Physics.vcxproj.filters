@@ -477,21 +477,6 @@
     <ClInclude Include="Panel_MathGeolib_Tools.h">
       <Filter>Sources\Panel_Windows</Filter>
     </ClInclude>
-    <ClInclude Include="Component_Transformation.h">
-      <Filter>Sources\GameObject\Components</Filter>
-    </ClInclude>
-    <ClInclude Include="Components.h">
-      <Filter>Sources\GameObject\Components</Filter>
-    </ClInclude>
-    <ClInclude Include="GameObject.h">
-      <Filter>Sources\GameObject</Filter>
-    </ClInclude>
-    <ClInclude Include="GameObject_Manager.h">
-      <Filter>Sources\GameObject</Filter>
-    </ClInclude>
-    <ClInclude Include="Component_Mesh.h">
-      <Filter>Sources\GameObject\Components</Filter>
-    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="ModuleAudio.cpp">
@@ -688,21 +673,6 @@
     </ClCompile>
     <ClCompile Include="Panel_MathGeolib_Tools.cpp">
       <Filter>Sources\Panel_Windows</Filter>
-    </ClCompile>
-    <ClCompile Include="Components.cpp">
-      <Filter>Sources\GameObject\Components</Filter>
-    </ClCompile>
-    <ClCompile Include="Component_Transformation.cpp">
-      <Filter>Sources\GameObject\Components</Filter>
-    </ClCompile>
-    <ClCompile Include="GameObject.cpp">
-      <Filter>Sources\GameObject</Filter>
-    </ClCompile>
-    <ClCompile Include="GameObject_Manager.cpp">
-      <Filter>Sources\GameObject</Filter>
-    </ClCompile>
-    <ClCompile Include="Component_Mesh.cpp">
-      <Filter>Sources\GameObject\Components</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

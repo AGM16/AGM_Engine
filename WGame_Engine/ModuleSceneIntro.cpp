@@ -15,9 +15,7 @@
 #include "Devil\include\ilu.h"
 #include "Devil\include\ilut.h"
 
-#include "GameObject.h"
-#include "Components.h"
-#include "Component_Transformation.h"
+
 
 
 using namespace std;

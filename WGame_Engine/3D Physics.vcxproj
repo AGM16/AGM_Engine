@@ -108,9 +108,6 @@
     <ClInclude Include="Assimp\include\vector3.h" />
     <ClInclude Include="Assimp\include\version.h" />
     <ClInclude Include="Color.h" />
-    <ClInclude Include="Components.h" />
-    <ClInclude Include="Component_Mesh.h" />
-    <ClInclude Include="Component_Transformation.h" />
     <ClInclude Include="Console.h" />
     <ClInclude Include="Devil\include\config.h" />
     <ClInclude Include="Devil\include\devil_internal_exports.h" />
@@ -122,8 +119,6 @@
     <ClInclude Include="Devil\include\il_wrap.h" />
     <ClInclude Include="Editor.h" />
     <ClInclude Include="FPS_Info.h" />
-    <ClInclude Include="GameObject.h" />
-    <ClInclude Include="GameObject_Manager.h" />
     <ClInclude Include="Globals.h" />
     <ClInclude Include="Hardware_Info.h" />
     <ClInclude Include="Imgui\imconfig.h" />
@@ -222,14 +217,9 @@
   <ItemGroup>
     <ClCompile Include="Application.cpp" />
     <ClCompile Include="Color.cpp" />
-    <ClCompile Include="Components.cpp" />
-    <ClCompile Include="Component_Mesh.cpp" />
-    <ClCompile Include="Component_Transformation.cpp" />
     <ClCompile Include="Console.cpp" />
     <ClCompile Include="Editor.cpp" />
     <ClCompile Include="FPS_Info.cpp" />
-    <ClCompile Include="GameObject.cpp" />
-    <ClCompile Include="GameObject_Manager.cpp" />
     <ClCompile Include="Hardware_Info.cpp" />
     <ClCompile Include="Imgui\imgui.cpp" />
     <ClCompile Include="Imgui\imgui_demo.cpp" />

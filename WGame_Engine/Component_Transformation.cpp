@@ -2,7 +2,7 @@
 #include "Application.h"
 #include "Imgui\imgui.h"
 
-Component_Transformation::Component_Transformation(COMPONENT_TYPE type, Mesh* mesh_, float3 position_, float3 rotation_, float3 scale_) : Components(type, mesh_), position(position_), rotation(rotation_), scale(scale_), angle(rotation_)
+Component_Transformation::Component_Transformation(COMPONENT_TYPE type, GameObject* go, float3 position_, float3 rotation_, float3 scale_) : Components(type, go), position(position_), rotation(rotation_), scale(scale_), angle(rotation_)
 {
 
 }
@@ -21,8 +21,6 @@ void Component_Transformation::Update()
 		if (ImGui::CollapsingHeader("Local Transform"))
 		{
 			ImGui::DragFloat3("Postion", position.ptr());
-			Get_Mesh_Game_Object()->translation = position;
-
 			ImGui::DragFloat3("Rotation", angle.ptr());
 			ImGui::DragFloat3("Scale", scale.ptr());
 		}

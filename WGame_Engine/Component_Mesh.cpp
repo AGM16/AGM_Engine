@@ -3,7 +3,7 @@
 
 using namespace std;
 
-Component_Mesh::Component_Mesh(COMPONENT_TYPE type, Mesh* mesh_) : Components(type, mesh_)
+Component_Mesh::Component_Mesh(COMPONENT_TYPE type, GameObject* go, Mesh* mesh_) : Components(type, go), m(mesh_)
 {
 
 }
@@ -16,7 +16,7 @@ Component_Mesh::~Component_Mesh()
 //Functions
 void Component_Mesh::Update()
 {
-	if (Get_Mesh_Game_Object() != NULL)
+	if (Get_Active_Component())
 	{
 		if (ImGui::CollapsingHeader("Mesh"))
 		{
@@ -29,5 +29,7 @@ void Component_Mesh::Update()
 			//ImGui::TextColored(ImVec4(1.f, 1.f, 1.f, 1.f), "%d", go_mesh->num_normals);
 		}
 	}
+
+
 }
 

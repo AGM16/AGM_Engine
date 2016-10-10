@@ -2,7 +2,7 @@
 #include "Application.h"
 
 
-Components::Components(COMPONENT_TYPE type, Mesh* mesh_go): active_component(true), type_c(type), mesh_game_obj(mesh_go)
+Components::Components(COMPONENT_TYPE type, GameObject* go): active_component(true), type_c(type), game_obj_c(go)
 {
 
 }
@@ -44,7 +44,7 @@ bool Components::Get_Active_Component()
 	return active_component;
 }
 
-Mesh* Components::Get_Mesh_Game_Object()
+GameObject* Components::Get_Game_Object()
 {
-	return mesh_game_obj;
+	return game_obj_c;
 }

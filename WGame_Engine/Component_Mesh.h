@@ -11,15 +11,15 @@ class Component_Mesh : public Components
 
 public:
 
-	Component_Mesh(COMPONENT_TYPE type, Mesh* mesh_);
+	Component_Mesh(COMPONENT_TYPE type, GameObject* go, Mesh* mesh_);
 	~Component_Mesh();
 
 	//Functions
 	void Update();
-	bool Assign_Mesh(Mesh *mesh);
 
 private:
 
+	Mesh* m;
 
 };
 

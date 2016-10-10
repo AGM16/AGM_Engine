@@ -2,12 +2,13 @@
 #include "Components.h"
 #include "Application.h"
 #include "Component_Transformation.h"
+#include "Component_Mesh.h"
 
 
 
 using namespace std;
 
-GameObject::GameObject() : name("Empty_Game_Object"), parent(NULL)
+GameObject::GameObject() : name("Root_Node_GameObject"), parent(NULL)
 {
 
 }
@@ -25,18 +26,32 @@ GameObject::~GameObject()
 
 void GameObject::Render_Components_Object()
 {
-	list<Components*>::iterator item_comp = componets_go.begin();
 
-	ImGui::Begin("Components");
+	if (children.size() > 0)
+	{
+		list<GameObject*>::iterator item_chilren_go = children.begin();
+		while (item_chilren_go != children.end())
+		{
+            Render_Components_Object();
+			item_chilren_go++;
+		}
+		
+	}
+	if (componets_go.size() > 0)
+	{
+		list<Components*>::iterator item_comp = componets_go.begin();
 
-	(*item_comp)->Update();
+		ImGui::Begin("Components");
 
-	ImGui::End();
+		(*item_comp)->Update();
+
+		ImGui::End();
+	}
 	
 }
 
 //Components
-bool GameObject::Add_Component(COMPONENT_TYPE type, Mesh mesh_go, float3 position_, float3 rotation_, float3 scale_)
+bool GameObject::Add_Component(COMPONENT_TYPE type, GameObject* go, Mesh mesh_go, float3 position_, float3 rotation_, float3 scale_)
 {
 	//Check if this component is already done
 	if (componets_go.size() > 0)
@@ -61,7 +76,12 @@ bool GameObject::Add_Component(COMPONENT_TYPE type, Mesh mesh_go, float3 positio
 
 		if (type == TRANSFORMATION)
 		{
-			new_component = new Component_Transformation(type, &mesh_go, position_,rotation_,scale_);
+			new_component = new Component_Transformation(type,go,position_,rotation_,scale_);
+			LOG("Error: The component %s has been created", (char*)type);
+		}
+		if (type == MESH)
+		{
+			new_component = new Component_Mesh(type, go, &mesh_go);
 			LOG("Error: The component %s has been created", (char*)type);
 		}
 
@@ -72,26 +92,29 @@ bool GameObject::Add_Component(COMPONENT_TYPE type, Mesh mesh_go, float3 positio
 	return true;
 }
 
-bool GameObject::Delete_Component(COMPONENT_TYPE type)
+/*bool GameObject::Delete_Component(COMPONENT_TYPE type)
 {
 
 	return true;
-}
+}*/
 
 bool GameObject::Active_Component(COMPONENT_TYPE type)
 {
-    list<Components*>::iterator item_comp = componets_go.begin();
-
-	while (item_comp != componets_go.end())
+	if (componets_go.size() > 0)
 	{
-		if ((*item_comp)->Get_Type() == type)
-		{
-			(*item_comp)->Enable();
-			LOG("Error: The component %s is enable", (char*)type);
-			return true;
-		}
+		list<Components*>::iterator item_comp = componets_go.begin();
 
-		item_comp++;
+		while (item_comp != componets_go.end())
+		{
+			if ((*item_comp)->Get_Type() == type)
+			{
+				(*item_comp)->Enable();
+				LOG("Error: The component %s is enable", (char*)type);
+				return true;
+			}
+
+			item_comp++;
+		}
 	}
 
 	LOG("Error: The component %s hasn't found", (char*)type);
@@ -117,11 +140,11 @@ bool GameObject::Add_Child(GameObject* child)
 	return true;
 }
 
-bool GameObject::Delete_Child(GameObject* child)
+/*bool GameObject::Delete_Child(GameObject* child)
 {
 
 	return true;
-}
+}*/
 
 
 void GameObject::Set_Name(const char* new_name)
@@ -142,20 +165,23 @@ GameObject* GameObject::Get_Parent()
 	return parent;
 }
 
-Components* GameObject::Get_Component_Transformation()
+Component_Transformation* GameObject::Get_Component_Transformation()
 {
-	list<Components*>::iterator item_comp = componets_go.begin();
-
-	while (item_comp != componets_go.end())
+	if (componets_go.size() > 0)
 	{
-		if ((*item_comp)->Get_Type() == TRANSFORMATION)
-		{
-			
-			LOG("The component %s of %s has been found", (char*)TRANSFORMATION, name);
-			return (*item_comp);
-		}
+		list<Components*>::iterator item_comp = componets_go.begin();
 
-		item_comp++;
+		while (item_comp != componets_go.end())
+		{
+			if ((*item_comp)->Get_Type() == TRANSFORMATION)
+			{
+
+				LOG("The component %s of %s has been found", (char*)TRANSFORMATION, name);
+				return (Component_Transformation*)(*item_comp);
+			}
+
+			item_comp++;
+		}
 	}
 
 	LOG("Error: The component %s of %s hasn't found", (char*)TRANSFORMATION, name);

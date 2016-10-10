@@ -3,6 +3,7 @@
 
 
 struct Mesh;
+class GameObject;
 
 enum COMPONENT_TYPE
 {
@@ -15,7 +16,7 @@ class Components
 {
 public:
 
-	Components(COMPONENT_TYPE type, Mesh* mesh_go);
+	Components(COMPONENT_TYPE type, GameObject* go);
 	~Components();
 
 	bool Enable();
@@ -24,14 +25,14 @@ public:
 
 	COMPONENT_TYPE Get_Type();
 	bool Get_Active_Component();
-	Mesh* Get_Mesh_Game_Object();
+	GameObject* Get_Game_Object();
 
 private:
 	
 	bool active_component;
 	//Create gameobject to get the information of it
 	COMPONENT_TYPE type_c;
-	Mesh* mesh_game_obj;
+	GameObject* game_obj_c;
 
 
 };

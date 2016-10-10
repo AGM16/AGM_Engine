@@ -21,13 +21,13 @@ public:
 	~GameObject();
 
 	//Components
-	bool Add_Component(COMPONENT_TYPE type, Mesh mesh_go, float3 position_, float3 rotation_, float3 scale_);
-	bool Delete_Component(COMPONENT_TYPE type);
+	bool Add_Component(COMPONENT_TYPE type, GameObject* go, Mesh mesh_go, float3 position_, float3 rotation_, float3 scale_);
+	/*bool Delete_Component(COMPONENT_TYPE type);*/
 	bool Active_Component(COMPONENT_TYPE type);
 
 	//Gameobject Childs
 	bool Add_Child(GameObject* child);
-	bool Delete_Child(GameObject* child);
+	//bool Delete_Child(GameObject* child);
 
 	//Getter and setters
 	void Set_Name(const char* new_name);
@@ -35,7 +35,7 @@ public:
 	GameObject* Get_Parent();
 
 	void Render_Components_Object();
-	Components* Get_Component_Transformation();//To pass the information to the function draw
+	Component_Transformation* Get_Component_Transformation();//To pass the information to the function draw
 	std::list<GameObject*> Get_Children();
 
 

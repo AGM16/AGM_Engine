@@ -8,7 +8,7 @@ class Component_Transformation : public Components
 {
 public:
 
-	Component_Transformation(COMPONENT_TYPE type, Mesh* mesh_, float3 position_, float3 rotation_, float3 scale_);
+	Component_Transformation(COMPONENT_TYPE type, GameObject* go, float3 position_, float3 rotation_, float3 scale_);
 	~Component_Transformation();
 
 	//Functions

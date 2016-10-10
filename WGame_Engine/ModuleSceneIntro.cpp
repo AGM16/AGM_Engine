@@ -47,7 +47,7 @@ bool ModuleSceneIntro::Start()
 	
 	//Load 3D model
 	geometry_object = App->geometry->Load_Geometry("Assets/Brutus.fbx");
-	App->gameobj_manager->Create_Game_Object(geometry_object[0]);
+	//App->gameobj_manager->Create_Game_Object(geometry_object[0]);
 
 	//Create Checker Image
 	/*GLubyte checkImage[30][30][4];
@@ -77,8 +77,8 @@ bool ModuleSceneIntro::Start()
 
 	Cube_Indice_OPENGL();
 
-	go = new GameObject();
-	go = App->gameobj_manager->Get_Root_Node();
+	/*go = new GameObject();
+	go = App->gameobj_manager->Get_Root_Node();*/
 
 	return ret;
 }
@@ -102,7 +102,7 @@ update_status ModuleSceneIntro::Update(float dt)
 			++array_mesh;
 		}
 
-		Draw_Indices_UVS(indices, my_indices, my_id, my_uvs, lena_image);
+		//Draw_Indices_UVS(indices, my_indices, my_id, my_uvs, lena_image);
 
         //Components Transform
 		/*array_mesh = geometry_object.begin();

@@ -22,7 +22,7 @@ bool GameObject_Manager::Start()
 	root_game_obj = new GameObject();
 
 	Mesh m;
-	root_game_obj->Add_Component(COMPONENT_TYPE::TRANSFORMATION, m, float3(0.f, 0.f, 0.f), float3(0.f, 0.f, 0.f), float3(0.f, 0.f, 0.f));
+	root_game_obj->Add_Component(COMPONENT_TYPE::TRANSFORMATION, root_game_obj, m, float3(0.f, 0.f, 0.f), float3(0.f, 0.f, 0.f), float3(0.f, 0.f, 0.f));
 
 	root_game_obj->Get_Name();
 
@@ -31,8 +31,18 @@ bool GameObject_Manager::Start()
 
 update_status GameObject_Manager::Update(float dt)
 {
-	//Render Active Components
-	root_game_obj->Render_Components_Object();
+	if (root_game_obj->Get_Children().size() > 0)
+	{
+		list<GameObject*>::iterator node_go = root_game_obj->Get_Children().begin();
+
+		while (node_go != root_game_obj->Get_Children().end())
+		{
+			//Render Components and draw mesh
+			(*node_go)->Render_Components_Object();
+			node_go++;
+		}
+	}
+	
 
 	return UPDATE_CONTINUE;
 }
@@ -62,16 +72,12 @@ bool GameObject_Manager::Create_Game_Object(Mesh m)
 	GameObject* game_obj = new GameObject(go_parent, m.name_node);
 
 	//Add Components
-	game_obj->Add_Component(COMPONENT_TYPE::TRANSFORMATION, m, m.translation, RadToDeg(m.rotation.ToEulerYXZ()), m.scaling);
+	game_obj->Add_Component(COMPONENT_TYPE::TRANSFORMATION, game_obj, m, m.translation, RadToDeg(m.rotation.ToEulerYXZ()), m.scaling);
 
-	if (m.parent != NULL)
-	{
-		game_obj->Get_Parent()->Add_Child(game_obj);
-	}
-	else
-	{
-		root_game_obj = game_obj;
-	}
+	//Assign child to parent
+	go_parent->Add_Child(game_obj);
+	
+
 
 
 

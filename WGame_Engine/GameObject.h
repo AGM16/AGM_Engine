@@ -18,6 +18,10 @@ public:
 	void Update_Go_Components();
 	bool Exist_Component(Components_Type type);
 
+	std::list<GameObject*> Get_Children()const;
+	GameObject* Get_Parent()const;
+	char* Get_Name()const;
+
 private:
 
 	//Variables

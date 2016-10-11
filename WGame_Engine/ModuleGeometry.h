@@ -1,7 +1,15 @@
 #ifndef _MODULEGEOMETRY_H
 #define _MODULEGEOMETRY_H
+
 #include "Globals.h"
 #include "Module.h"
+
+#include "Assimp\include\cimport.h"
+#include "Assimp\include\scene.h"
+#include "Assimp\include\postprocess.h"
+#include "Assimp\include\cfileio.h"
+
+class GameObject;
 
 
 
@@ -37,7 +45,7 @@ struct Mesh
 	//Hierarchy
 	int num_children = 0;
 	const char* parent = NULL;
-	const char* name_node;
+	char* name_node;
 
 };
 
@@ -54,7 +62,7 @@ class ModuleGeometry : public Module
 
 	   vector<Mesh> Load_Geometry(const char* path);
 
-	   
+	   void Load_Nodes_For_Hierarchy(aiNode* node_child, aiMesh* mesh_scene, aiScene* scene, GameObject* parent);
 	   
 
 

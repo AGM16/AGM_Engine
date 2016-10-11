@@ -16,7 +16,7 @@ Application::Application()
 	geometry = new ModuleGeometry(this);
 	filesystem = new ModuleFileSystem(this);
 	hardware = new Hardware_Info(this);
-	
+	go_manager = new Module_Go_Manager(this);
 
 	// The order of calls is very important!
 	// Modules will Init() Start() and Update in this order
@@ -30,6 +30,7 @@ Application::Application()
 	AddModule(console);
 	AddModule(hardware);
 	AddModule(fps_info);
+	AddModule(go_manager);
 	AddModule(geometry);
 	AddModule(camera);
 	AddModule(input);

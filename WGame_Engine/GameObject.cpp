@@ -94,3 +94,18 @@ bool GameObject::Exist_Component(Components_Type type)
 
 	return true;
 }
+
+list<GameObject*> GameObject::Get_Children()const
+{
+	return children;
+}
+
+GameObject* GameObject::Get_Parent()const
+{
+	return Parent;
+}
+
+char* GameObject::Get_Name()const
+{
+	return name;
+}

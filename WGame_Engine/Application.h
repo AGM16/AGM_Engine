@@ -17,6 +17,7 @@
 #include "FPS_Info.h"
 #include "Console.h"
 #include "Hardware_Info.h"
+#include "Module_Go_Manager.h"
 
 
 
@@ -38,7 +39,7 @@ public:
 	ModuleGeometry*  geometry;
 	ModuleFileSystem* filesystem;
 	Hardware_Info*    hardware;
-
+	Module_Go_Manager* go_manager;
 
     
 private:

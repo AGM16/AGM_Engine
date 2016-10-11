@@ -45,6 +45,7 @@ bool ModuleSceneIntro::Start()
 	
 	//Load 3D model
 	geometry_object = App->geometry->Load_Geometry("Assets/Brutus.fbx");
+
 	//App->gameobj_manager->Create_Game_Object(geometry_object[0]);
 
 	//Create Checker Image
@@ -72,6 +73,7 @@ bool ModuleSceneIntro::Start()
 
 	//Load Image
     lena_image = ilutGLLoadImage("Assets/Lenna.png");
+
 
 	Cube_Indice_OPENGL();
 

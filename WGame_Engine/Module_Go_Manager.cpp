@@ -29,9 +29,14 @@ GameObject* Module_Go_Manager::Create_Game_Object(Mesh* m, GameObject* Parent)
 
 	if (m != NULL)
 	{
-			//Add Component
+			//Add Components Transformation
+			new_game_object->Add_Component_Transformation(m);
+			LOG("The GameObject %s has a new component : %s ", new_game_object->Get_Name(), "TRANSFORMATION");
+			
+			//Add Components Mesh
 			new_game_object->Add_Component_Mesh(m);
-			LOG("The GameObject %s has a new component : %s ", new_game_object->Get_Name(), "MESH");	
+			LOG("The GameObject %s has a new component : %s ", new_game_object->Get_Name(), "MESH");
+
 	}
 	else
 	{
@@ -46,11 +51,11 @@ GameObject* Module_Go_Manager::Create_Game_Object(Mesh* m, GameObject* Parent)
 update_status Module_Go_Manager::Update(float dt)
 {
 
-	if (root_game_object->Get_Children().size() > 0)
+	if (root_game_object->Get_Children()->size() > 0)
 	{
-		list<GameObject*>::iterator node_game_obj = root_game_object->children.begin();
+		list<GameObject*>::iterator node_game_obj = root_game_object->Get_Children()->begin();
 
-		while (node_game_obj != root_game_object->children.end())
+		while (node_game_obj != root_game_object->Get_Children()->end())
 		{
 			//Render Components
 			(*node_game_obj)->Update_Go_Components();

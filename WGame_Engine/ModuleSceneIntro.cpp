@@ -44,7 +44,7 @@ bool ModuleSceneIntro::Start()
 	
 	
 	//Load 3D model
-	 App->geometry->Load_Geometry("Assets/Brutus.fbx");
+	 App->geometry->Load_Geometry("Assets/cube.fbx");
 
 	//App->gameobj_manager->Create_Game_Object(geometry_object[0]);
 

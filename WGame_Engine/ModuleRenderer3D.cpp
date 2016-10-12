@@ -184,7 +184,7 @@ void ModuleRenderer3D::OnResize(int width, int height, float fovy)
 	glLoadIdentity();
 }
 
-void ModuleRenderer3D::Draw_Geometry(const Mesh* mesh, uint texture, float3 position)
+void ModuleRenderer3D::Draw_Geometry(const Mesh* mesh, uint texture, float4x4 transformation_matrix)
 {
 	
 	/*if (wire == true)
@@ -194,9 +194,8 @@ void ModuleRenderer3D::Draw_Geometry(const Mesh* mesh, uint texture, float3 posi
 
 	glColor4f(1.0f, 1.0f, 1.0f, 1.0f);
 	glPushMatrix();
-	glTranslatef(position.x, position.y, position.z);
-	//glRotatef(90, 0.f, 1.f, 0.f);
-	//glScalef(0.5f, 0.3f, 0.5f);
+	//glTranslatef(transformation_matrix.x, transformation_matrix.y, transformation_matrix.z);
+	glMultMatrixf(*transformation_matrix.v);
 	
 	//Enables
 	glEnableClientState(GL_VERTEX_ARRAY);

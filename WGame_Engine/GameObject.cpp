@@ -2,6 +2,7 @@
 #include "Application.h"
 #include "Components.h"
 #include "Component_Mesh.h"
+#include "Component_Transformation.h"
 
 using namespace std;
 
@@ -25,8 +26,27 @@ bool GameObject::Add_Component_Mesh(Mesh* m)
 
 	if (ret)
 	{
-		Components* new_component = new Component_Mesh(MESH,m);
-		LOG("The GameObject %s component %s has been creqated", name, "mesh");
+		Components* new_component = new Component_Mesh(MESH, this , m);
+		LOG("The GameObject %s component %s has been created", name, "MESH");
+
+		components_list.push_back(new_component);
+	}
+
+	return ret;
+}
+
+bool GameObject::Add_Component_Transformation(Mesh* m)
+{
+	bool ret = true;
+	if (components_list.size() > 0)
+	{
+		ret = Exist_Component(TRANSFORMATION);
+	}
+
+	if (ret)
+	{
+		Components* new_component = new Component_Transformation(TRANSFORMATION, this, m->translation,  m->scaling, m->rotation, RadToDeg(m->rotation.ToEulerXYZ()));
+		LOG("The GameObject %s component %s has been created", name, "TRANSFORMATION");
 
 		components_list.push_back(new_component);
 	}
@@ -95,9 +115,35 @@ bool GameObject::Exist_Component(Components_Type type)
 	return true;
 }
 
-list<GameObject*> GameObject::Get_Children()const
+
+Components* GameObject::Get_Component(Components_Type type)
 {
-	return children;
+	
+		list<Components*>::iterator itme_component = components_list.begin();
+
+		while (itme_component != components_list.end())
+		{
+			if ((*itme_component)->Get_Type() == type)
+			{
+				LOG("The GameObject %s has already a %s component", name, (char*)type);
+				return (*itme_component);
+			}
+
+			itme_component++;
+		}
+	
+
+	return NULL;
+}
+
+std::list<GameObject*>* GameObject::Get_Children()
+{
+	return &children;
+}
+
+std::list<Components*>* GameObject::Get_Components()
+{
+	return &components_list;
 }
 
 GameObject* GameObject::Get_Parent()const

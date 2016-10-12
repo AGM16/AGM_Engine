@@ -13,23 +13,28 @@ public:
 	~GameObject();
 
 	bool Add_Component_Mesh( Mesh* m);
+	bool Add_Component_Transformation(Mesh* m);
 	bool Add_Child(GameObject* child);
 
 	void Update_Go_Components();
 	bool Exist_Component(Components_Type type);
+	Components* Get_Component(Components_Type type);
 
-	std::list<GameObject*> Get_Children()const;
+
+	std::list<GameObject*>* Get_Children();
+	std::list<Components*>* Get_Components();
 	GameObject* Get_Parent()const;
 	char* Get_Name()const;
+
 	
-	std::list<GameObject*> children;
+	
 
 private:
 
 	//Variables
 	GameObject* Parent = nullptr;
-	
-	std::list<Components*> components_list;
+	std::list<GameObject*> children;
+    std::list<Components*> components_list;
 	char* name = NULL;
 
 };

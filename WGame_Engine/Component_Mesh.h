@@ -10,7 +10,7 @@ class Component_Mesh : public Components
 {
 public:
 
-	Component_Mesh(Components_Type type, Mesh* mesh_);
+	Component_Mesh(Components_Type type, GameObject* game_object, Mesh* mesh_);
 	~Component_Mesh();
 
 	void Update();

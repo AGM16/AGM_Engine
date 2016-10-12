@@ -44,7 +44,7 @@ bool ModuleSceneIntro::Start()
 	
 	
 	//Load 3D model
-	geometry_object = App->geometry->Load_Geometry("Assets/Brutus.fbx");
+	 App->geometry->Load_Geometry("Assets/Brutus.fbx");
 
 	//App->gameobj_manager->Create_Game_Object(geometry_object[0]);
 
@@ -77,8 +77,7 @@ bool ModuleSceneIntro::Start()
 
 	Cube_Indice_OPENGL();
 
-	/*go = new GameObject();
-	go = App->gameobj_manager->Get_Root_Node();*/
+	
 
 	return ret;
 }
@@ -95,25 +94,9 @@ bool ModuleSceneIntro::CleanUp()
 // Update
 update_status ModuleSceneIntro::Update(float dt)
 {
-		vector<Mesh>::iterator array_mesh = geometry_object.begin();
-		while (array_mesh != geometry_object.end())
-		{
-			App->renderer3D->Draw_Geometry(&(*array_mesh), lena_image, (*array_mesh).translation);
-			++array_mesh;
-		}
+		
 
-		//Draw_Indices_UVS(indices, my_indices, my_id, my_uvs, lena_image);
-
-        //Components Transform
-		/*array_mesh = geometry_object.begin();
-		ImGui::Begin("Components");
-
-			if (ImGui::CollapsingHeader("Local Transform"))
-			{
-				ImGui::InputFloat3("Postion", (*array_mesh).translation.ptr());
-			}
-
-       ImGui::End();*/
+     
 
 	
 	return UPDATE_CONTINUE;

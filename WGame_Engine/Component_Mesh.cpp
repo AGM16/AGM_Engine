@@ -13,5 +13,5 @@ Component_Mesh::~Component_Mesh()
 
 void Component_Mesh::Update()
 {
-
+	App->renderer3D->Draw_Geometry(mesh, App->scene_intro->lena_image, mesh->translation);
 }

@@ -26,7 +26,7 @@ bool GameObject::Add_Component_Mesh(Mesh* m)
 	if (ret)
 	{
 		Components* new_component = new Component_Mesh(MESH,m);
-		LOG("The GameObject %s component %s has been creqated", name, (char*)MESH);
+		LOG("The GameObject %s component %s has been creqated", name, "mesh");
 
 		components_list.push_back(new_component);
 	}

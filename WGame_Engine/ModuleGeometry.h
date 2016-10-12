@@ -60,9 +60,9 @@ class ModuleGeometry : public Module
 	   update_status Update(float dt);
 	   bool CleanUp();
 
-	   vector<Mesh> Load_Geometry(const char* path);
+	   bool Load_Geometry(const char* path);
 
-	   void Load_Nodes_For_Hierarchy(aiNode* node_child, aiMesh* mesh_scene, aiScene* scene, GameObject* parent);
+	   void Load_Nodes_For_Hierarchy(aiNode* node_child, const aiScene* scene, GameObject* parent, const char* path);
 	   
 
 

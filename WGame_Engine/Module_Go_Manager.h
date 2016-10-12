@@ -14,7 +14,7 @@ public:
 	Module_Go_Manager(Application* app, bool start_enabled = true);
 	~Module_Go_Manager();
 
-	void Create_Game_Object(Mesh* m, GameObject* Parent);
+	GameObject* Create_Game_Object(Mesh* m, GameObject* Parent);
 	update_status Update(float dt);
 	GameObject* Search_parent(char* name);
 

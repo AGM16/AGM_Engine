@@ -43,16 +43,12 @@ public:
 	vector<float2> uvs;
 	uint my_uvs = 0;
 
-	//FBX
-	vector<Mesh> geometry_object;
-
 	//Texture Check Image
 	uint image_name;
 
 	//Texture Elena
 	uint  lena_image;
 
-	GameObject* go;
 
 
 

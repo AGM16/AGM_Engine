@@ -21,14 +21,16 @@ public:
 	std::list<GameObject*> Get_Children()const;
 	GameObject* Get_Parent()const;
 	char* Get_Name()const;
+	
+	std::list<GameObject*> children;
 
 private:
 
 	//Variables
 	GameObject* Parent = nullptr;
-	std::list<GameObject*> children;
+	
 	std::list<Components*> components_list;
-	char* name;
+	char* name = NULL;
 
 };
 

@@ -1,6 +1,7 @@
 #include "Application.h"
 #include "Module_Go_Manager.h"
 #include "GameObject.h"
+#include "Components.h"
 
 using namespace std;
 
@@ -13,6 +14,7 @@ Module_Go_Manager::~Module_Go_Manager()
 {
 
 }
+
 
 GameObject* Module_Go_Manager::Create_Game_Object(Mesh* m, GameObject* Parent)
 {
@@ -64,26 +66,89 @@ update_status Module_Go_Manager::Update(float dt)
 
 	}
 
+	
+	ImGui::Begin("Hierarchy", &open_hierarchy_window);
+	if (root_game_object->Get_Children()->size() > 0)
+	{
+		Window_Hierarchy(root_game_object);
+	}
+	ImGui::End();
 
 	return UPDATE_CONTINUE;
 }
 
-GameObject* Module_Go_Manager::Search_parent(char* name)
+void Module_Go_Manager::Window_Hierarchy(GameObject* Root_node)
 {
-	/*if (root_game_object->Get_Children().size() > 0)
+
+	for (list<GameObject*>::iterator node_go = Root_node->Get_Children()->begin(); node_go != Root_node->Get_Children()->end(); node_go++)
 	{
-		list<GameObject*>::iterator node_game_obj = root_game_object->Get_Children().begin();
+		uint flags = 0;
+		if ((*node_go) == game_object_selected)
+			flags = ImGuiTreeNodeFlags_Selected;
 
-		while (node_game_obj != root_game_object->Get_Children().end())
+		if ((*node_go)->Get_Children()->size() > 0)
 		{
-			if ((*node_game_obj)->Get_Children().size() > 0)
+			if (ImGui::TreeNodeEx((*node_go)->Get_Name(), flags))
 			{
+				if (ImGui::IsItemClicked())
+				{   
+					if (game_object_selected != NULL)
+					{
+						Search_GameObject_To_Disactive(game_object_selected);
+					}
+					game_object_selected = (*node_go);
+					Search_GameObject_To_Active( game_object_selected);
 
+					last_game_object_selected = game_object_selected;
+				}
+
+				Window_Hierarchy((*node_go));
+				ImGui::TreePop();
 			}
-			node_game_obj++;
 		}
+		else
+		{
+			if (ImGui::TreeNodeEx((*node_go)->Get_Name(), flags | ImGuiTreeNodeFlags_Leaf))
+			{
+				if (ImGui::IsItemClicked())
+				{
+					if (game_object_selected != NULL)
+					{
+						Search_GameObject_To_Disactive(game_object_selected);
+					}
+					game_object_selected = (*node_go);
+					Search_GameObject_To_Active( game_object_selected);
 
-	}*/
+					last_game_object_selected = game_object_selected;
+				}
 
-	return NULL;
+				ImGui::TreePop();
+			}
+		}
+	}
+
+}
+
+void Module_Go_Manager::Search_GameObject_To_Active( GameObject* root_go)
+{
+	list<Components*>::iterator node_comp = root_go->Get_Components()->begin();
+	while (node_comp != root_go->Get_Components()->end())
+	{
+		(*node_comp)->Enable();
+		node_comp++;
+	}
+}
+
+void Module_Go_Manager::Search_GameObject_To_Disactive( GameObject* root_go)
+{
+	if (last_game_object_selected != NULL)
+	{
+		list<Components*>::iterator node_comp = last_game_object_selected->Get_Components()->begin();
+		while (node_comp != last_game_object_selected->Get_Components()->end())
+		{
+			(*node_comp)->Disable();
+			node_comp++;
+		}
+	}
+	
 }

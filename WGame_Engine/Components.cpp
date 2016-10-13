@@ -1,7 +1,7 @@
 #include "Components.h"
 #include "MathGeoLib\include\MathGeoLib.h"
 
-Components::Components(Components_Type type, GameObject* game_object) : active_component(false), type_c(type), game_object(game_object)
+Components::Components(Components_Type type, GameObject* game_object) : active_component(false), type_c(type), game_object(game_object) 
 {
 
 }
@@ -40,4 +40,9 @@ Components_Type Components::Get_Type()const
 GameObject* Components::Get_Game_Object()const
 {
 	return game_object;
+}
+
+bool Components::Get_Panel_Opened()const
+{
+	return panels_open;
 }

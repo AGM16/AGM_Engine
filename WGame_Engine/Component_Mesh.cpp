@@ -17,40 +17,42 @@ Component_Mesh::~Component_Mesh()
 
 void Component_Mesh::Update()
 {
-
-	if (ImGui::CollapsingHeader("Mesh"))
+	if (Is_Active())
 	{
-		//--------------------------------------------------------------------
-		ImGui::Text("Name : ");
-		ImGui::SameLine();
-		ImGui::TextColored(ImVec4(1, 1, 1, 1), "%s", mesh->name_node);
-		
-		ImGui::SameLine();
-		ImGui::Text("                NumVertices : ");
-		ImGui::SameLine();
-		ImGui::TextColored(ImVec4(1, 1, 1, 1), "%i", mesh->num_vertices);
+		if (ImGui::CollapsingHeader("Mesh", ImGuiTreeNodeFlags_DefaultOpen))
+		{
+			//--------------------------------------------------------------------
+			ImGui::Text("Name : ");
+			ImGui::SameLine();
+			ImGui::TextColored(ImVec4(1, 1, 1, 1), "%s", mesh->name_node);
 
-		//--------------------------------------------------------------------
-		ImGui::Text("NumChildren : ");
-		ImGui::SameLine();
-		ImGui::TextColored(ImVec4(1, 1, 1, 1), "%s", mesh->num_children);
+			ImGui::SameLine();
+			ImGui::Text("                NumVertices : ");
+			ImGui::SameLine();
+			ImGui::TextColored(ImVec4(1, 1, 1, 1), "%i", mesh->num_vertices);
 
-		ImGui::SameLine();
-		ImGui::Text("         NumIndices : ");
-		ImGui::SameLine();
-		ImGui::TextColored(ImVec4(1, 1, 1, 1), "%i", mesh->num_indices);
+			//--------------------------------------------------------------------
+			ImGui::Text("NumChildren : ");
+			ImGui::SameLine();
+			ImGui::TextColored(ImVec4(1, 1, 1, 1), "%i", mesh->num_children);
 
-		//--------------------------------------------------------------------
-		ImGui::Text("Parent : ");
-		ImGui::SameLine();
-		ImGui::TextColored(ImVec4(1, 1, 1, 1), "%s", mesh->parent);
+			ImGui::SameLine();
+			ImGui::Text("         NumIndices : ");
+			ImGui::SameLine();
+			ImGui::TextColored(ImVec4(1, 1, 1, 1), "%i", mesh->num_indices);
 
-		ImGui::SameLine();
-		ImGui::Text("            NumNormals : ");
-		ImGui::SameLine();
-		ImGui::TextColored(ImVec4(1, 1, 1, 1), "%i", mesh->num_normals);
+			//--------------------------------------------------------------------
+			ImGui::Text("Parent : ");
+			ImGui::SameLine();
+			ImGui::TextColored(ImVec4(1, 1, 1, 1), "%s", mesh->parent);
+
+			ImGui::SameLine();
+			ImGui::Text("            NumNormals : ");
+			ImGui::SameLine();
+			ImGui::TextColored(ImVec4(1, 1, 1, 1), "%i", mesh->num_normals);
 
 
+		}
 	}
 	
 	Component_Transformation* transformation =  (Component_Transformation*)Get_Game_Object()->Get_Component(TRANSFORMATION);

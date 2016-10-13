@@ -16,6 +16,8 @@ public:
 	void Set_Rotation();
 	void Set_Scale();
 
+	math::float3 Get_Position()const;
+
 	math::float4x4 Create_New_Matrix_Transformation();
 	math::float4x4 Get_Tranformation_Matrix()const;
 
@@ -33,6 +35,7 @@ private:
 	//Last Information of matrix
 	math::float4x4 transformation_matrix = math::float4x4::identity;
 
+	bool start = true;
 
 };
 #endif // ! _COMPONENT_TRANSFORMATION_H_

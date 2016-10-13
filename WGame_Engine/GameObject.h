@@ -36,6 +36,7 @@ private:
 	std::list<GameObject*> children;
     std::list<Components*> components_list;
 	char* name = NULL;
+	bool Open_components_panel = true;
 
 };
 

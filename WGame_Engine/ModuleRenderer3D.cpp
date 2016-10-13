@@ -210,12 +210,17 @@ void ModuleRenderer3D::Draw_Geometry(const Mesh* mesh, uint texture, float4x4 tr
 	glBindBuffer(GL_ARRAY_BUFFER, mesh->id_normals);
 	glNormalPointer(GL_FLOAT, 0, NULL);
 
+	
 	//Uvs
 	glBindBuffer(GL_ARRAY_BUFFER, mesh->id_uvs_texture_coords);
 	glTexCoordPointer(2, GL_FLOAT, 0, NULL);
 
-    //Put Texture in buffer
-	glBindTexture(GL_TEXTURE_2D, texture);
+
+	if (mesh->num_uvs_texture_coords > 0)
+	{
+		//Put Texture in buffer
+		glBindTexture(GL_TEXTURE_2D, texture);
+	}
 
 	//Index
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, mesh->id_indices);

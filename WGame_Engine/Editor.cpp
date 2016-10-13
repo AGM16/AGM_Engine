@@ -36,6 +36,9 @@ update_status Editor::Update(float dt)
 	
 	plane.Render();
 
+	//AGM IF you want to change the ImGui style...
+	//ImGui::ShowStyleEditor();
+
 	//Menu Bar ---------------------------
 	if (ImGui::BeginMainMenuBar())
 	{

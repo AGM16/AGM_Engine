@@ -92,130 +92,176 @@ void ModuleGeometry::Load_Nodes_For_Hierarchy(aiNode* node_child, const aiScene*
 	
     GameObject* game_obj = nullptr;
 
-	for(int i = 0; i < node_child->mNumMeshes; i++)
+	if (node_child->mNumMeshes > 0)
 	{
-	   aiMesh* new_mesh = scene->mMeshes[node_child->mMeshes[i]];
-       Mesh* m = new Mesh();
-
-		//Vertices
-		m->num_vertices = new_mesh->mNumVertices;
-		m->vertices = new float[m->num_vertices * 3];
-		memcpy(m->vertices, new_mesh->mVertices, sizeof(float) * m->num_vertices * 3);
-		LOG("New mesh with %d vertices", m->num_vertices);
-
-		//Check if our mesh have normals
-		if (new_mesh->HasNormals())
+		for (int i = 0; i < node_child->mNumMeshes; i++)
 		{
+			aiMesh* new_mesh = scene->mMeshes[node_child->mMeshes[i]];
+			Mesh* m = new Mesh();
 
-			m->num_normals = new_mesh->mNumVertices;
-			m->normals = new float[m->num_normals * 3];
-			memcpy(m->normals, new_mesh->mNormals, sizeof(float) * m->num_normals * 3);
-			LOG("New mesh with %d normals", m->num_normals);
-		}
+			//Vertices
+			m->num_vertices = new_mesh->mNumVertices;
+			m->vertices = new float[m->num_vertices * 3];
+			memcpy(m->vertices, new_mesh->mVertices, sizeof(float) * m->num_vertices * 3);
+			LOG("New mesh with %d vertices", m->num_vertices);
 
-		//Check if the mesh have uvs coordenates
-		if (new_mesh->HasTextureCoords(m->uvs_index_texture_coords))
-		{
-			m->num_uvs_texture_coords = new_mesh->mNumVertices;
-			m->uvs_texture_coords = new float2[m->num_uvs_texture_coords];
-
-			for (int i = 0; i < m->num_uvs_texture_coords; i++)
+			//Check if our mesh have normals
+			if (new_mesh->HasNormals())
 			{
-				//Assign uv to the uvs_array<float2>
-				m->uvs_texture_coords[i].x = new_mesh->mTextureCoords[m->uvs_index_texture_coords][i].x;
-				m->uvs_texture_coords[i].y = new_mesh->mTextureCoords[m->uvs_index_texture_coords][i].y;
+
+				m->num_normals = new_mesh->mNumVertices;
+				m->normals = new float[m->num_normals * 3];
+				memcpy(m->normals, new_mesh->mNormals, sizeof(float) * m->num_normals * 3);
+				LOG("New mesh with %d normals", m->num_normals);
 			}
 
-			LOG("New mesh with %d uvs_texture_coords", m->num_uvs_texture_coords);
-		}
-
-		//Faces
-		if (new_mesh->HasFaces())
-		{
-			//We assume that each face is a triangle
-			m->num_indices = new_mesh->mNumFaces * 3;
-			m->indices = new uint[m->num_indices];
-			for (uint i = 0; i < new_mesh->mNumFaces; ++i)
+			//Check if the mesh have uvs coordenates
+			if (new_mesh->HasTextureCoords(m->uvs_index_texture_coords))
 			{
-				//Check the number of indices of each face
-				if (new_mesh->mFaces[i].mNumIndices != 3)
+				m->num_uvs_texture_coords = new_mesh->mNumVertices;
+				m->uvs_texture_coords = new float2[m->num_uvs_texture_coords];
+
+				for (int i = 0; i < m->num_uvs_texture_coords; i++)
 				{
-					LOG("WARNING, geometry face with != 3indices!");
+					//Assign uv to the uvs_array<float2>
+					m->uvs_texture_coords[i].x = new_mesh->mTextureCoords[m->uvs_index_texture_coords][i].x;
+					m->uvs_texture_coords[i].y = new_mesh->mTextureCoords[m->uvs_index_texture_coords][i].y;
+				}
+
+				LOG("New mesh with %d uvs_texture_coords", m->num_uvs_texture_coords);
+			}
+
+			//Faces
+			if (new_mesh->HasFaces())
+			{
+				//We assume that each face is a triangle
+				m->num_indices = new_mesh->mNumFaces * 3;
+				m->indices = new uint[m->num_indices];
+				for (uint i = 0; i < new_mesh->mNumFaces; ++i)
+				{
+					//Check the number of indices of each face
+					if (new_mesh->mFaces[i].mNumIndices != 3)
+					{
+						LOG("WARNING, geometry face with != 3indices!");
+					}
+					else
+						memcpy(&m->indices[i * 3], new_mesh->mFaces[i].mIndices, 3 * sizeof(uint));
+
+				}
+			}
+
+
+			//Load Mesh buffer to the VRAM
+			//Vertices Buffer
+			glGenBuffers(1, (GLuint*) &(m->id_vertices));//Generate the buffer
+			glBindBuffer(GL_ARRAY_BUFFER, m->id_vertices);//Start using that buffer
+			glBufferData(GL_ARRAY_BUFFER, sizeof(float) * m->num_vertices * 3, m->vertices, GL_STATIC_DRAW);
+
+			//Normals Buffer
+			glGenBuffers(1, (GLuint*) &(m->id_normals));
+			glBindBuffer(GL_ARRAY_BUFFER, m->id_normals);
+			glBufferData(GL_ARRAY_BUFFER, sizeof(float) * m->num_normals * 3, m->normals, GL_STATIC_DRAW);
+
+			//Texture_coords Buffer
+			glGenBuffers(1, (GLuint*) &(m->id_uvs_texture_coords));
+			glBindBuffer(GL_ARRAY_BUFFER, m->id_uvs_texture_coords);
+			glBufferData(GL_ARRAY_BUFFER, sizeof(float) * m->num_uvs_texture_coords * 2, m->uvs_texture_coords, GL_STATIC_DRAW);
+
+			//Indices Buffer
+			glGenBuffers(1, (GLuint*) &(m->id_indices));
+			glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m->id_indices);
+			glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(uint) *  m->num_indices, m->indices, GL_STATIC_DRAW);
+
+
+			//Check Hierarchy and local transform of every mesh
+			if (new_mesh->HasPositions() == true)
+			{
+				//Hierarchy
+				if (node_child->mParent->mName.data == "RootNode")//If child parent is RootNode
+				{
+					m->parent = NULL;
+					m->num_children = node_child->mNumChildren;
+					m->name_node = node_child->mName.data;
+					LOG("The %s mesh is the rootnode of the scene %s", m->name_node, path);
 				}
 				else
-					memcpy(&m->indices[i * 3], new_mesh->mFaces[i].mIndices, 3 * sizeof(uint));
+				{
+					//parent = node_child->mParent;
+					m->parent = node_child->mParent->mName.data;
+					m->num_children = node_child->mNumChildren;
+					m->name_node = node_child->mName.data;
+					LOG("The %s mesh is the child of the gameobject %s", m->name_node, m->parent);
+				}
+
+				aiVector3D translation;
+				aiVector3D scaling;
+				aiQuaternion rotation;
+				node_child->mTransformation.Decompose(scaling, rotation, translation);
+
+				//Position
+				m->translation.x = translation.x;
+				m->translation.y = translation.y;
+				m->translation.z = translation.z;
+
+				//Scale
+				m->scaling.x = scaling.x;
+				m->scaling.y = scaling.y;
+				m->scaling.z = scaling.z;
+
+				//Rotation
+				m->rotation.x = rotation.x;
+				m->rotation.y = rotation.y;
+				m->rotation.z = rotation.z;
+				m->rotation.w = rotation.w;
+
+				game_obj = App->go_manager->Create_Game_Object(m, parent);
 
 			}
+
 		}
-
-
-		//Load Mesh buffer to the VRAM
-		//Vertices Buffer
-		glGenBuffers(1, (GLuint*) &(m->id_vertices));//Generate the buffer
-		glBindBuffer(GL_ARRAY_BUFFER, m->id_vertices);//Start using that buffer
-		glBufferData(GL_ARRAY_BUFFER, sizeof(float) * m->num_vertices * 3, m->vertices, GL_STATIC_DRAW);
-
-		//Normals Buffer
-		glGenBuffers(1, (GLuint*) &(m->id_normals));
-		glBindBuffer(GL_ARRAY_BUFFER, m->id_normals);
-		glBufferData(GL_ARRAY_BUFFER, sizeof(float) * m->num_normals * 3, m->normals, GL_STATIC_DRAW);
-
-		//Texture_coords Buffer
-		glGenBuffers(1, (GLuint*) &(m->id_uvs_texture_coords));
-		glBindBuffer(GL_ARRAY_BUFFER, m->id_uvs_texture_coords);
-		glBufferData(GL_ARRAY_BUFFER, sizeof(float) * m->num_uvs_texture_coords * 2, m->uvs_texture_coords, GL_STATIC_DRAW);
-
-		//Indices Buffer
-		glGenBuffers(1, (GLuint*) &(m->id_indices));
-		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m->id_indices);
-		glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(uint) *  m->num_indices, m->indices, GL_STATIC_DRAW);
-
-
-		//Check Hierarchy and local transform of every mesh
-		if (new_mesh->HasPositions() == true)
+	}
+	else
+	{
+		Mesh* m = new Mesh();
+		//Hierarchy
+		if (node_child->mParent->mName.data == "RootNode")//If child parent is RootNode
 		{
-			//Hierarchy
-			if (node_child->mParent->mName.data == "RootNode")//If child parent is RootNode
-			{
-				m->parent = NULL;
-				m->num_children = node_child->mNumChildren;
-				m->name_node = node_child->mName.data;
-				LOG("The %s mesh is the rootnode of the scene %s", m->name_node, path);
-			}
-			else
-			{
-				//parent = node_child->mParent;
-				m->parent = node_child->mParent->mName.data;
-				m->num_children = node_child->mNumChildren;
-				m->name_node = node_child->mName.data;
-				LOG("The %s mesh is the child of the gameobject %s", m->name_node, m->parent);
-			}
-
-			aiVector3D translation;
-			aiVector3D scaling;
-			aiQuaternion rotation;
-			node_child->mTransformation.Decompose(scaling, rotation, translation);
-
-			//Position
-			m->translation.x = translation.x;
-			m->translation.y = translation.y;
-			m->translation.z = translation.z;
-
-			//Scale
-			m->scaling.x = scaling.x;
-			m->scaling.y = scaling.y;
-			m->scaling.z = scaling.z;
-
-			//Rotation
-			m->rotation.x = rotation.x;
-			m->rotation.y = rotation.y;
-			m->rotation.z = rotation.z;
-			m->rotation.w = rotation.w;
-
-			game_obj = App->go_manager->Create_Game_Object(m, parent);
-
+			m->parent = NULL;
+			m->num_children = node_child->mNumChildren;
+			m->name_node = node_child->mName.data;
+			LOG("The %s mesh is the rootnode of the scene %s", m->name_node, path);
+		}
+		else
+		{
+			//parent = node_child->mParent;
+			m->parent = node_child->mParent->mName.data;
+			m->num_children = node_child->mNumChildren;
+			m->name_node = node_child->mName.data;
+			LOG("The %s mesh is the child of the gameobject %s", m->name_node, m->parent);
 		}
 
+		aiVector3D translation;
+		aiVector3D scaling;
+		aiQuaternion rotation;
+		node_child->mTransformation.Decompose(scaling, rotation, translation);
+
+		//Position
+		m->translation.x = translation.x;
+		m->translation.y = translation.y;
+		m->translation.z = translation.z;
+
+		//Scale
+		m->scaling.x = scaling.x;
+		m->scaling.y = scaling.y;
+		m->scaling.z = scaling.z;
+
+		//Rotation
+		m->rotation.x = rotation.x;
+		m->rotation.y = rotation.y;
+		m->rotation.z = rotation.z;
+		m->rotation.w = rotation.w;
+
+		game_obj = App->go_manager->Create_Game_Object(m, parent);
 	}
 
 

@@ -21,6 +21,8 @@ public:
 	math::float4x4 Create_New_Matrix_Transformation();
 	math::float4x4 Get_Tranformation_Matrix()const;
 
+	void Modify_Children();
+
 
 private:
 
@@ -29,6 +31,9 @@ private:
 	math::float3 rotation_degrees = math::float3::zero;
 	math::float3 scale = math::float3::zero;
 	math::Quat quat_rotation = math::Quat::identity;
+
+	math::float3 last_position = math::float3::zero;
+	math::float3 last_scale = math::float3::zero;
 
 	math::float3 rotation_radians = math::float3::zero;
 

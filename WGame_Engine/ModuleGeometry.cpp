@@ -7,8 +7,17 @@
 #include "Glew\include\glew.h"
 #include <gl/GL.h>
 
+#pragma comment (lib, "Devil/libx86/DevIL.lib")    /* link OpenGL Utility lib     */
+#pragma comment (lib, "Devil/libx86/ILU.lib") /* link Microsoft OpenGL lib   */
+#pragma comment (lib, "Devil/libx86/ILUT.lib") 
+
+#include "Devil\include\il.h"
+#include "Devil\include\ilu.h"
+#include "Devil\include\ilut.h"
 
 #pragma comment(lib, "Assimp/libx86/assimp.lib")
+
+using namespace std;
 
 
 ModuleGeometry::ModuleGeometry(Application* app, bool start_enabled) : Module(app, start_enabled)
@@ -146,6 +155,31 @@ void ModuleGeometry::Load_Nodes_For_Hierarchy(aiNode* node_child, const aiScene*
 					else
 						memcpy(&m->indices[i * 3], new_mesh->mFaces[i].mIndices, 3 * sizeof(uint));
 
+			    }
+			}
+
+			//Texture
+			aiMaterial* material = scene->mMaterials[new_mesh->mMaterialIndex];
+			
+			if (material)
+			{
+				m->num_image_textures = material->GetTextureCount(aiTextureType_DIFFUSE);
+				if (m->num_image_textures > 0)
+				{
+					aiString path_;
+					material->GetTexture(aiTextureType_DIFFUSE, 0, &path_);
+
+					string path_file = App->filesystem->Get_FileName_From_Path(path_.data);
+
+					if (path_.length > 0)
+					{
+						ILuint id;
+						ilGenImages(1, &id);
+						ilBindImage(id);
+						ilLoadImage(path_file.data());
+
+						m->id_image_texture = ilutGLBindTexImage();
+					}
 				}
 			}
 

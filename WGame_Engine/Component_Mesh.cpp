@@ -57,6 +57,6 @@ void Component_Mesh::Update()
 	
 	Component_Transformation* transformation =  (Component_Transformation*)Get_Game_Object()->Get_Component(TRANSFORMATION);
 
-	App->renderer3D->Draw_Geometry(mesh, App->scene_intro->lena_image, transformation->Get_Tranformation_Matrix().Transposed());
+	App->renderer3D->Draw_Geometry(mesh, mesh->id_image_texture, transformation->Get_Tranformation_Matrix().Transposed());
 
 }

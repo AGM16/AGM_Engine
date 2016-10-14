@@ -6,6 +6,8 @@
 
 #pragma comment( lib, "PhysFS/libx86/physfs.lib" )
 
+using namespace std;
+
 ModuleFileSystem::ModuleFileSystem(Application* app, bool start_enabled) : Module(app, start_enabled)
 {
 	
@@ -45,12 +47,18 @@ bool ModuleFileSystem::Init()
 		// We add the writing directory as a reading directory too with speacial mount point
 		LOG("Writing directory is %s\n", write_path);
 		AddPath(write_path, GetSaveDirectory());
-		AddPath("Asstes", "Assets");
+		AddPath("Assets/3D_Models", "3D_Models");
+		AddPath("Assets/Textures", "Textures");
 	}
 
 	SDL_free(write_path);
 
 	return ret;
+}
+
+string ModuleFileSystem::Get_FileName_From_Path(const std::string strPath) const
+{
+	return strPath.substr(strPath.find_last_of("/\\") + 1);
 }
 
 // Called before quitting

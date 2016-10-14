@@ -47,6 +47,10 @@ struct Mesh
 	const char* parent = NULL;
 	const char* name_node;
 
+	//Texture
+	uint num_image_textures = 0;
+	uint id_image_texture;
+
 };
 
 

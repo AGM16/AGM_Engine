@@ -218,8 +218,11 @@ void ModuleRenderer3D::Draw_Geometry(const Mesh* mesh, uint texture, float4x4 tr
 
 	if (mesh->num_uvs_texture_coords > 0)
 	{
-		//Put Texture in buffer
-		glBindTexture(GL_TEXTURE_2D, texture);
+		if (mesh->id_image_texture != 0)
+		{
+			//Put Texture in buffer
+			glBindTexture(GL_TEXTURE_2D, texture);
+		}
 	}
 
 	//Index

@@ -76,6 +76,7 @@ void GameObject::Update_Go_Components()
 	if (components_list.size() > 0)
 	{
 		list<Components*>::iterator node_comp = components_list.begin();
+		
 		ImGui::Begin("Components",&Open_components_panel);
 		while (node_comp != components_list.end())
 		{

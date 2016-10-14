@@ -42,41 +42,8 @@ bool ModuleSceneIntro::Start()
 	App->camera->Move(vec(40.0f, 40.0f, 0.0f));
 	App->camera->LookAt(vec(0, 0, 0));	
 	
-	
 	//Load 3D model
-	 App->geometry->Load_Geometry("Assets/Street environment_V02.fbx");
-
-	//App->gameobj_manager->Create_Game_Object(geometry_object[0]);
-
-	//Create Checker Image
-	/*GLubyte checkImage[30][30][4];
-	for (int i = 0; i < 30; i++) {
-		for (int j = 0; j < 30; j++) {
-			int c = ((((i & 0x8) == 0) ^ (((j & 0x8)) == 0))) * 255;
-			checkImage[i][j][0] = (GLubyte)c;
-			checkImage[i][j][1] = (GLubyte)c;
-			checkImage[i][j][2] = (GLubyte)c;
-			checkImage[i][j][3] = (GLubyte)255;
-		}
-	}
-
-
-	//Load Image 
-	glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
-	glGenTextures(1, &image_name);
-	glBindTexture(GL_TEXTURE_2D, image_name);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
-	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, 0, 30, 0, GL_RGBA, GL_UNSIGNED_BYTE, checkImage);*/
-
-	//Load Image
-    lena_image = ilutGLLoadImage("Assets/Lenna.png");
-
-
-	Cube_Indice_OPENGL();
-
+	 App->geometry->Load_Geometry("Street environment_V01.fbx");
 	
 
 	return ret;

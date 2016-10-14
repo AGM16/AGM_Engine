@@ -8,6 +8,7 @@ using namespace std;
 Module_Go_Manager::Module_Go_Manager(Application* app, bool start_enabled) : Module(app, start_enabled)
 {
 	root_game_object = new GameObject(NULL, "Root_Game_Object");
+	root_game_object->Add_Component_Transformation(float3::zero, float3::one, Quat::identity, float3::zero);
 }
 
 Module_Go_Manager::~Module_Go_Manager()
@@ -26,13 +27,13 @@ GameObject* Module_Go_Manager::Create_Game_Object(Mesh* m, GameObject* Parent)
 		GameObject* new_game_object = new GameObject(Parent, m->name_node);
 
 		//Add Child to the parent
-		new_game_object->Get_Parent()->Add_Child(new_game_object);
+		Parent->Add_Child(new_game_object);
 		LOG("The GameObject %s has a new child : %s ", new_game_object->Get_Parent()->Get_Name(), new_game_object->Get_Name());
 
 	if (m != NULL)
 	{
 			//Add Components Transformation
-			new_game_object->Add_Component_Transformation(m);
+			new_game_object->Add_Component_Transformation(m->translation,m->scaling,m->rotation, RadToDeg(m->rotation.ToEulerXYZ()));
 			LOG("The GameObject %s has a new component : %s ", new_game_object->Get_Name(), "TRANSFORMATION");
 			
 			//Add Components Mesh

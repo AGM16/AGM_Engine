@@ -29,16 +29,14 @@ private:
 	//Coordenates we show in the pannel
 	math::float3 position = math::float3::zero;
 	math::float3 rotation_degrees = math::float3::zero;
-	math::float3 scale = math::float3::zero;
+	math::float3 scale = math::float3::one;
 	math::Quat quat_rotation = math::Quat::identity;
-
-	math::float3 last_position = math::float3::zero;
-	math::float3 last_scale = math::float3::zero;
 
 	math::float3 rotation_radians = math::float3::zero;
 
 	//Last Information of matrix
 	math::float4x4 transformation_matrix = math::float4x4::identity;
+	math::float4x4 transformation_matrix_to_draw = math::float4x4::identity;
 
 	bool start = true;
 

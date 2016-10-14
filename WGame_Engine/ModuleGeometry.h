@@ -45,7 +45,7 @@ struct Mesh
 	//Hierarchy
 	int num_children = 0;
 	const char* parent = NULL;
-	char* name_node;
+	const char* name_node;
 
 };
 

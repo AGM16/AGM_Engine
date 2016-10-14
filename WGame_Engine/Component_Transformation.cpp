@@ -5,9 +5,10 @@
 #include "Imgui\imgui.h"
 
 
-Component_Transformation::Component_Transformation(Components_Type type, GameObject* game_object, float3 pos, float3 scale_, Quat rot_quat, float3 angles) : Components(type, game_object), position(pos), last_position(pos),  scale(scale_), last_scale(scale_), quat_rotation(rot_quat), rotation_degrees(angles)
+Component_Transformation::Component_Transformation(Components_Type type, GameObject* game_object, float3 pos, float3 scale_, Quat rot_quat, float3 angles) : Components(type, game_object), position(pos), scale(scale_), quat_rotation(rot_quat), rotation_degrees(angles)
 {
 	transformation_matrix = Create_New_Matrix_Transformation();
+	Modify_Children();
 }
 
 Component_Transformation::~Component_Transformation()
@@ -42,18 +43,18 @@ void Component_Transformation::Update()
 	}
 }
 
+
+
 void Component_Transformation::Set_Position()
 {
 
 	transformation_matrix = Create_New_Matrix_Transformation();
 	Modify_Children();
-	last_position = position;
 
 }
 
 void Component_Transformation::Set_Rotation()
 {
-
 	rotation_radians = DegToRad(rotation_degrees);
 
 	quat_rotation = quat_rotation.FromEulerXYZ(rotation_radians.x, rotation_radians.y, rotation_radians.z);
@@ -75,38 +76,29 @@ void Component_Transformation::Modify_Children()
 	GameObject* go = Get_Game_Object();
 	if (go)
 	{
-		if (go->Get_Children()->size() > 0)
+		if (go->Get_Parent())
 		{
-			std::list<GameObject*>::iterator node = go->Get_Children()->begin();
 			
-			for(node; node != go->Get_Children()->end(); node++)
+			if (go->Get_Parent()->Exist_Component(TRANSFORMATION))
 			{
-			    Component_Transformation* comp_trans = (Component_Transformation*)(*node)->Get_Component(TRANSFORMATION);
+				Component_Transformation* par_comp_transform = (Component_Transformation*)go->Get_Parent()->Get_Component(TRANSFORMATION);
 
-			
-				comp_trans->position += (position - last_position);
-				comp_trans->Set_Position();
-				
-				comp_trans->rotation_degrees = rotation_degrees;
-				comp_trans->Set_Rotation();
-
-				if (comp_trans->scale.x != scale.x && comp_trans->scale.y != scale.y && comp_trans->scale.z != scale.z)
-				{
-					comp_trans->scale = float3(scale.x * comp_trans->scale.x, scale.y * comp_trans->scale.y, scale.z * comp_trans->scale.z);
-				}
-				else
-				{
-					comp_trans->scale = scale;
-				}
-
-				comp_trans->Set_Scale();
-
-
-		       if((*node)->Get_Children()->size() > 0)
-               comp_trans->Modify_Children();
+				transformation_matrix_to_draw = par_comp_transform->transformation_matrix_to_draw * transformation_matrix;
 			}
-			
+						
+				for (std::list<GameObject*>::iterator g_object_children = go->Get_Children()->begin(); g_object_children != go->Get_Children()->end(); g_object_children++)
+				{
+					if ((*g_object_children)->Exist_Component(TRANSFORMATION))
+					{
+						Component_Transformation* transform = (Component_Transformation*)(*g_object_children)->Get_Component(TRANSFORMATION);
 
+						transform->Modify_Children();
+					}
+				}	
+		}
+		else
+		{
+			transformation_matrix_to_draw = transformation_matrix;
 		}
 	}
 }
@@ -118,7 +110,7 @@ math::float4x4 Component_Transformation::Create_New_Matrix_Transformation()
 
 math::float4x4 Component_Transformation::Get_Tranformation_Matrix()const
 {
-	return transformation_matrix;
+	return transformation_matrix_to_draw;
 }
 
 math::float3 Component_Transformation::Get_Position()const

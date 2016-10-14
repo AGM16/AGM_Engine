@@ -26,28 +26,28 @@ void Component_Mesh::Update()
 			ImGui::SameLine();
 			ImGui::TextColored(ImVec4(1, 1, 1, 1), "%s", mesh->name_node);
 
-			ImGui::SameLine();
-			ImGui::Text("                NumVertices : ");
-			ImGui::SameLine();
-			ImGui::TextColored(ImVec4(1, 1, 1, 1), "%i", mesh->num_vertices);
-
 			//--------------------------------------------------------------------
 			ImGui::Text("NumChildren : ");
 			ImGui::SameLine();
 			ImGui::TextColored(ImVec4(1, 1, 1, 1), "%i", mesh->num_children);
 
+			//--------------------------------------------------------------------
+			ImGui::Text("Parent : ");
 			ImGui::SameLine();
-			ImGui::Text("         NumIndices : ");
+			ImGui::TextColored(ImVec4(1, 1, 1, 1), "%s", mesh->parent);	
+
+			//--------------------------------------------------------------------
+			ImGui::Text("NumIndices : ");
 			ImGui::SameLine();
 			ImGui::TextColored(ImVec4(1, 1, 1, 1), "%i", mesh->num_indices);
 
 			//--------------------------------------------------------------------
-			ImGui::Text("Parent : ");
+			ImGui::Text("NumVertices : ");
 			ImGui::SameLine();
-			ImGui::TextColored(ImVec4(1, 1, 1, 1), "%s", mesh->parent);
+			ImGui::TextColored(ImVec4(1, 1, 1, 1), "%i", mesh->num_vertices);
 
-			ImGui::SameLine();
-			ImGui::Text("            NumNormals : ");
+			//--------------------------------------------------------------------
+			ImGui::Text("NumNormals : ");
 			ImGui::SameLine();
 			ImGui::TextColored(ImVec4(1, 1, 1, 1), "%i", mesh->num_normals);
 

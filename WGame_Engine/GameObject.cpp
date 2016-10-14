@@ -6,7 +6,7 @@
 
 using namespace std;
 
-GameObject::GameObject(GameObject* Parent_, char* name_): Parent(Parent_), name(name_)
+GameObject::GameObject(GameObject* Parent_, const char* name_): Parent(Parent_), name(name_)
 {
 
 }
@@ -18,40 +18,31 @@ GameObject::~GameObject()
 
 bool GameObject::Add_Component_Mesh(Mesh* m)
 {
-	bool ret = true;
-	if (components_list.size() > 0)
-	{
-		ret = Exist_Component(MESH);
-	}
 
-	if (ret)
+	if (Exist_Component(MESH) == false)
 	{
 		Components* new_component = new Component_Mesh(MESH, this , m);
 		LOG("The GameObject %s component %s has been created", name, "MESH");
 
 		components_list.push_back(new_component);
+		return true;
 	}
 
-	return ret;
+	return false;
 }
 
-bool GameObject::Add_Component_Transformation(Mesh* m)
+bool GameObject::Add_Component_Transformation(math::float3 pos, math::float3 scale_, math::Quat rot_quat, math::float3 angles)
 {
-	bool ret = true;
-	if (components_list.size() > 0)
+	if (Exist_Component(MESH) == false)
 	{
-		ret = Exist_Component(TRANSFORMATION);
-	}
-
-	if (ret)
-	{
-		Components* new_component = new Component_Transformation(TRANSFORMATION, this, m->translation,  m->scaling, m->rotation, RadToDeg(m->rotation.ToEulerXYZ()));
-		LOG("The GameObject %s component %s has been created", name, "TRANSFORMATION");
+		Components* new_component = new Component_Transformation(TRANSFORMATION, this, pos, scale_, rot_quat, angles);
+		LOG("The GameObject %s component %s has been created", this->name, "TRANSFORMATION");
 
 		components_list.push_back(new_component);
+		return true;
 	}
 
-	return ret;
+	return false;
 }
 
 bool GameObject::Add_Child(GameObject* child)
@@ -106,13 +97,13 @@ bool GameObject::Exist_Component(Components_Type type)
 		if ((*node_com)->Get_Type() == type)
 		{
 			LOG("The GameObject %s has already a %s component", name, (char*)type);
-			return false;
+			return true;
 		}
 
 		node_com++;
 	}
 
-	return true;
+	return false;
 }
 
 
@@ -151,7 +142,7 @@ GameObject* GameObject::Get_Parent()const
 	return Parent;
 }
 
-char* GameObject::Get_Name()const
+const char* GameObject::Get_Name()const
 {
 	return name;
 }

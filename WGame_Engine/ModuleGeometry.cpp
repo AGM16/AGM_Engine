@@ -58,7 +58,6 @@ bool ModuleGeometry::Load_Geometry(const char* path)
 		{
 			//RootNode of the scene
 			aiNode* parent = scene->mRootNode;//At the begining this will be the RootNode 
-			aiNode* child;
 
 			for( int i = 0; i < parent->mNumChildren; i++)
 			{
@@ -228,7 +227,7 @@ void ModuleGeometry::Load_Nodes_For_Hierarchy(aiNode* node_child, const aiScene*
 		{
 			m->parent = NULL;
 			m->num_children = node_child->mNumChildren;
-			m->name_node = node_child->mName.data;
+			m->name_node = node_child->mName.C_Str();
 			LOG("The %s mesh is the rootnode of the scene %s", m->name_node, path);
 		}
 		else
@@ -236,10 +235,11 @@ void ModuleGeometry::Load_Nodes_For_Hierarchy(aiNode* node_child, const aiScene*
 			//parent = node_child->mParent;
 			m->parent = node_child->mParent->mName.data;
 			m->num_children = node_child->mNumChildren;
-			m->name_node = node_child->mName.data;
+			m->name_node = node_child->mName.C_Str();
 			LOG("The %s mesh is the child of the gameobject %s", m->name_node, m->parent);
 		}
 
+		
 		aiVector3D translation;
 		aiVector3D scaling;
 		aiQuaternion rotation;

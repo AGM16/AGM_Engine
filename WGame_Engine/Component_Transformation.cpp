@@ -23,22 +23,36 @@ void Component_Transformation::Update()
 	{
 		if (ImGui::CollapsingHeader("Local Transform", ImGuiTreeNodeFlags_DefaultOpen))
 		{
-
-			if (ImGui::DragFloat3("Postion", position.ptr()))
+			if (active == false)
 			{
-				Set_Position();
+				if (ImGui::DragFloat3("Postion", position.ptr()))
+				{
+					Set_Position();
+				}
+
+				if (ImGui::DragFloat3("Rotation", rotation_degrees.ptr()))
+				{
+					Set_Rotation();
+				}
+
+
+				if (ImGui::DragFloat3("Scale", scale.ptr()))
+				{
+					Set_Scale();
+				}
+			}
+			else
+			{
+				ImGui::DragFloat3("Postion", float3(0.f, 0.f, 0.f).ptr());
+				
+
+				ImGui::DragFloat3("Rotation", float3(0.f, 0.f, 0.f).ptr());
+				
+
+				ImGui::DragFloat3("Scale", float3(0.f, 0.f, 0.f).ptr());	
 			}
 
-			if (ImGui::DragFloat3("Rotation", rotation_degrees.ptr()))
-			{
-				Set_Rotation();
-			}
-
-
-			if (ImGui::DragFloat3("Scale", scale.ptr()))
-			{
-				Set_Scale();
-			}
+			ImGui::Checkbox("Active##foo2", &active);
 		}
 	}
 }

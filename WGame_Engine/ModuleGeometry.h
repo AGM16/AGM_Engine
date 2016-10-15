@@ -38,20 +38,20 @@ struct Mesh
 
 
 	//Local Transform
-	float3 translation;
-	float3 scaling;
-	Quat rotation;
+	float3 translation = float3::zero;
+	float3 scaling = float3::zero;
+	Quat rotation = Quat::identity;
 
 	//Hierarchy
 	int num_children = 0;
 	const char* parent = NULL;
-	const char* name_node;
+	const char* name_node = NULL;
 
 	//Texture
 	uint num_image_textures = 0;
-	uint id_image_texture;
-	string name_texture;
-	string dir_texture;
+	uint id_image_texture = 0;
+	string name_texture = NULL;
+	string dir_texture = NULL;
 
 };
 

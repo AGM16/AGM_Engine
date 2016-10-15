@@ -30,8 +30,7 @@ GameObject* Module_Go_Manager::Create_Game_Object(Mesh* m, GameObject* Parent)
 		Parent->Add_Child(new_game_object);
 		LOG("The GameObject %s has a new child : %s ", new_game_object->Get_Parent()->Get_Name(), new_game_object->Get_Name());
 
-	if (m != NULL)
-	{
+
 			//Add Components Transformation
 			new_game_object->Add_Component_Transformation(m->translation,m->scaling,m->rotation, RadToDeg(m->rotation.ToEulerXYZ()));
 			LOG("The GameObject %s has a new component : %s ", new_game_object->Get_Name(), "TRANSFORMATION");
@@ -42,12 +41,7 @@ GameObject* Module_Go_Manager::Create_Game_Object(Mesh* m, GameObject* Parent)
 
 			new_game_object->Add_Component_Material(m->name_texture, m->dir_texture, m->num_image_textures, m->id_image_texture);
 			LOG("The GameObject %s has a new component : %s ", new_game_object->Get_Name(), "MaATERIAL");
-
-	}
-	else
-	{
-		LOG("The GameObject mesh is empty ");
-	}
+	
 
 	return new_game_object;
 

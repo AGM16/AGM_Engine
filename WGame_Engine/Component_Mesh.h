@@ -18,6 +18,8 @@ public:
 public:
 
 	Mesh* mesh;
+	bool active = false;
+	unsigned int id_image = 0;
 };
 
 #endif // !_COMPONENT_MESH_H_

@@ -34,7 +34,7 @@ bool GameObject::Add_Component_Mesh(Mesh* m)
 
 bool GameObject::Add_Component_Transformation(math::float3 pos, math::float3 scale_, math::Quat rot_quat, math::float3 angles)
 {
-	if (Exist_Component(MESH) == false)
+	if (Exist_Component(TRANSFORMATION) == false)
 	{
 		Components* new_component = new Component_Transformation(TRANSFORMATION, this, pos, scale_, rot_quat, angles);
 		LOG("The GameObject %s component %s has been created", this->name, "TRANSFORMATION");
@@ -51,7 +51,7 @@ bool GameObject::Add_Component_Material(std::string name_textu, std::string path
 {
 	if (Exist_Component(MATERIAL) == false)
 	{
-		Components* new_component = new Component_Material(TRANSFORMATION, this, name_textu, path_texture, num_textu, id_textu);
+		Components* new_component = new Component_Material(MATERIAL, this, name_textu, path_texture, num_textu, id_textu);
 		LOG("The GameObject %s component %s has been created", this->name, "MATERIAL");
 
 		components_list.push_back(new_component);
@@ -107,17 +107,20 @@ void GameObject::Update_Go_Components()
 
 bool GameObject::Exist_Component(Components_Type type)
 {
-	list<Components*>::iterator node_com = components_list.begin();
-
-	while (node_com != components_list.end())
+	if (components_list.size() > 0)
 	{
-		if ((*node_com)->Get_Type() == type)
-		{
-			LOG("The GameObject %s has already a %s component", name, (char*)type);
-			return true;
-		}
+		list<Components*>::iterator node_com = components_list.begin();
 
-		node_com++;
+		while (node_com != components_list.end())
+		{
+			if ((*node_com)->Get_Type() == type)
+			{
+				//LOG("The GameObject %s has already a %s component", name, (char*)type);
+				return true;
+			}
+
+			node_com++;
+		}
 	}
 
 	return false;
@@ -133,7 +136,7 @@ Components* GameObject::Get_Component(Components_Type type)
 		{
 			if ((*itme_component)->Get_Type() == type)
 			{
-				LOG("The GameObject %s has already a %s component", name, (char*)type);
+				//LOG("The GameObject %s has already a %s component", name, (char*)type);
 				return (*itme_component);
 			}
 

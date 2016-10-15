@@ -38,7 +38,7 @@ private:
 	math::float4x4 transformation_matrix = math::float4x4::identity;
 	math::float4x4 transformation_matrix_to_draw = math::float4x4::identity;
 
-	bool start = true;
+	bool active = false;
 
 };
 #endif // ! _COMPONENT_TRANSFORMATION_H_

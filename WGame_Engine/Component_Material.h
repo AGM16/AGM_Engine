@@ -21,7 +21,7 @@ public:
 	std::string dir_path_texture;
 	unsigned int num_textures;
 	unsigned int id_texture;
-
+	bool active = false;
 };
 
 #endif

@@ -40,6 +40,9 @@ GameObject* Module_Go_Manager::Create_Game_Object(Mesh* m, GameObject* Parent)
 			new_game_object->Add_Component_Mesh(m);
 			LOG("The GameObject %s has a new component : %s ", new_game_object->Get_Name(), "MESH");
 
+			new_game_object->Add_Component_Material(m->name_texture, m->dir_texture, m->num_image_textures, m->id_image_texture);
+			LOG("The GameObject %s has a new component : %s ", new_game_object->Get_Name(), "MaATERIAL");
+
 	}
 	else
 	{

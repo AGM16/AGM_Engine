@@ -3,6 +3,7 @@
 #include "Components.h"
 #include "Component_Mesh.h"
 #include "Component_Transformation.h"
+#include "Component_Material.h"
 
 using namespace std;
 
@@ -37,6 +38,21 @@ bool GameObject::Add_Component_Transformation(math::float3 pos, math::float3 sca
 	{
 		Components* new_component = new Component_Transformation(TRANSFORMATION, this, pos, scale_, rot_quat, angles);
 		LOG("The GameObject %s component %s has been created", this->name, "TRANSFORMATION");
+
+		components_list.push_back(new_component);
+		return true;
+	}
+
+	return false;
+}
+
+
+bool GameObject::Add_Component_Material(std::string name_textu, std::string path_texture, unsigned int num_textu, unsigned int id_textu)
+{
+	if (Exist_Component(MATERIAL) == false)
+	{
+		Components* new_component = new Component_Material(TRANSFORMATION, this, name_textu, path_texture, num_textu, id_textu);
+		LOG("The GameObject %s component %s has been created", this->name, "MATERIAL");
 
 		components_list.push_back(new_component);
 		return true;

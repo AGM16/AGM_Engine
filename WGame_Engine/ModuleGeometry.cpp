@@ -169,14 +169,17 @@ void ModuleGeometry::Load_Nodes_For_Hierarchy(aiNode* node_child, const aiScene*
 					aiString path_;
 					material->GetTexture(aiTextureType_DIFFUSE, 0, &path_);
 
-					string path_file = App->filesystem->Get_FileName_From_Path(path_.data);
+					
+					m->dir_texture.assign("Assets/Textures/");
+					m->name_texture.assign(App->filesystem->Get_FileName_From_Path(path_.data));
+					m->dir_texture.append(m->name_texture.c_str());
 
 					if (path_.length > 0)
 					{
 						ILuint id;
 						ilGenImages(1, &id);
 						ilBindImage(id);
-						ilLoadImage(path_file.data());
+						ilLoadImage(m->dir_texture.c_str());
 
 						m->id_image_texture = ilutGLBindTexImage();
 					}

@@ -108,3 +108,11 @@ void ModuleWindow::SetTitle(const char* title)
 {
 	SDL_SetWindowTitle(window, title);
 }
+
+ImVec2 ModuleWindow::Get_Screen_size()
+{
+	int width, height;
+	SDL_GetWindowSize(window, &width, &height);
+
+	return ImVec2(width, height);
+}

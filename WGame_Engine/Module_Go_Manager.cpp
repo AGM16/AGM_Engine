@@ -64,7 +64,17 @@ update_status Module_Go_Manager::Update(float dt)
 
 	}
 
-	
+	ImGui::SetNextWindowPos(ImVec2(2, 20));
+	ImVec2 size_w;
+	if (App->Get_Windows_Resized() == false)
+	{
+		size_w = ImVec2(170.f, 340.f);
+	}
+	else
+	{
+		size_w = ImVec2(350.f, 740.f);
+	}
+	ImGui::SetNextWindowSize(size_w);
 	ImGui::Begin("Hierarchy", &open_hierarchy_window);
 	if (root_game_object->Get_Children()->size() > 0)
 	{

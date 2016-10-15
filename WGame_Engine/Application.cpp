@@ -74,6 +74,8 @@ bool Application::Init()
 {
 	bool ret = true;
 
+	window_resized = false;
+
 	// Call Init() in all modules
 	list<Module*>::iterator i = list_modules.begin();
 
@@ -258,4 +260,14 @@ void Application::Log_Console(const char* text)
 			console->Save_Log(text);
 	}
 
+}
+
+void Application::Windows_Resized()
+{
+	window_resized = !window_resized;
+}
+
+bool Application::Get_Windows_Resized()
+{
+	return window_resized;
 }

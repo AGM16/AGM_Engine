@@ -3,7 +3,7 @@
 #include "Imgui\imgui.h"
 
 
-Panel_Application::Panel_Application() : active_window(false)
+Panel_Application::Panel_Application() : active_window(true)
 {
 
 }
@@ -27,6 +27,20 @@ bool Panel_Application::Draw_Panel_Application()
 {
 	if (Is_Active())
 	{
+		ImVec2 size_w;
+		float2 pos;
+		if (App->Get_Windows_Resized() == false)
+		{
+			size_w = ImVec2(290.f, 300.f);
+			pos = float2(291, 332);
+		}
+		else
+		{
+			size_w = ImVec2(380.f, 375.f);
+			pos = float2(382, 639);
+		}
+		ImGui::SetNextWindowPos(ImVec2(App->window->Get_Screen_size().x - pos.x, pos.y));
+		ImGui::SetNextWindowSize(size_w);
 		ImGui::Begin("Computer");
 
 		if (ImGui::CollapsingHeader("FPS"))

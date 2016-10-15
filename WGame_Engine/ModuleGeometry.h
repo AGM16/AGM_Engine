@@ -50,8 +50,8 @@ struct Mesh
 	//Texture
 	uint num_image_textures = 0;
 	uint id_image_texture = 0;
-	string name_texture = NULL;
-	string dir_texture = NULL;
+	string name_texture;
+	string dir_texture;
 
 };
 

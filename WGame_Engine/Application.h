@@ -54,7 +54,7 @@ private:
 	double     time_last_frame;
 	bool       console_exists;
 	int     max_frames;
-	
+	bool    window_resized;
 
 
 	float	dt;
@@ -78,6 +78,8 @@ public:
 	double Get_Last_Frame_Time()const;
 	int Get_Limit_Frames()const;
 	void Set_Limit_Frames(int max_fps);
+	void Windows_Resized();
+	bool Get_Windows_Resized();
 
 	bool Consoler_Exist();
 	bool Set_Console(bool exist);

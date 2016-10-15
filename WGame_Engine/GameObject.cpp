@@ -4,6 +4,7 @@
 #include "Component_Mesh.h"
 #include "Component_Transformation.h"
 #include "Component_Material.h"
+#include "Imgui\imgui.h"
 
 using namespace std;
 
@@ -93,6 +94,20 @@ void GameObject::Update_Go_Components()
 	{
 		list<Components*>::iterator node_comp = components_list.begin();
 		
+		ImVec2 size_w;
+		float2 pos;
+		if (App->Get_Windows_Resized() == false)
+		{
+			size_w = ImVec2(290.f, 310.f);
+			pos = float2(290, 20);
+		}
+		else
+		{
+			size_w = ImVec2(380.f, 620.f);
+			pos = float2(382, 20);
+		}
+		ImGui::SetNextWindowPos(ImVec2(App->window->Get_Screen_size().x - pos.x, pos.y));
+		ImGui::SetNextWindowSize(size_w);
 		ImGui::Begin("Components",&Open_components_panel);
 		while (node_comp != components_list.end())
 		{

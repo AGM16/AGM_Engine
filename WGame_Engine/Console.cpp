@@ -4,7 +4,7 @@
 #include "Imgui\imgui.h"
 
 
-Console::Console(Application* app, bool start_enabled) : Module(app, start_enabled), open_window(false)
+Console::Console(Application* app, bool start_enabled) : Module(app, start_enabled), open_window(true)
 {
 
 }
@@ -37,7 +37,20 @@ void Console::Render_Console()
 {
 	if (open_window)
 	{
-		ImGui::SetNextWindowSize(ImVec2(1200.f, 300.f));
+		ImVec2 size_w;
+		float2 pos;
+		if (App->Get_Windows_Resized() == false)
+		{
+			size_w = ImVec2(490, 125.f);
+			pos = float2(2, 128);
+		}
+		else
+		{
+			size_w = ImVec2(1200.f, 250.f);
+			pos = float2(2, 250);
+		}
+		ImGui::SetNextWindowPos(ImVec2(pos.x, App->window->Get_Screen_size().y - pos.y));
+		ImGui::SetNextWindowSize(size_w);
 		ImGui::Begin("Console", &open_window);
 
 		ImGui::TextUnformatted(text_console.begin());

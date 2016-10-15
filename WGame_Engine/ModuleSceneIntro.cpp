@@ -44,6 +44,8 @@ bool ModuleSceneIntro::Start()
 	
 	//Load 3D model
 	 App->geometry->Load_Geometry("Assets/3D_Models/Street environment_V01.fbx");
+
+
 	
 
 	return ret;

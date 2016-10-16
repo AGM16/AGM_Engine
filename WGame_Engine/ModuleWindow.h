@@ -27,7 +27,6 @@ public:
 	void Set_Fullscreen_Window(bool active);
 	void Set_Fullscreen_Desktop_Window(bool active);
 	void Set_Borderless_Window(bool active);
-	void Set_Resizable_Window(bool active);
 
 public:
 	//The window we'll be rendering to

@@ -143,21 +143,6 @@ void ModuleWindow::Set_Borderless_Window(bool active)
 	SDL_SetWindowBordered(window, flags);
 }
 
-void ModuleWindow::Set_Resizable_Window(bool active)
-{
-	float2 size;
-	if (active)
-	{
-		size.x = 1920;
-		size.y = 1017;
-	}
-	else
-	{
-		size.x = 800;
-		size.y = 640;
-	}
-	SDL_SetWindowSize(window,size.x, size.y);
-}
 
 ImVec2 ModuleWindow::Get_Screen_size()
 {

@@ -79,7 +79,7 @@ bool Panel_Application::Draw_Panel_Application()
 				{
 					fullscreen_desktop = false;
 					App->window->Set_Fullscreen_Desktop_Window(fullscreen_desktop);
-					borderless = false;
+
 				}
 
 				App->window->Set_Fullscreen_Window(fullscreen);
@@ -91,7 +91,6 @@ bool Panel_Application::Draw_Panel_Application()
 				{
 					fullscreen = false;
 					App->window->Set_Fullscreen_Window(fullscreen);
-					borderless = false;
 				}
 
 				App->window->Set_Fullscreen_Desktop_Window(fullscreen_desktop);
@@ -103,28 +102,13 @@ bool Panel_Application::Draw_Panel_Application()
 				{
 					fullscreen = false;
 					App->window->Set_Fullscreen_Window(fullscreen);
-					fullscreen_desktop = false;
-					App->window->Set_Borderless_Window(borderless);
+					//fullscreen_desktop = false;	
+					//App->window->Set_Fullscreen_Desktop_Window(fullscreen_desktop);
 				}
 
 				App->window->Set_Borderless_Window(borderless);
 			}
 
-			if (ImGui::Checkbox("REZISABLE", &resizable))
-			{
-				if (fullscreen == true || fullscreen_desktop == true || borderless == true)
-				{
-					fullscreen = false;
-					App->window->Set_Fullscreen_Window(fullscreen);
-					fullscreen_desktop = false;
-					App->window->Set_Borderless_Window(borderless);
-					borderless = false;
-				}
-
-				    
-					App->window->Set_Resizable_Window(resizable);
-				
-			}
 		}
 
 

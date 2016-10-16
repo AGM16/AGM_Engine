@@ -39,7 +39,6 @@ Application::Application()
 
 
 	// Scenes
-	
 	AddModule(editor);
 	AddModule(scene_intro);
 	

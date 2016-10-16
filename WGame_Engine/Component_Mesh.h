@@ -20,7 +20,8 @@ public:
 
 	Mesh* mesh = nullptr;
 	bool active = false;
-	bool last_active = false;
+	bool last_active_mesh = false;
+	bool last_active_texture = false;
 	unsigned int id_image = 0;
 };
 

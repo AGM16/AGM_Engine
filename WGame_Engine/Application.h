@@ -78,6 +78,8 @@ public:
 	double Get_Last_Frame_Time()const;
 	int Get_Limit_Frames()const;
 	void Set_Limit_Frames(int max_fps);
+
+	//Window
 	void Windows_Resized();
 	bool Get_Windows_Resized();
 

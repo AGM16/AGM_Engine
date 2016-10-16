@@ -23,6 +23,7 @@ public:
 
 	void Window_Hierarchy(GameObject* Root_node);
 
+	GameObject* Get_Root()const;
 
 private:
 

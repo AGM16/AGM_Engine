@@ -175,3 +175,8 @@ void Module_Go_Manager::Search_GameObject_To_Deactive( GameObject* root_go)
 	}
 	
 }
+
+GameObject* Module_Go_Manager::Get_Root()const
+{
+	return root_game_object;
+}

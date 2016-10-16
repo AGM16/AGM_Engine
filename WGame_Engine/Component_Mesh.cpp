@@ -29,7 +29,54 @@ void Component_Mesh::Clean_Up()
 
 void Component_Mesh::Update()
 {	
+	//Render the Meshes
+	Component_Transformation* transformation = (Component_Transformation*)Get_Game_Object()->Get_Component(TRANSFORMATION);
+	Component_Material* material = (Component_Material*)Get_Game_Object()->Get_Component(MATERIAL);
+    
+	//Check if the material checkbox is active
+	id_image = material->id_texture;
+	if (material->active == true)
+	{
+		id_image = 0;
+	}
 	
+	//Check the checkbox of the parent_mesh
+	Component_Mesh* mesh_parent = nullptr;
+	Component_Material* material_parent = nullptr;
+	const char* root = "RootNode";
+    if (Get_Game_Object()->Get_Parent() != App->go_manager->Get_Root())
+	{	
+		if (Get_Game_Object()->Get_Parent()->Exist_Component(MESH))
+		{
+			mesh_parent = (Component_Mesh*)Get_Game_Object()->Get_Parent()->Get_Component(MESH);
+			material_parent = (Component_Material*)Get_Game_Object()->Get_Parent()->Get_Component(MATERIAL);
+
+			if (material_parent->active == true)
+			{
+				material->active = true;
+				id_image = 0;
+			}
+
+			if (last_active_texture == true && material_parent->active == false)
+			{
+				material->active = false;
+				id_image = material->id_texture;
+			}
+
+			if (mesh_parent->active == true)
+				active = true;
+			
+			if (last_active_mesh == true && mesh_parent->active == false)
+			{
+				active = false;
+			}
+
+			last_active_mesh = mesh_parent->active;
+			last_active_texture = material_parent->active;
+
+		}
+		
+	}
 
 	if (Is_Active())
 	{
@@ -88,39 +135,14 @@ void Component_Mesh::Update()
 		}
 	}
 
-	//Render the Meshes
-	Component_Transformation* transformation = (Component_Transformation*)Get_Game_Object()->Get_Component(TRANSFORMATION);
-	Component_Material* material = (Component_Material*)Get_Game_Object()->Get_Component(MATERIAL);
-    
-	//Check if the material checkbox is active
-	id_image = material->id_texture;
-	if (material->active == true)
+	
+
+	if (mesh_parent != nullptr)
 	{
-		id_image = 0;
-	}
-    
-    //Check the checkbox of the parent_mesh
-	Component_Mesh* mesh_parent;
-	Component_Material* material_parent;
-
-    if (Get_Game_Object()->Get_Parent() != NULL)
-	{	
-		if (Get_Game_Object()->Get_Parent()->Exist_Component(MESH))
+		if (active == false && mesh_parent->active == false)
 		{
-			mesh_parent = (Component_Mesh*)Get_Game_Object()->Get_Parent()->Get_Component(MESH);
-			material_parent = (Component_Material*)Get_Game_Object()->Get_Parent()->Get_Component(MATERIAL);
-
-			if (material_parent->active == true)
-			{
-				id_image = 0;
-			}
-			
-			if (active == false && mesh_parent->active == false)
-			{
-				App->renderer3D->Draw_Geometry(mesh, id_image, transformation->Get_Tranformation_Matrix().Transposed());
-			}
+			App->renderer3D->Draw_Geometry(mesh, id_image, transformation->Get_Tranformation_Matrix().Transposed());
 		}
-		
 	}
 
 

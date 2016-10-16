@@ -77,10 +77,13 @@ class ModuleGeometry : public Module
 
 	   bool Load_Geometry(const char* path, bool drop);
 
-	   void Load_Nodes_For_Hierarchy(aiNode* node_child, const aiScene* scene, GameObject* parent, const char* path);
+	   void Load_Nodes_For_Hierarchy(aiNode* node_child, const aiScene* scene, GameObject* parent);
 	   
-
-
+	   std::string Delete_$Assimp$_word(std::string str);
+	  
+	   void Load_Info_Mesh(Mesh* m, aiMesh* new_mesh); 
+	   void Load_texture_From_FBX(Mesh* m, aiMesh* new_mesh, const aiScene* scene);
+	   void Hierarchy_And_Local_Transform(Mesh* m, aiNode* node);
 };
 
 #endif

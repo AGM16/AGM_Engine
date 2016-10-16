@@ -82,16 +82,13 @@ bool ModuleGeometry::Load_Geometry(const char* path, bool drop)
 
 			for( int i = 0; i < parent->mNumChildren; i++)
 			{
-				//Visit each children to obtain the mesh information using Load
-				Load_Nodes_For_Hierarchy(parent->mChildren[i], scene, NULL, path);
+				//Visit each child to obtain the mesh information using Load
+				Load_Nodes_For_Hierarchy(parent->mChildren[i], scene, NULL);
 			}
 		
 			ret = true;
 
-			
-			aiReleaseImport(scene);
-			
-			
+			aiReleaseImport(scene);		
 		}
 		else
 		{
@@ -114,7 +111,7 @@ bool ModuleGeometry::Load_Geometry(const char* path, bool drop)
 
 }
 
-void ModuleGeometry::Load_Nodes_For_Hierarchy(aiNode* node_child, const aiScene* scene, GameObject* parent, const char* path)
+void ModuleGeometry::Load_Nodes_For_Hierarchy(aiNode* node_child, const aiScene* scene, GameObject* parent)
 { 
 	
     GameObject* game_obj = nullptr;
@@ -126,84 +123,11 @@ void ModuleGeometry::Load_Nodes_For_Hierarchy(aiNode* node_child, const aiScene*
 			aiMesh* new_mesh = scene->mMeshes[node_child->mMeshes[i]];
 			Mesh* m = new Mesh();
 
-			//Vertices
-			m->num_vertices = new_mesh->mNumVertices;
-			m->vertices = new float[m->num_vertices * 3];
-			memcpy(m->vertices, new_mesh->mVertices, sizeof(float) * m->num_vertices * 3);
-			LOG("New mesh with %d vertices", m->num_vertices);
-
-			//Check if our mesh have normals
-			if (new_mesh->HasNormals())
-			{
-
-				m->num_normals = new_mesh->mNumVertices;
-				m->normals = new float[m->num_normals * 3];
-				memcpy(m->normals, new_mesh->mNormals, sizeof(float) * m->num_normals * 3);
-				LOG("New mesh with %d normals", m->num_normals);
-			}
-
-			//Check if the mesh have uvs coordenates
-			if (new_mesh->HasTextureCoords(m->uvs_index_texture_coords))
-			{
-				m->num_uvs_texture_coords = new_mesh->mNumVertices;
-				m->uvs_texture_coords = new float2[m->num_uvs_texture_coords];
-
-				for (int i = 0; i < m->num_uvs_texture_coords; i++)
-				{
-					//Assign uv to the uvs_array<float2>
-					m->uvs_texture_coords[i].x = new_mesh->mTextureCoords[m->uvs_index_texture_coords][i].x;
-					m->uvs_texture_coords[i].y = new_mesh->mTextureCoords[m->uvs_index_texture_coords][i].y;
-				}
-
-				LOG("New mesh with %d uvs_texture_coords", m->num_uvs_texture_coords);
-			}
-
-			//Faces
-			if (new_mesh->HasFaces())
-			{
-				//We assume that each face is a triangle
-				m->num_indices = new_mesh->mNumFaces * 3;
-				m->indices = new uint[m->num_indices];
-				for (uint i = 0; i < new_mesh->mNumFaces; ++i)
-				{
-					//Check the number of indices of each face
-					if (new_mesh->mFaces[i].mNumIndices != 3)
-					{
-						LOG("WARNING, geometry face with != 3indices!");
-					}
-					else
-						memcpy(&m->indices[i * 3], new_mesh->mFaces[i].mIndices, 3 * sizeof(uint));
-
-			    }
-			}
+			//Load Mesh
+			Load_Info_Mesh(m, new_mesh);
 
 			//Texture
-			aiMaterial* material = scene->mMaterials[new_mesh->mMaterialIndex];
-			
-			if (material)
-			{
-				m->num_image_textures = material->GetTextureCount(aiTextureType_DIFFUSE);
-				if (m->num_image_textures > 0)
-				{
-					aiString path_;
-					material->GetTexture(aiTextureType_DIFFUSE, 0, &path_);
-
-					
-					m->dir_texture.assign("Assets/Textures/");
-					m->name_texture.assign(App->filesystem->Get_FileName_From_Path(path_.data));
-					m->dir_texture.append(m->name_texture.c_str());
-
-					if (path_.length > 0)
-					{
-						ILuint id;
-						ilGenImages(1, &id);
-						ilBindImage(id);
-						ilLoadImage(m->dir_texture.c_str());
-
-						m->id_image_texture = ilutGLBindTexImage();
-					}
-				}
-			}
+			Load_texture_From_FBX(m, new_mesh, scene);
 
 
 			//Load Mesh buffer to the VRAM
@@ -230,105 +154,20 @@ void ModuleGeometry::Load_Nodes_For_Hierarchy(aiNode* node_child, const aiScene*
 
 			//Check Hierarchy and local transform of every mesh
 			if (new_mesh->HasPositions() == true)
-			{
-				//Hierarchy
-				if (node_child->mParent->mName.data == "RootNode")//If child parent is RootNode
-				{
-					m->parent = "";
-					m->num_children = node_child->mNumChildren;
-					m->name_node = node_child->mName.C_Str();
-					LOG("The %s mesh is the rootnode of the scene %s", m->name_node.c_str(), path);
-				}
-				else
-				{
-					//parent = node_child->mParent;
-					m->parent = node_child->mParent->mName.C_Str();
-					m->num_children = node_child->mNumChildren;
-					m->name_node = node_child->mName.C_Str();
-					LOG("The %s mesh is the child of the gameobject %s", m->name_node.c_str(), m->parent);
-
-					
-				}
-
-				aiVector3D translation;
-				aiVector3D scaling;
-				aiQuaternion rotation;
-				node_child->mTransformation.Decompose(scaling, rotation, translation);
-
-				//Position
-				m->translation.x = translation.x;
-				m->translation.y = translation.y;
-				m->translation.z = translation.z;
-
-				//Scale
-				m->scaling.x = scaling.x;
-				m->scaling.y = scaling.y;
-				m->scaling.z = scaling.z;
-
-				//Rotation
-				m->rotation.x = rotation.x;
-				m->rotation.y = rotation.y;
-				m->rotation.z = rotation.z;
-				m->rotation.w = rotation.w;
+			{	
+				Hierarchy_And_Local_Transform(m, node_child);
 
 				game_obj = App->go_manager->Create_Game_Object(m, parent);
 			}
-
 		}
 	}
 	else
 	{
 		Mesh* m = new Mesh();
-		//Hierarchy
-		if (node_child->mParent->mName.data == "RootNode")//If child parent is RootNode
-		{
-			m->parent = "";
-			m->num_children = node_child->mNumChildren;
-			m->name_node = node_child->mName.C_Str();
-			LOG("The %s mesh is the rootnode of the scene %s", m->name_node.c_str(), path);
-		}
-		else
-		{
-			//parent = node_child->mParent;
-			m->parent = node_child->mParent->mName.C_Str();
-			m->num_children = node_child->mNumChildren;
-			m->name_node = node_child->mName.C_Str();
-			LOG("The %s mesh is the child of the gameobject %s", m->name_node.c_str(), m->parent);
-			
-			string name_node = m->name_node.c_str();
-			size_t size = name_node.find("$AssimpFbx$");
-			if (size != string::npos)
-			{
-				name_node = name_node.substr(0, size);
-				m->name_node = name_node;
-			}
-
-		}
-
 		
-		aiVector3D translation;
-		aiVector3D scaling;
-		aiQuaternion rotation;
-		node_child->mTransformation.Decompose(scaling, rotation, translation);
-
-		//Position
-		m->translation.x = translation.x;
-		m->translation.y = translation.y;
-		m->translation.z = translation.z;
-
-		//Scale
-		m->scaling.x = scaling.x;
-		m->scaling.y = scaling.y;
-		m->scaling.z = scaling.z;
-
-		//Rotation
-		m->rotation.x = rotation.x;
-		m->rotation.y = rotation.y;
-		m->rotation.z = rotation.z;
-		m->rotation.w = rotation.w;
+		Hierarchy_And_Local_Transform(m, node_child);
 
 		game_obj = App->go_manager->Create_Game_Object(m, parent);
-
 	}
 
 
@@ -336,9 +175,150 @@ void ModuleGeometry::Load_Nodes_For_Hierarchy(aiNode* node_child, const aiScene*
 	{
 		for (int i = 0; i < node_child->mNumChildren; i++)
 		{
-			Load_Nodes_For_Hierarchy(node_child->mChildren[i], scene, game_obj, path);
+			Load_Nodes_For_Hierarchy(node_child->mChildren[i], scene, game_obj);
 		}
 
 	}
 
+}
+
+
+//-------------------------------LOAD_FUNCTIONS-------------------------------------
+void ModuleGeometry::Load_Info_Mesh(Mesh* m, aiMesh* new_mesh)
+{
+	//Vertices
+	m->num_vertices = new_mesh->mNumVertices;
+	m->vertices = new float[m->num_vertices * 3];
+	memcpy(m->vertices, new_mesh->mVertices, sizeof(float) * m->num_vertices * 3);
+	LOG("New mesh with %d vertices", m->num_vertices);
+
+	//Check if our mesh have normals
+	if (new_mesh->HasNormals())
+	{
+
+		m->num_normals = new_mesh->mNumVertices;
+		m->normals = new float[m->num_normals * 3];
+		memcpy(m->normals, new_mesh->mNormals, sizeof(float) * m->num_normals * 3);
+		LOG("New mesh with %d normals", m->num_normals);
+	}
+
+	//Check if the mesh have uvs coordenates
+	if (new_mesh->HasTextureCoords(m->uvs_index_texture_coords))
+	{
+		m->num_uvs_texture_coords = new_mesh->mNumVertices;
+		m->uvs_texture_coords = new float2[m->num_uvs_texture_coords];
+
+		for (int i = 0; i < m->num_uvs_texture_coords; i++)
+		{
+			//Assign uv to the uvs_array<float2>
+			m->uvs_texture_coords[i].x = new_mesh->mTextureCoords[m->uvs_index_texture_coords][i].x;
+			m->uvs_texture_coords[i].y = new_mesh->mTextureCoords[m->uvs_index_texture_coords][i].y;
+		}
+
+		LOG("New mesh with %d uvs_texture_coords", m->num_uvs_texture_coords);
+	}
+
+	//Faces
+	if (new_mesh->HasFaces())
+	{
+		//We assume that each face is a triangle
+		m->num_indices = new_mesh->mNumFaces * 3;
+		m->indices = new uint[m->num_indices];
+		for (uint i = 0; i < new_mesh->mNumFaces; ++i)
+		{
+			//Check the number of indices of each face
+			if (new_mesh->mFaces[i].mNumIndices != 3)
+			{
+				LOG("WARNING, geometry face with != 3indices!");
+			}
+			else
+				memcpy(&m->indices[i * 3], new_mesh->mFaces[i].mIndices, 3 * sizeof(uint));
+
+		}
+	}
+}
+
+void ModuleGeometry::Hierarchy_And_Local_Transform(Mesh* m, aiNode* node)
+{
+
+	m->parent = node->mParent->mName.C_Str();
+	m->num_children = node->mNumChildren;
+	m->name_node = node->mName.C_Str();
+	LOG("The %s mesh is the child of the gameobject %s", m->name_node.c_str(), m->parent);
+
+	//Delete the assimp from the strings
+	m->name_node = Delete_$Assimp$_word(m->name_node);
+	m->parent = Delete_$Assimp$_word(m->parent);
+
+	aiVector3D translation;
+	aiVector3D scaling;
+	aiQuaternion rotation;
+	node->mTransformation.Decompose(scaling, rotation, translation);
+
+	//Position
+	m->translation.x = translation.x;
+	m->translation.y = translation.y;
+	m->translation.z = translation.z;
+
+	//Scale
+	m->scaling.x = scaling.x;
+	m->scaling.y = scaling.y;
+	m->scaling.z = scaling.z;
+
+	//Rotation
+	m->rotation.x = rotation.x;
+	m->rotation.y = rotation.y;
+	m->rotation.z = rotation.z;
+	m->rotation.w = rotation.w;
+
+}
+
+void ModuleGeometry::Load_texture_From_FBX(Mesh* m, aiMesh* new_mesh, const aiScene* scene)
+{
+	aiMaterial* material = scene->mMaterials[new_mesh->mMaterialIndex];
+
+	if (material)
+	{
+		//Get the number of textures
+		m->num_image_textures = material->GetTextureCount(aiTextureType_DIFFUSE);
+		if (m->num_image_textures > 0)
+		{
+			aiString path_;
+			material->GetTexture(aiTextureType_DIFFUSE, 0, &path_);
+
+			//Add the correct path of the texture
+			m->dir_texture.assign("Assets/Textures/");
+			m->name_texture.assign(App->filesystem->Get_FileName_From_Path(path_.data));
+			m->dir_texture.append(m->name_texture.c_str());
+
+			if (path_.length > 0)
+			{
+				ILuint id;
+				ilGenImages(1, &id);
+				ilBindImage(id);
+				ilLoadImage(m->dir_texture.c_str());
+
+				m->id_image_texture = ilutGLBindTexImage();
+			}
+		}
+	}
+
+}
+
+
+string ModuleGeometry::Delete_$Assimp$_word(string str)
+{
+	string name_node = str.c_str();
+	size_t size = name_node.find("$AssimpFbx$");
+	if (size != string::npos)
+	{
+		name_node = name_node.substr(0, size);
+		
+	}
+	else
+	{
+		LOG("There is no $Assimp$ in this string");
+	}
+	
+	return name_node;
 }

@@ -105,7 +105,7 @@ void Module_Go_Manager::Window_Hierarchy(GameObject* Root_node)
 		{
 			if (ImGui::TreeNodeEx((*node_go)->Get_Name(), flags))
 			{
-				if (ImGui::IsItemClicked())
+				if (ImGui::IsItemClicked(0))
 				{   
 					if (game_object_selected != NULL)
 					{
@@ -127,7 +127,7 @@ void Module_Go_Manager::Window_Hierarchy(GameObject* Root_node)
 		{
 			if (ImGui::TreeNodeEx((*node_go)->Get_Name(), flags | ImGuiTreeNodeFlags_Leaf))
 			{
-				if (ImGui::IsItemClicked())
+				if (ImGui::IsItemClicked(0))
 				{
 					if (game_object_selected != NULL)
 					{

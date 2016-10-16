@@ -68,7 +68,7 @@ bool ModuleGeometry::Load_Geometry(const char* path, bool drop)
 		}
 	}
 	else
-	{
+	{       //For doctor memory when I have to drop a FBX in the scene to find memory leaks
 			scene = aiImportFile(path, aiProcessPreset_TargetRealtime_MaxQuality);
 	}
 

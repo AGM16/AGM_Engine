@@ -1,7 +1,7 @@
 #ifndef _PANEL_APPLICATION_H_
 #define _PANEL_APPLICATION_H_
 
-
+#include "MathGeoLib\include\MathGeoLib.h"
 
 class Panel_Application
 {
@@ -17,6 +17,10 @@ class Panel_Application
   private:
 
 	bool active_window;
+	bool fullscreen;
+	bool fullscreen_desktop;
+	bool borderless;
+	bool resizable;
 
 };
 

@@ -1,9 +1,11 @@
 #include "Panel_Application.h"
 #include "Application.h"
 #include "Imgui\imgui.h"
+#include "MathGeoLib\include\MathGeoLib.h"
 
+using namespace std;
 
-Panel_Application::Panel_Application() : active_window(true)
+Panel_Application::Panel_Application() : active_window(true), fullscreen(false), fullscreen_desktop(false), borderless(true), resizable(false)
 {
 
 }
@@ -43,6 +45,7 @@ bool Panel_Application::Draw_Panel_Application()
 		ImGui::SetNextWindowSize(size_w);
 		ImGui::Begin("Computer");
 
+		//--------------------------------------_FPS_-------------------------------------------
 		if (ImGui::CollapsingHeader("FPS"))
 		{
 			char title[25];
@@ -61,10 +64,69 @@ bool Panel_Application::Draw_Panel_Application()
 			}
 		}
 
+		//------------------------------------_HARDWARE_------------------------------------------
 		if (ImGui::CollapsingHeader("Hardware"))
 		{
 			App->hardware->Render_Hardware_Info();
 		}
+
+		//------------------------------------_WINDOWS_------------------------------------------
+		if (ImGui::CollapsingHeader("Window"))
+		{
+			if (ImGui::Checkbox("FULLSCREEN", &fullscreen))
+			{
+				if (fullscreen_desktop == true || borderless == true)
+				{
+					fullscreen_desktop = false;
+					App->window->Set_Fullscreen_Desktop_Window(fullscreen_desktop);
+					borderless = false;
+				}
+
+				App->window->Set_Fullscreen_Window(fullscreen);
+			}
+
+			if (ImGui::Checkbox("FULLSCREEN DESKTOP", &fullscreen_desktop))
+			{
+				if (fullscreen == true || borderless == true)
+				{
+					fullscreen = false;
+					App->window->Set_Fullscreen_Window(fullscreen);
+					borderless = false;
+				}
+
+				App->window->Set_Fullscreen_Desktop_Window(fullscreen_desktop);
+			}
+
+			if (ImGui::Checkbox("BORDERLESS", &borderless))
+			{
+				if (fullscreen == true || fullscreen_desktop == true)
+				{
+					fullscreen = false;
+					App->window->Set_Fullscreen_Window(fullscreen);
+					fullscreen_desktop = false;
+					App->window->Set_Borderless_Window(borderless);
+				}
+
+				App->window->Set_Borderless_Window(borderless);
+			}
+
+			if (ImGui::Checkbox("REZISABLE", &resizable))
+			{
+				if (fullscreen == true || fullscreen_desktop == true || borderless == true)
+				{
+					fullscreen = false;
+					App->window->Set_Fullscreen_Window(fullscreen);
+					fullscreen_desktop = false;
+					App->window->Set_Borderless_Window(borderless);
+					borderless = false;
+				}
+
+				    
+					App->window->Set_Resizable_Window(resizable);
+				
+			}
+		}
+
 
 		if (ImGui::Button("Close"))
 		{
@@ -79,3 +141,4 @@ bool Panel_Application::Draw_Panel_Application()
 	return Is_Active();
 
 }
+

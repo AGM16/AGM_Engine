@@ -30,7 +30,7 @@ private:
 	GameObject* last_game_object_selected = nullptr;
 	bool open_hierarchy_window = true;
 	
-
+	Panel_Application panel_window;
 };
 
 

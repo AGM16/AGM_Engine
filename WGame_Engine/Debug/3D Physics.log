@@ -1,4 +1,4 @@
-﻿  Console.cpp
+﻿  Panel_Application.cpp
 c:\program files (x86)\microsoft visual studio 14.0\vc\include\xlocale(341): warning C4530: Se ha utilizado el controlador de excepciones de C++, pero la semántica de desenredo no está habilitada. Especifique /EHsc
 c:\users\pc1\desktop\wgame_engine\wgame_engine\mathgeolib\include\geometry\aabb2d.h(132): warning C4996: 'sprintf': This function or variable may be unsafe. Consider using sprintf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
   c:\program files (x86)\windows kits\10\include\10.0.10240.0\ucrt\stdio.h(1769): note: vea la declaración de 'sprintf'

@@ -109,6 +109,56 @@ void ModuleWindow::SetTitle(const char* title)
 	SDL_SetWindowTitle(window, title);
 }
 
+void ModuleWindow::Set_Fullscreen_Window(bool active)
+{
+	uint flags;
+	if (active)
+		flags |= SDL_WINDOW_FULLSCREEN;
+	else
+		flags = 0;
+
+	SDL_SetWindowFullscreen(window , flags);
+}
+
+void ModuleWindow::Set_Fullscreen_Desktop_Window(bool active)
+{
+	uint flags;
+	if (active)
+		flags |= SDL_WINDOW_FULLSCREEN_DESKTOP;
+	else
+		flags = 0;
+
+	SDL_SetWindowFullscreen(window, flags);
+
+}
+
+void ModuleWindow::Set_Borderless_Window(bool active)
+{
+	SDL_bool flags;
+	if (active)
+		flags = SDL_TRUE;
+	else
+		flags = SDL_FALSE;
+
+	SDL_SetWindowBordered(window, flags);
+}
+
+void ModuleWindow::Set_Resizable_Window(bool active)
+{
+	float2 size;
+	if (active)
+	{
+		size.x = 1920;
+		size.y = 1017;
+	}
+	else
+	{
+		size.x = 800;
+		size.y = 640;
+	}
+	SDL_SetWindowSize(window,size.x, size.y);
+}
+
 ImVec2 ModuleWindow::Get_Screen_size()
 {
 	int width, height;

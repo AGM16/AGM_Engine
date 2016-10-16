@@ -22,15 +22,18 @@ public:
 
 
 	bool Enable();
-	virtual void Update();
 	bool Disable();
+	
+	virtual void Update();
 	virtual void Clean_Up();
 
-	bool Is_Active()const;
+	
 	Components_Type Get_Type()const;
-
 	GameObject* Get_Game_Object()const;
+
+
 	bool Get_Panel_Opened()const;
+	bool Is_Active()const;
 
 private:
 

@@ -147,7 +147,7 @@ bool GameObject::Exist_Component(Components_Type type)
 		{
 			if ((*node_com)->Get_Type() == type)
 			{
-				//LOG("The GameObject %s has already a %s component", name, (char*)type);
+				LOG("The GameObject %s has already this component", name);
 				return true;
 			}
 
@@ -168,7 +168,7 @@ Components* GameObject::Get_Component(Components_Type type)
 		{
 			if ((*itme_component)->Get_Type() == type)
 			{
-				//LOG("The GameObject %s has already a %s component", name, (char*)type);
+				LOG("The GameObject %s has the component", name);
 				return (*itme_component);
 			}
 

@@ -88,16 +88,18 @@ void Component_Mesh::Update()
 		}
 	}
 
+	//Render the Meshes
 	Component_Transformation* transformation = (Component_Transformation*)Get_Game_Object()->Get_Component(TRANSFORMATION);
-
 	Component_Material* material = (Component_Material*)Get_Game_Object()->Get_Component(MATERIAL);
     
+	//Check if the material checkbox is active
 	id_image = material->id_texture;
 	if (material->active == true)
 	{
 		id_image = 0;
 	}
     
+    //Check the checkbox of the parent_mesh
 	Component_Mesh* mesh_parent;
 	Component_Material* material_parent;
 

@@ -46,6 +46,7 @@ GameObject* Module_Go_Manager::Create_Game_Object(Mesh* m, GameObject* Parent)
 			new_game_object->Add_Component_Mesh(m);
 			LOG("The GameObject %s has a new component : %s ", new_game_object->Get_Name(), "MESH");
 
+			//Add Component Material
 			new_game_object->Add_Component_Material(m->name_texture.c_str(), m->dir_texture.c_str(), m->num_image_textures, m->id_image_texture);
 			LOG("The GameObject %s has a new component : %s ", new_game_object->Get_Name(), "MaATERIAL");
 	
@@ -83,10 +84,14 @@ update_status Module_Go_Manager::Update(float dt)
 	}
 	ImGui::SetNextWindowSize(size_w);
 	ImGui::Begin("Hierarchy", &open_hierarchy_window);
+
 	if (root_game_object->Get_Children()->size() > 0)
 	{
+		//Render Hierarchy Panel
 		Window_Hierarchy(root_game_object);
+
 	}
+
 	ImGui::End();
 
 	return UPDATE_CONTINUE;
@@ -109,7 +114,7 @@ void Module_Go_Manager::Window_Hierarchy(GameObject* Root_node)
 				{   
 					if (game_object_selected != NULL)
 					{
-						Search_GameObject_To_Disactive(game_object_selected);
+						Search_GameObject_To_Deactive(game_object_selected);
 					}
 
 					game_object_selected = (*node_go);
@@ -131,8 +136,9 @@ void Module_Go_Manager::Window_Hierarchy(GameObject* Root_node)
 				{
 					if (game_object_selected != NULL)
 					{
-						Search_GameObject_To_Disactive(game_object_selected);
+						Search_GameObject_To_Deactive(game_object_selected);
 					}
+
 					game_object_selected = (*node_go);
 					Search_GameObject_To_Active( game_object_selected);
 
@@ -156,7 +162,7 @@ void Module_Go_Manager::Search_GameObject_To_Active( GameObject* root_go)
 	}
 }
 
-void Module_Go_Manager::Search_GameObject_To_Disactive( GameObject* root_go)
+void Module_Go_Manager::Search_GameObject_To_Deactive( GameObject* root_go)
 {
 	if (last_game_object_selected != NULL)
 	{

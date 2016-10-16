@@ -83,7 +83,7 @@ update_status Module_Go_Manager::Update(float dt)
 		size_w = ImVec2(350.f, 740.f);
 	}
 	ImGui::SetNextWindowSize(size_w);
-	ImGui::Begin("Hierarchy", &open_hierarchy_window);
+	ImGui::Begin("Hierarchy");
 
 	if (root_game_object->Get_Children()->size() > 0)
 	{

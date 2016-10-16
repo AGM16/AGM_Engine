@@ -35,7 +35,6 @@ private:
 	std::vector<GameObject*> children;
     std::vector<Components*> components_list;
 	const char* name = NULL;
-	bool Open_components_panel = true;
 
 };
 

@@ -30,7 +30,7 @@ private:
 	GameObject* root_game_object = nullptr;
 	GameObject* game_object_selected = nullptr;
 	GameObject* last_game_object_selected = nullptr;
-	bool open_hierarchy_window = true;
+
 	
 	
 };

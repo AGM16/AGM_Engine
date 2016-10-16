@@ -125,7 +125,7 @@ void GameObject::Update_Go_Components()
 		}
 		ImGui::SetNextWindowPos(ImVec2(App->window->Get_Screen_size().x - pos.x, pos.y));
 		ImGui::SetNextWindowSize(size_w);
-		ImGui::Begin("Components",&Open_components_panel);
+		ImGui::Begin("Components");
 		while (node_comp != components_list.end())
 		{
 		    (*node_comp)->Update();

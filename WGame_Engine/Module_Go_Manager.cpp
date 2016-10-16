@@ -24,7 +24,7 @@ GameObject* Module_Go_Manager::Create_Game_Object(Mesh* m, GameObject* Parent)
 		Parent = root_game_object;
     }
 		
-		GameObject* new_game_object = new GameObject(Parent, m->name_node);
+		GameObject* new_game_object = new GameObject(Parent, m->name_node.c_str());
 
 		//Add Child to the parent
 		Parent->Add_Child(new_game_object);

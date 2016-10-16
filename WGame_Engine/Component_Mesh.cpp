@@ -30,7 +30,7 @@ void Component_Mesh::Update()
 				//--------------------------------------------------------------------
 				ImGui::Text("Name : ");
 				ImGui::SameLine();
-				ImGui::TextColored(ImVec4(1, 1, 1, 1), "%s", mesh->name_node);
+				ImGui::TextColored(ImVec4(1, 1, 1, 1), "%s", mesh->name_node.c_str());
 
 				//--------------------------------------------------------------------
 				ImGui::Text("NumChildren : ");

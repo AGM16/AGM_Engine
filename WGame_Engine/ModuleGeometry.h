@@ -45,7 +45,7 @@ struct Mesh
 	//Hierarchy
 	int num_children = 0;
 	const char* parent = NULL;
-	const char* name_node = NULL;
+	string name_node;
 
 	//Texture
 	uint num_image_textures = 0;

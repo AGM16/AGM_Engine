@@ -170,7 +170,7 @@ void ModuleGeometry::Load_Nodes_For_Hierarchy(aiNode* node_child, const aiScene*
 					material->GetTexture(aiTextureType_DIFFUSE, 0, &path_);
 
 					
-					m->dir_texture.assign("Assets/Textures/");
+					m->dir_texture.assign("Game/Assets/Textures/");
 					m->name_texture.assign(App->filesystem->Get_FileName_From_Path(path_.data));
 					m->dir_texture.append(m->name_texture.c_str());
 
@@ -217,16 +217,18 @@ void ModuleGeometry::Load_Nodes_For_Hierarchy(aiNode* node_child, const aiScene*
 				{
 					m->parent = NULL;
 					m->num_children = node_child->mNumChildren;
-					m->name_node = node_child->mName.data;
-					LOG("The %s mesh is the rootnode of the scene %s", m->name_node, path);
+					m->name_node = node_child->mName.C_Str();
+					LOG("The %s mesh is the rootnode of the scene %s", m->name_node.c_str(), path);
 				}
 				else
 				{
 					//parent = node_child->mParent;
 					m->parent = node_child->mParent->mName.data;
 					m->num_children = node_child->mNumChildren;
-					m->name_node = node_child->mName.data;
-					LOG("The %s mesh is the child of the gameobject %s", m->name_node, m->parent);
+					m->name_node = node_child->mName.C_Str();
+					LOG("The %s mesh is the child of the gameobject %s", m->name_node.c_str(), m->parent);
+
+					
 				}
 
 				aiVector3D translation;
@@ -265,7 +267,7 @@ void ModuleGeometry::Load_Nodes_For_Hierarchy(aiNode* node_child, const aiScene*
 			m->parent = NULL;
 			m->num_children = node_child->mNumChildren;
 			m->name_node = node_child->mName.C_Str();
-			LOG("The %s mesh is the rootnode of the scene %s", m->name_node, path);
+			LOG("The %s mesh is the rootnode of the scene %s", m->name_node.c_str(), path);
 		}
 		else
 		{
@@ -273,7 +275,16 @@ void ModuleGeometry::Load_Nodes_For_Hierarchy(aiNode* node_child, const aiScene*
 			m->parent = node_child->mParent->mName.data;
 			m->num_children = node_child->mNumChildren;
 			m->name_node = node_child->mName.C_Str();
-			LOG("The %s mesh is the child of the gameobject %s", m->name_node, m->parent);
+			LOG("The %s mesh is the child of the gameobject %s", m->name_node.c_str(), m->parent);
+			
+			string name_node = m->name_node.c_str();
+			size_t size = name_node.find("$AssimpFbx$");
+			if (size != string::npos)
+			{
+				name_node = name_node.substr(0, size);
+				m->name_node = name_node;
+			}
+
 		}
 
 		

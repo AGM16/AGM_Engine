@@ -3,9 +3,9 @@ Author: Adrià Gómez
 
 A videogame engine created and developed by AGM16.
 
-Link Source Code:https://github.com/AGM16/WGame_Engine/tree/master/WGame_Engine
+Link Source Code: https://github.com/AGM16/WGame_Engine/tree/master/WGame_Engine
 
-License:https://github.com/AGM16/WGame_Engine/blob/master/LICENSE
+License: https://github.com/AGM16/WGame_Engine/blob/master/LICENSE
 
 # Instructions
 Camera Movement: W(UP), A(LEFT), S(DOWN) and D(RIGHT). 

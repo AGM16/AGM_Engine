@@ -28,13 +28,13 @@ public:
 	update_status PostUpdate(float dt);
 	bool CleanUp();
 
-	PhysBody3D* AddBody(const Primitive_Sphere& sphere, float mass = 1.0f, bool isSensor = false);
+/*	PhysBody3D* AddBody(const Primitive_Sphere& sphere, float mass = 1.0f, bool isSensor = false);
 	PhysBody3D* AddBody(const Primitive_Cube& cube, float mass = 1.0f, bool isSensor = false);
 	PhysBody3D* AddBody(const Primitive_Cylinder& cylinder, float mass = 1.0f, bool isSensor = false);
 	PhysVehicle3D* AddVehicle(const VehicleInfo& info);
 
 	void AddConstraintP2P(PhysBody3D& bodyA, PhysBody3D& bodyB, const vec& anchorA, const vec& anchorB);
-	void AddConstraintHinge(PhysBody3D& bodyA, PhysBody3D& bodyB, const vec& anchorA, const vec& anchorB, const vec& axisS, const vec& axisB, bool disable_collision = false);
+	void AddConstraintHinge(PhysBody3D& bodyA, PhysBody3D& bodyB, const vec& anchorA, const vec& anchorB, const vec& axisS, const vec& axisB, bool disable_collision = false);*/
 
 private:
 

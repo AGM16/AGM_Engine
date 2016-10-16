@@ -1,26 +1,128 @@
-﻿  GameObject.cpp
+﻿cl : Línea de comandos warning D9028: error de recompilación mínimo, revirtiendo a la compilación normal
+  Application.cpp
+c:\program files (x86)\microsoft visual studio 14.0\vc\include\xlocale(341): warning C4530: Se ha utilizado el controlador de excepciones de C++, pero la semántica de desenredo no está habilitada. Especifique /EHsc
+c:\users\pc1\desktop\wgame_engine\wgame_engine\mathgeolib\include\geometry\aabb2d.h(132): warning C4996: 'sprintf': This function or variable may be unsafe. Consider using sprintf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+  c:\program files (x86)\windows kits\10\include\10.0.10240.0\ucrt\stdio.h(1769): note: vea la declaración de 'sprintf'
+c:\users\pc1\desktop\wgame_engine\wgame_engine\application.cpp(116): warning C4244: '=': conversión de 'int' a 'float'; posible pérdida de datos
+c:\users\pc1\desktop\wgame_engine\wgame_engine\application.cpp(218): warning C4244: 'argumento': conversión de 'double' a 'Uint32'; posible pérdida de datos
+c:\program files (x86)\microsoft visual studio 14.0\vc\include\cmath(35): warning C4577: si se usa 'noexcept' sin ningún modo de control de excepciones especificado, la finalización de la excepción no está garantizada. Especifique /EHsc
+  Component_Material.cpp
+c:\program files (x86)\microsoft visual studio 14.0\vc\include\xlocale(341): warning C4530: Se ha utilizado el controlador de excepciones de C++, pero la semántica de desenredo no está habilitada. Especifique /EHsc
+c:\users\pc1\desktop\wgame_engine\wgame_engine\mathgeolib\include\geometry\aabb2d.h(132): warning C4996: 'sprintf': This function or variable may be unsafe. Consider using sprintf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+  c:\program files (x86)\windows kits\10\include\10.0.10240.0\ucrt\stdio.h(1769): note: vea la declaración de 'sprintf'
+c:\program files (x86)\microsoft visual studio 14.0\vc\include\cmath(35): warning C4577: si se usa 'noexcept' sin ningún modo de control de excepciones especificado, la finalización de la excepción no está garantizada. Especifique /EHsc
+  Component_Mesh.cpp
+c:\program files (x86)\microsoft visual studio 14.0\vc\include\xlocale(341): warning C4530: Se ha utilizado el controlador de excepciones de C++, pero la semántica de desenredo no está habilitada. Especifique /EHsc
+c:\users\pc1\desktop\wgame_engine\wgame_engine\mathgeolib\include\geometry\aabb2d.h(132): warning C4996: 'sprintf': This function or variable may be unsafe. Consider using sprintf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+  c:\program files (x86)\windows kits\10\include\10.0.10240.0\ucrt\stdio.h(1769): note: vea la declaración de 'sprintf'
+c:\program files (x86)\microsoft visual studio 14.0\vc\include\cmath(35): warning C4577: si se usa 'noexcept' sin ningún modo de control de excepciones especificado, la finalización de la excepción no está garantizada. Especifique /EHsc
+  Console.cpp
+c:\program files (x86)\microsoft visual studio 14.0\vc\include\xlocale(341): warning C4530: Se ha utilizado el controlador de excepciones de C++, pero la semántica de desenredo no está habilitada. Especifique /EHsc
+c:\users\pc1\desktop\wgame_engine\wgame_engine\mathgeolib\include\geometry\aabb2d.h(132): warning C4996: 'sprintf': This function or variable may be unsafe. Consider using sprintf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+  c:\program files (x86)\windows kits\10\include\10.0.10240.0\ucrt\stdio.h(1769): note: vea la declaración de 'sprintf'
+c:\program files (x86)\microsoft visual studio 14.0\vc\include\cmath(35): warning C4577: si se usa 'noexcept' sin ningún modo de control de excepciones especificado, la finalización de la excepción no está garantizada. Especifique /EHsc
+  Editor.cpp
+c:\program files (x86)\microsoft visual studio 14.0\vc\include\xlocale(341): warning C4530: Se ha utilizado el controlador de excepciones de C++, pero la semántica de desenredo no está habilitada. Especifique /EHsc
+c:\users\pc1\desktop\wgame_engine\wgame_engine\mathgeolib\include\geometry\aabb2d.h(132): warning C4996: 'sprintf': This function or variable may be unsafe. Consider using sprintf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+  c:\program files (x86)\windows kits\10\include\10.0.10240.0\ucrt\stdio.h(1769): note: vea la declaración de 'sprintf'
+c:\program files (x86)\microsoft visual studio 14.0\vc\include\cmath(35): warning C4577: si se usa 'noexcept' sin ningún modo de control de excepciones especificado, la finalización de la excepción no está garantizada. Especifique /EHsc
+  FPS_Info.cpp
+c:\program files (x86)\microsoft visual studio 14.0\vc\include\xlocale(341): warning C4530: Se ha utilizado el controlador de excepciones de C++, pero la semántica de desenredo no está habilitada. Especifique /EHsc
+c:\users\pc1\desktop\wgame_engine\wgame_engine\mathgeolib\include\geometry\aabb2d.h(132): warning C4996: 'sprintf': This function or variable may be unsafe. Consider using sprintf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+  c:\program files (x86)\windows kits\10\include\10.0.10240.0\ucrt\stdio.h(1769): note: vea la declaración de 'sprintf'
+c:\users\pc1\desktop\wgame_engine\wgame_engine\fps_info.cpp(52): warning C4018: '<': no coinciden signed/unsigned
+c:\users\pc1\desktop\wgame_engine\wgame_engine\fps_info.cpp(57): warning C4244: '=': conversión de 'double' a 'float'; posible pérdida de datos
+c:\users\pc1\desktop\wgame_engine\wgame_engine\fps_info.cpp(62): warning C4244: 'argumento': conversión de 'double' a 'const float'; posible pérdida de datos
+c:\program files (x86)\microsoft visual studio 14.0\vc\include\cmath(35): warning C4577: si se usa 'noexcept' sin ningún modo de control de excepciones especificado, la finalización de la excepción no está garantizada. Especifique /EHsc
+  GameObject.cpp
+c:\program files (x86)\microsoft visual studio 14.0\vc\include\xlocale(341): warning C4530: Se ha utilizado el controlador de excepciones de C++, pero la semántica de desenredo no está habilitada. Especifique /EHsc
+c:\users\pc1\desktop\wgame_engine\wgame_engine\mathgeolib\include\geometry\aabb2d.h(132): warning C4996: 'sprintf': This function or variable may be unsafe. Consider using sprintf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+  c:\program files (x86)\windows kits\10\include\10.0.10240.0\ucrt\stdio.h(1769): note: vea la declaración de 'sprintf'
+c:\program files (x86)\microsoft visual studio 14.0\vc\include\cmath(35): warning C4577: si se usa 'noexcept' sin ningún modo de control de excepciones especificado, la finalización de la excepción no está garantizada. Especifique /EHsc
+  Hardware_Info.cpp
+c:\program files (x86)\microsoft visual studio 14.0\vc\include\xlocale(341): warning C4530: Se ha utilizado el controlador de excepciones de C++, pero la semántica de desenredo no está habilitada. Especifique /EHsc
+c:\users\pc1\desktop\wgame_engine\wgame_engine\mathgeolib\include\geometry\aabb2d.h(132): warning C4996: 'sprintf': This function or variable may be unsafe. Consider using sprintf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+  c:\program files (x86)\windows kits\10\include\10.0.10240.0\ucrt\stdio.h(1769): note: vea la declaración de 'sprintf'
+c:\program files (x86)\microsoft visual studio 14.0\vc\include\cmath(35): warning C4577: si se usa 'noexcept' sin ningún modo de control de excepciones especificado, la finalización de la excepción no está garantizada. Especifique /EHsc
+  Main.cpp
+c:\program files (x86)\microsoft visual studio 14.0\vc\include\xlocale(341): warning C4530: Se ha utilizado el controlador de excepciones de C++, pero la semántica de desenredo no está habilitada. Especifique /EHsc
+c:\users\pc1\desktop\wgame_engine\wgame_engine\mathgeolib\include\geometry\aabb2d.h(132): warning C4996: 'sprintf': This function or variable may be unsafe. Consider using sprintf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+  c:\program files (x86)\windows kits\10\include\10.0.10240.0\ucrt\stdio.h(1769): note: vea la declaración de 'sprintf'
+c:\program files (x86)\microsoft visual studio 14.0\vc\include\cmath(35): warning C4577: si se usa 'noexcept' sin ningún modo de control de excepciones especificado, la finalización de la excepción no está garantizada. Especifique /EHsc
+  ModuleAudio.cpp
+c:\program files (x86)\microsoft visual studio 14.0\vc\include\xlocale(341): warning C4530: Se ha utilizado el controlador de excepciones de C++, pero la semántica de desenredo no está habilitada. Especifique /EHsc
+c:\users\pc1\desktop\wgame_engine\wgame_engine\mathgeolib\include\geometry\aabb2d.h(132): warning C4996: 'sprintf': This function or variable may be unsafe. Consider using sprintf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+  c:\program files (x86)\windows kits\10\include\10.0.10240.0\ucrt\stdio.h(1769): note: vea la declaración de 'sprintf'
+c:\program files (x86)\microsoft visual studio 14.0\vc\include\cmath(35): warning C4577: si se usa 'noexcept' sin ningún modo de control de excepciones especificado, la finalización de la excepción no está garantizada. Especifique /EHsc
+  ModuleCamera3D.cpp
+c:\program files (x86)\microsoft visual studio 14.0\vc\include\xlocale(341): warning C4530: Se ha utilizado el controlador de excepciones de C++, pero la semántica de desenredo no está habilitada. Especifique /EHsc
+c:\users\pc1\desktop\wgame_engine\wgame_engine\mathgeolib\include\geometry\aabb2d.h(132): warning C4996: 'sprintf': This function or variable may be unsafe. Consider using sprintf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+  c:\program files (x86)\windows kits\10\include\10.0.10240.0\ucrt\stdio.h(1769): note: vea la declaración de 'sprintf'
+c:\users\pc1\desktop\wgame_engine\wgame_engine\modulecamera3d.cpp(198): warning C4244: 'inicializando': conversión de 'float' a 'int'; posible pérdida de datos
+c:\users\pc1\desktop\wgame_engine\wgame_engine\modulecamera3d.cpp(199): warning C4244: 'inicializando': conversión de 'float' a 'int'; posible pérdida de datos
+c:\users\pc1\desktop\wgame_engine\wgame_engine\modulecamera3d.cpp(266): warning C4244: '=': conversión de 'float' a 'int'; posible pérdida de datos
+c:\users\pc1\desktop\wgame_engine\wgame_engine\modulecamera3d.cpp(267): warning C4244: '=': conversión de 'float' a 'int'; posible pérdida de datos
+c:\program files (x86)\microsoft visual studio 14.0\vc\include\cmath(35): warning C4577: si se usa 'noexcept' sin ningún modo de control de excepciones especificado, la finalización de la excepción no está garantizada. Especifique /EHsc
+  ModuleFileSystem.cpp
+c:\program files (x86)\microsoft visual studio 14.0\vc\include\xlocale(341): warning C4530: Se ha utilizado el controlador de excepciones de C++, pero la semántica de desenredo no está habilitada. Especifique /EHsc
+c:\users\pc1\desktop\wgame_engine\wgame_engine\mathgeolib\include\geometry\aabb2d.h(132): warning C4996: 'sprintf': This function or variable may be unsafe. Consider using sprintf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+  c:\program files (x86)\windows kits\10\include\10.0.10240.0\ucrt\stdio.h(1769): note: vea la declaración de 'sprintf'
+c:\users\pc1\desktop\wgame_engine\wgame_engine\modulefilesystem.cpp(249): warning C4244: 'inicializando': conversión de 'PHYSFS_sint64' a 'int'; posible pérdida de datos
+c:\program files (x86)\microsoft visual studio 14.0\vc\include\cmath(35): warning C4577: si se usa 'noexcept' sin ningún modo de control de excepciones especificado, la finalización de la excepción no está garantizada. Especifique /EHsc
+  ModuleGeometry.cpp
+c:\program files (x86)\microsoft visual studio 14.0\vc\include\xlocale(341): warning C4530: Se ha utilizado el controlador de excepciones de C++, pero la semántica de desenredo no está habilitada. Especifique /EHsc
+c:\users\pc1\desktop\wgame_engine\wgame_engine\mathgeolib\include\geometry\aabb2d.h(132): warning C4996: 'sprintf': This function or variable may be unsafe. Consider using sprintf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+  c:\program files (x86)\windows kits\10\include\10.0.10240.0\ucrt\stdio.h(1769): note: vea la declaración de 'sprintf'
+c:\users\pc1\desktop\wgame_engine\wgame_engine\modulegeometry.cpp(83): warning C4018: '<': no coinciden signed/unsigned
+c:\users\pc1\desktop\wgame_engine\wgame_engine\modulegeometry.cpp(124): warning C4018: '<': no coinciden signed/unsigned
+c:\users\pc1\desktop\wgame_engine\wgame_engine\modulegeometry.cpp(151): warning C4018: '<': no coinciden signed/unsigned
+c:\users\pc1\desktop\wgame_engine\wgame_engine\modulegeometry.cpp(337): warning C4018: '<': no coinciden signed/unsigned
+c:\program files (x86)\microsoft visual studio 14.0\vc\include\cmath(35): warning C4577: si se usa 'noexcept' sin ningún modo de control de excepciones especificado, la finalización de la excepción no está garantizada. Especifique /EHsc
+  ModuleInput.cpp
+c:\program files (x86)\microsoft visual studio 14.0\vc\include\xlocale(341): warning C4530: Se ha utilizado el controlador de excepciones de C++, pero la semántica de desenredo no está habilitada. Especifique /EHsc
+c:\users\pc1\desktop\wgame_engine\wgame_engine\mathgeolib\include\geometry\aabb2d.h(132): warning C4996: 'sprintf': This function or variable may be unsafe. Consider using sprintf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+  c:\program files (x86)\windows kits\10\include\10.0.10240.0\ucrt\stdio.h(1769): note: vea la declaración de 'sprintf'
+c:\program files (x86)\microsoft visual studio 14.0\vc\include\cmath(35): warning C4577: si se usa 'noexcept' sin ningún modo de control de excepciones especificado, la finalización de la excepción no está garantizada. Especifique /EHsc
+  ModulePhysics3D.cpp
+c:\program files (x86)\microsoft visual studio 14.0\vc\include\xlocale(341): warning C4530: Se ha utilizado el controlador de excepciones de C++, pero la semántica de desenredo no está habilitada. Especifique /EHsc
+c:\users\pc1\desktop\wgame_engine\wgame_engine\mathgeolib\include\geometry\aabb2d.h(132): warning C4996: 'sprintf': This function or variable may be unsafe. Consider using sprintf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+  c:\program files (x86)\windows kits\10\include\10.0.10240.0\ucrt\stdio.h(1769): note: vea la declaración de 'sprintf'
+c:\program files (x86)\microsoft visual studio 14.0\vc\include\cmath(35): warning C4577: si se usa 'noexcept' sin ningún modo de control de excepciones especificado, la finalización de la excepción no está garantizada. Especifique /EHsc
+  ModuleRenderer3D.cpp
+c:\program files (x86)\microsoft visual studio 14.0\vc\include\xlocale(341): warning C4530: Se ha utilizado el controlador de excepciones de C++, pero la semántica de desenredo no está habilitada. Especifique /EHsc
+c:\users\pc1\desktop\wgame_engine\wgame_engine\mathgeolib\include\geometry\aabb2d.h(132): warning C4996: 'sprintf': This function or variable may be unsafe. Consider using sprintf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+  c:\program files (x86)\windows kits\10\include\10.0.10240.0\ucrt\stdio.h(1769): note: vea la declaración de 'sprintf'
+c:\program files (x86)\microsoft visual studio 14.0\vc\include\cmath(35): warning C4577: si se usa 'noexcept' sin ningún modo de control de excepciones especificado, la finalización de la excepción no está garantizada. Especifique /EHsc
+  ModuleSceneIntro.cpp
+c:\program files (x86)\microsoft visual studio 14.0\vc\include\xlocale(341): warning C4530: Se ha utilizado el controlador de excepciones de C++, pero la semántica de desenredo no está habilitada. Especifique /EHsc
+c:\users\pc1\desktop\wgame_engine\wgame_engine\mathgeolib\include\geometry\aabb2d.h(132): warning C4996: 'sprintf': This function or variable may be unsafe. Consider using sprintf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+  c:\program files (x86)\windows kits\10\include\10.0.10240.0\ucrt\stdio.h(1769): note: vea la declaración de 'sprintf'
+c:\program files (x86)\microsoft visual studio 14.0\vc\include\cmath(35): warning C4577: si se usa 'noexcept' sin ningún modo de control de excepciones especificado, la finalización de la excepción no está garantizada. Especifique /EHsc
+  ModuleWindow.cpp
+c:\program files (x86)\microsoft visual studio 14.0\vc\include\xlocale(341): warning C4530: Se ha utilizado el controlador de excepciones de C++, pero la semántica de desenredo no está habilitada. Especifique /EHsc
+c:\users\pc1\desktop\wgame_engine\wgame_engine\mathgeolib\include\geometry\aabb2d.h(132): warning C4996: 'sprintf': This function or variable may be unsafe. Consider using sprintf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+  c:\program files (x86)\windows kits\10\include\10.0.10240.0\ucrt\stdio.h(1769): note: vea la declaración de 'sprintf'
+c:\users\pc1\desktop\wgame_engine\wgame_engine\modulewindow.cpp(159): warning C4244: 'argumento': conversión de 'float' a 'int'; posible pérdida de datos
+c:\users\pc1\desktop\wgame_engine\wgame_engine\modulewindow.cpp(167): warning C4244: 'argumento': conversión de 'int' a 'float'; posible pérdida de datos
+c:\program files (x86)\microsoft visual studio 14.0\vc\include\cmath(35): warning C4577: si se usa 'noexcept' sin ningún modo de control de excepciones especificado, la finalización de la excepción no está garantizada. Especifique /EHsc
+  Module_Go_Manager.cpp
+c:\program files (x86)\microsoft visual studio 14.0\vc\include\xlocale(341): warning C4530: Se ha utilizado el controlador de excepciones de C++, pero la semántica de desenredo no está habilitada. Especifique /EHsc
+c:\users\pc1\desktop\wgame_engine\wgame_engine\mathgeolib\include\geometry\aabb2d.h(132): warning C4996: 'sprintf': This function or variable may be unsafe. Consider using sprintf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+  c:\program files (x86)\windows kits\10\include\10.0.10240.0\ucrt\stdio.h(1769): note: vea la declaración de 'sprintf'
+c:\program files (x86)\microsoft visual studio 14.0\vc\include\cmath(35): warning C4577: si se usa 'noexcept' sin ningún modo de control de excepciones especificado, la finalización de la excepción no está garantizada. Especifique /EHsc
+  Panel_Application.cpp
 c:\program files (x86)\microsoft visual studio 14.0\vc\include\xlocale(341): warning C4530: Se ha utilizado el controlador de excepciones de C++, pero la semántica de desenredo no está habilitada. Especifique /EHsc
 c:\users\pc1\desktop\wgame_engine\wgame_engine\mathgeolib\include\geometry\aabb2d.h(132): warning C4996: 'sprintf': This function or variable may be unsafe. Consider using sprintf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
   c:\program files (x86)\windows kits\10\include\10.0.10240.0\ucrt\stdio.h(1769): note: vea la declaración de 'sprintf'
 c:\program files (x86)\microsoft visual studio 14.0\vc\include\cmath(35): warning C4577: si se usa 'noexcept' sin ningún modo de control de excepciones especificado, la finalización de la excepción no está garantizada. Especifique /EHsc
   Generando código...
   Compilando...
-  Module_Go_Manager.cpp
+  Panel_MathGeolib_Tools.cpp
 c:\program files (x86)\microsoft visual studio 14.0\vc\include\xlocale(341): warning C4530: Se ha utilizado el controlador de excepciones de C++, pero la semántica de desenredo no está habilitada. Especifique /EHsc
 c:\users\pc1\desktop\wgame_engine\wgame_engine\mathgeolib\include\geometry\aabb2d.h(132): warning C4996: 'sprintf': This function or variable may be unsafe. Consider using sprintf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
   c:\program files (x86)\windows kits\10\include\10.0.10240.0\ucrt\stdio.h(1769): note: vea la declaración de 'sprintf'
 c:\program files (x86)\microsoft visual studio 14.0\vc\include\cmath(35): warning C4577: si se usa 'noexcept' sin ningún modo de control de excepciones especificado, la finalización de la excepción no está garantizada. Especifique /EHsc
-  Component_Transformation.cpp
-c:\program files (x86)\microsoft visual studio 14.0\vc\include\xlocale(341): warning C4530: Se ha utilizado el controlador de excepciones de C++, pero la semántica de desenredo no está habilitada. Especifique /EHsc
-c:\users\pc1\desktop\wgame_engine\wgame_engine\mathgeolib\include\geometry\aabb2d.h(132): warning C4996: 'sprintf': This function or variable may be unsafe. Consider using sprintf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
-  c:\program files (x86)\windows kits\10\include\10.0.10240.0\ucrt\stdio.h(1769): note: vea la declaración de 'sprintf'
-c:\program files (x86)\microsoft visual studio 14.0\vc\include\limits(210): warning C4577: si se usa 'noexcept' sin ningún modo de control de excepciones especificado, la finalización de la excepción no está garantizada. Especifique /EHsc
-  Component_Mesh.cpp
-c:\program files (x86)\microsoft visual studio 14.0\vc\include\xlocale(341): warning C4530: Se ha utilizado el controlador de excepciones de C++, pero la semántica de desenredo no está habilitada. Especifique /EHsc
-c:\users\pc1\desktop\wgame_engine\wgame_engine\mathgeolib\include\geometry\aabb2d.h(132): warning C4996: 'sprintf': This function or variable may be unsafe. Consider using sprintf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
-  c:\program files (x86)\windows kits\10\include\10.0.10240.0\ucrt\stdio.h(1769): note: vea la declaración de 'sprintf'
-c:\program files (x86)\microsoft visual studio 14.0\vc\include\cmath(35): warning C4577: si se usa 'noexcept' sin ningún modo de control de excepciones especificado, la finalización de la excepción no está garantizada. Especifique /EHsc
-  Component_Material.cpp
+  log.cpp
 c:\program files (x86)\microsoft visual studio 14.0\vc\include\xlocale(341): warning C4530: Se ha utilizado el controlador de excepciones de C++, pero la semántica de desenredo no está habilitada. Especifique /EHsc
 c:\users\pc1\desktop\wgame_engine\wgame_engine\mathgeolib\include\geometry\aabb2d.h(132): warning C4996: 'sprintf': This function or variable may be unsafe. Consider using sprintf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
   c:\program files (x86)\windows kits\10\include\10.0.10240.0\ucrt\stdio.h(1769): note: vea la declaración de 'sprintf'

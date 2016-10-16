@@ -108,6 +108,15 @@ update_status ModuleInput::PreUpdate(float dt)
 			mouse_y_motion = e.motion.yrel / SCREEN_SIZE;
 			break;
 
+			case SDL_DROPFILE:
+			{
+				char *dropped_filedir = e.drop.file;
+				//Must add any check to see if the dropped file is an .fbx
+				App->geometry->Load_Geometry(dropped_filedir, true);
+				SDL_free(dropped_filedir);
+			}
+			break;
+
 			case SDL_QUIT:
 			quit = true;
 			break;

@@ -43,7 +43,7 @@ bool ModuleSceneIntro::Start()
 	App->camera->LookAt(vec(0, 0, 0));	
 	
 	//Load 3D model
-	 App->geometry->Load_Geometry("Assets/3D_Models/Street environment_V01.fbx");
+	 App->geometry->Load_Geometry("Assets/3D_Models/Street environment_V01.fbx",false);
 
 
 

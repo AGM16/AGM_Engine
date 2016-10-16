@@ -21,6 +21,11 @@ void Components::Update()
 
 }
 
+void Components::Clean_Up()
+{
+
+}
+
 bool Components::Disable()
 {
 	active_component = false;

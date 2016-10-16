@@ -4,6 +4,7 @@
 #include "Component_Mesh.h"
 #include "Component_Transformation.h"
 #include "Component_Material.h"
+#include "p2Defs.h"
 #include "Imgui\imgui.h"
 
 using namespace std;
@@ -17,6 +18,7 @@ GameObject::~GameObject()
 {
 	for (vector<Components*>::iterator compo = components_list.begin(); compo != components_list.end(); ++compo)
 	{
+		(*compo)->Clean_Up();
 		delete (*compo);
 		(*compo) = nullptr;
 	}
@@ -30,6 +32,7 @@ GameObject::~GameObject()
 
 	children.clear();
 
+	Parent = nullptr;
 }
 
 bool GameObject::Add_Component_Mesh(Mesh* m)
@@ -62,7 +65,7 @@ bool GameObject::Add_Component_Transformation(math::float3 pos, math::float3 sca
 }
 
 
-bool GameObject::Add_Component_Material(std::string name_textu, std::string path_texture, unsigned int num_textu, unsigned int id_textu)
+bool GameObject::Add_Component_Material(const char* name_textu, const char* path_texture, unsigned int num_textu, unsigned int id_textu)
 {
 	if (Exist_Component(MATERIAL) == false)
 	{

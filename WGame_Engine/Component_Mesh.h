@@ -14,11 +14,13 @@ public:
 	~Component_Mesh();
 
 	void Update();
+	void Clean_Up();
 
 public:
 
-	Mesh* mesh;
+	Mesh* mesh = nullptr;
 	bool active = false;
+	bool last_active = false;
 	unsigned int id_image = 0;
 };
 

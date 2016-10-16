@@ -24,6 +24,7 @@ public:
 	bool Enable();
 	virtual void Update();
 	bool Disable();
+	virtual void Clean_Up();
 
 	bool Is_Active()const;
 	Components_Type Get_Type()const;

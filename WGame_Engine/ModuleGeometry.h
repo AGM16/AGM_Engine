@@ -3,6 +3,7 @@
 
 #include "Globals.h"
 #include "Module.h"
+#include "p2Defs.h"
 
 #include "Assimp\include\cimport.h"
 #include "Assimp\include\scene.h"
@@ -15,6 +16,14 @@ class GameObject;
 
 struct Mesh
 {
+	void Clean_Up()
+	{
+		RELEASE(vertices);
+		RELEASE(indices);
+		RELEASE(uvs_texture_coords);
+		RELEASE(normals);
+	}
+
    //Faces Variables
 	uint id_indices = 0;
 	uint num_indices = 0;
@@ -44,14 +53,14 @@ struct Mesh
 
 	//Hierarchy
 	int num_children = 0;
-	const char* parent = NULL;
+	string parent;
 	string name_node;
 
 	//Texture
 	uint num_image_textures = 0;
 	uint id_image_texture = 0;
-	string name_texture;
-	string dir_texture;
+	string name_texture = "";
+	string dir_texture = "";
 
 };
 
@@ -66,11 +75,10 @@ class ModuleGeometry : public Module
 	   update_status Update(float dt);
 	   bool CleanUp();
 
-	   bool Load_Geometry(const char* path);
+	   bool Load_Geometry(const char* path, bool drop);
 
 	   void Load_Nodes_For_Hierarchy(aiNode* node_child, const aiScene* scene, GameObject* parent, const char* path);
 	   
-
 
 
 };

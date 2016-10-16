@@ -15,7 +15,16 @@ Component_Mesh::Component_Mesh(Components_Type type, GameObject* game_object, Me
 
 Component_Mesh::~Component_Mesh()
 {
-	RELEASE(mesh);
+	
+}
+
+void Component_Mesh::Clean_Up()
+{
+	if (mesh != NULL)
+	{
+		mesh->Clean_Up();
+		RELEASE(mesh);
+	}
 }
 
 void Component_Mesh::Update()
@@ -41,7 +50,7 @@ void Component_Mesh::Update()
 				//--------------------------------------------------------------------
 				ImGui::Text("Parent : ");
 				ImGui::SameLine();
-				ImGui::TextColored(ImVec4(1, 1, 1, 1), "%s", mesh->parent);
+				ImGui::TextColored(ImVec4(1, 1, 1, 1), "%s", mesh->parent.c_str());
 
 				//--------------------------------------------------------------------
 				ImGui::Text("NumIndices : ");
@@ -91,9 +100,9 @@ void Component_Mesh::Update()
     
 	Component_Mesh* mesh_parent;
 	Component_Material* material_parent;
+
     if (Get_Game_Object()->Get_Parent() != NULL)
-	{
-		
+	{	
 		if (Get_Game_Object()->Get_Parent()->Exist_Component(MESH))
 		{
 			mesh_parent = (Component_Mesh*)Get_Game_Object()->Get_Parent()->Get_Component(MESH);
@@ -111,6 +120,8 @@ void Component_Mesh::Update()
 		}
 		
 	}
+
+
 
 	
 	

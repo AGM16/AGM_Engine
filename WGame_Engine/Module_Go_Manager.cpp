@@ -2,6 +2,7 @@
 #include "Module_Go_Manager.h"
 #include "GameObject.h"
 #include "Components.h"
+#include "p2Defs.h"
 
 using namespace std;
 
@@ -9,11 +10,17 @@ Module_Go_Manager::Module_Go_Manager(Application* app, bool start_enabled) : Mod
 {
 	root_game_object = new GameObject(NULL, "Root_Game_Object");
 	root_game_object->Add_Component_Transformation(float3::zero, float3::one, Quat::identity, float3::zero);
+	root_game_object->Add_Component_Mesh(nullptr);
+	root_game_object->Add_Component_Material("", "", 0, 0);
 }
 
 Module_Go_Manager::~Module_Go_Manager()
 {
+	if (root_game_object)
+		RELEASE(root_game_object);
 
+	game_object_selected = nullptr;
+	last_game_object_selected = nullptr;
 }
 
 
@@ -39,7 +46,7 @@ GameObject* Module_Go_Manager::Create_Game_Object(Mesh* m, GameObject* Parent)
 			new_game_object->Add_Component_Mesh(m);
 			LOG("The GameObject %s has a new component : %s ", new_game_object->Get_Name(), "MESH");
 
-			new_game_object->Add_Component_Material(m->name_texture, m->dir_texture, m->num_image_textures, m->id_image_texture);
+			new_game_object->Add_Component_Material(m->name_texture.c_str(), m->dir_texture.c_str(), m->num_image_textures, m->id_image_texture);
 			LOG("The GameObject %s has a new component : %s ", new_game_object->Get_Name(), "MaATERIAL");
 	
 
@@ -104,7 +111,9 @@ void Module_Go_Manager::Window_Hierarchy(GameObject* Root_node)
 					{
 						Search_GameObject_To_Disactive(game_object_selected);
 					}
+
 					game_object_selected = (*node_go);
+
 					Search_GameObject_To_Active( game_object_selected);
 
 					last_game_object_selected = game_object_selected;

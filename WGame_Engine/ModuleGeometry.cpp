@@ -4,6 +4,7 @@
 #include "Assimp\include\scene.h"
 #include "Assimp\include\postprocess.h"
 #include "Assimp\include\cfileio.h"
+#include "p2Defs.h"
 #include "Glew\include\glew.h"
 #include <gl/GL.h>
 
@@ -51,19 +52,30 @@ bool ModuleGeometry::CleanUp()
 	return true;
 }
 
-bool ModuleGeometry::Load_Geometry(const char* path)
+bool ModuleGeometry::Load_Geometry(const char* path, bool drop)
 {
 	bool ret = false;
+	const aiScene* scene = nullptr;
 	char* buffer;
-	uint size_file = App->filesystem->Load(path, &buffer);
-
-	if (size_file != 0)
+	if (drop == false)
 	{
-		//Import Geometry File
-		const aiScene* scene = aiImportFileFromMemory(buffer, size_file, aiProcessPreset_TargetRealtime_MaxQuality, NULL);
+		uint size_file = App->filesystem->Load(path, &buffer);
 
+		if (size_file != 0)
+		{
+			//Import Geometry File
+			scene = aiImportFileFromMemory(buffer, size_file, aiProcessPreset_TargetRealtime_MaxQuality, NULL);
+		}
+	}
+	else
+	{
+			scene = aiImportFile(path, aiProcessPreset_TargetRealtime_MaxQuality);
+	}
+
+	if(scene != nullptr)
+	{
 		//Check the state of the import
-		if (scene != nullptr && scene->HasMeshes() == true)
+		if (scene->HasMeshes() == true)
 		{
 			//RootNode of the scene
 			aiNode* parent = scene->mRootNode;//At the begining this will be the RootNode 
@@ -75,12 +87,19 @@ bool ModuleGeometry::Load_Geometry(const char* path)
 			}
 		
 			ret = true;
+
+			
+			aiReleaseImport(scene);
+			
+			
 		}
 		else
 		{
 			LOG("Error loading scene %s", path);
 			ret = false;
 		}
+		
+		delete[] buffer;
 	}
 	else
 	{
@@ -88,7 +107,7 @@ bool ModuleGeometry::Load_Geometry(const char* path)
 		ret = false;
 	}
 
-	delete[] buffer;
+	
 
 	return ret;
 	
@@ -215,7 +234,7 @@ void ModuleGeometry::Load_Nodes_For_Hierarchy(aiNode* node_child, const aiScene*
 				//Hierarchy
 				if (node_child->mParent->mName.data == "RootNode")//If child parent is RootNode
 				{
-					m->parent = NULL;
+					m->parent = "";
 					m->num_children = node_child->mNumChildren;
 					m->name_node = node_child->mName.C_Str();
 					LOG("The %s mesh is the rootnode of the scene %s", m->name_node.c_str(), path);
@@ -223,7 +242,7 @@ void ModuleGeometry::Load_Nodes_For_Hierarchy(aiNode* node_child, const aiScene*
 				else
 				{
 					//parent = node_child->mParent;
-					m->parent = node_child->mParent->mName.data;
+					m->parent = node_child->mParent->mName.C_Str();
 					m->num_children = node_child->mNumChildren;
 					m->name_node = node_child->mName.C_Str();
 					LOG("The %s mesh is the child of the gameobject %s", m->name_node.c_str(), m->parent);
@@ -253,7 +272,6 @@ void ModuleGeometry::Load_Nodes_For_Hierarchy(aiNode* node_child, const aiScene*
 				m->rotation.w = rotation.w;
 
 				game_obj = App->go_manager->Create_Game_Object(m, parent);
-
 			}
 
 		}
@@ -264,7 +282,7 @@ void ModuleGeometry::Load_Nodes_For_Hierarchy(aiNode* node_child, const aiScene*
 		//Hierarchy
 		if (node_child->mParent->mName.data == "RootNode")//If child parent is RootNode
 		{
-			m->parent = NULL;
+			m->parent = "";
 			m->num_children = node_child->mNumChildren;
 			m->name_node = node_child->mName.C_Str();
 			LOG("The %s mesh is the rootnode of the scene %s", m->name_node.c_str(), path);
@@ -272,7 +290,7 @@ void ModuleGeometry::Load_Nodes_For_Hierarchy(aiNode* node_child, const aiScene*
 		else
 		{
 			//parent = node_child->mParent;
-			m->parent = node_child->mParent->mName.data;
+			m->parent = node_child->mParent->mName.C_Str();
 			m->num_children = node_child->mNumChildren;
 			m->name_node = node_child->mName.C_Str();
 			LOG("The %s mesh is the child of the gameobject %s", m->name_node.c_str(), m->parent);
@@ -310,6 +328,7 @@ void ModuleGeometry::Load_Nodes_For_Hierarchy(aiNode* node_child, const aiScene*
 		m->rotation.w = rotation.w;
 
 		game_obj = App->go_manager->Create_Game_Object(m, parent);
+
 	}
 
 

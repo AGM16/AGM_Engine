@@ -3,24 +3,24 @@
 
 #include "Components.h"
 
-struct Mesh;
-
 
 class Component_Material : public Components
 {
 public:
 
-	Component_Material(Components_Type type, GameObject* game_object, std::string name_textu, std::string path_texture, unsigned int num_textu, unsigned int id_textu);
+	Component_Material(Components_Type type, GameObject* game_object, const char* name_textu, const char* path_texture, unsigned int num_textu, unsigned int id_textu);
 	~Component_Material();
 
 	void Update();
 
+	void Clean_Up();
+
 public:
     
-	std::string name_texture;
-	std::string dir_path_texture;
-	unsigned int num_textures;
-	unsigned int id_texture;
+	const char* name_texture = NULL;
+	const char* dir_path_texture = NULL;
+	unsigned int num_textures = 0;
+	unsigned int id_texture = 0;
 	bool active = false;
 };
 

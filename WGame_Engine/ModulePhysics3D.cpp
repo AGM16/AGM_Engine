@@ -17,23 +17,23 @@
 
 ModulePhysics3D::ModulePhysics3D(Application* app, bool start_enabled) : Module(app, start_enabled)
 {
-	debug = true;
+	/*debug = true;
 
 	collision_conf = new btDefaultCollisionConfiguration();
 	dispatcher = new btCollisionDispatcher(collision_conf);
 	broad_phase = new btDbvtBroadphase();
 	solver = new btSequentialImpulseConstraintSolver();
-	debug_draw = new DebugDrawer();
+	debug_draw = new DebugDrawer();*/
 }
 
 // Destructor
 ModulePhysics3D::~ModulePhysics3D()
 {
-	delete debug_draw;
+	/*delete debug_draw;
 	delete solver;
 	delete broad_phase;
 	delete dispatcher;
-	delete collision_conf;
+	delete collision_conf;*/
 }
 
 // Render not available yet----------------------------------
@@ -48,7 +48,7 @@ bool ModulePhysics3D::Init()
 // ---------------------------------------------------------
 bool ModulePhysics3D::Start()
 {
-	LOG("Creating Physics environment");
+	/*LOG("Creating Physics environment");
 
 	world = new btDiscreteDynamicsWorld(dispatcher, broad_phase, solver, collision_conf);
 	world->setDebugDrawer(debug_draw);
@@ -63,7 +63,7 @@ bool ModulePhysics3D::Start()
 		btRigidBody::btRigidBodyConstructionInfo rbInfo(0.0f, myMotionState, colShape);
 
 		btRigidBody* body = new btRigidBody(rbInfo);
-		world->addRigidBody(body);
+		world->addRigidBody(body);*/
 	
 
 	return true;
@@ -72,7 +72,7 @@ bool ModulePhysics3D::Start()
 // ---------------------------------------------------------
 update_status ModulePhysics3D::PreUpdate(float dt)
 {
-	world->stepSimulation(dt, 15);
+	/*world->stepSimulation(dt, 15);
 
 	int numManifolds = world->getDispatcher()->getNumManifolds();
 	for(int i = 0; i<numManifolds; i++)
@@ -105,7 +105,7 @@ update_status ModulePhysics3D::PreUpdate(float dt)
 				}
 			}
 		}
-	}
+	}*/
 
 	return UPDATE_CONTINUE;
 }
@@ -113,7 +113,7 @@ update_status ModulePhysics3D::PreUpdate(float dt)
 // ---------------------------------------------------------
 update_status ModulePhysics3D::Update(float dt)
 {
-	if(App->input->GetKey(SDL_SCANCODE_F1) == KEY_DOWN)
+	/*if(App->input->GetKey(SDL_SCANCODE_F1) == KEY_DOWN)
 		debug = !debug;
 
 	if(debug == true)
@@ -129,7 +129,7 @@ update_status ModulePhysics3D::Update(float dt)
 			++item;
 		}
 
-	}
+	}*/
 
 	return UPDATE_CONTINUE;
 }
@@ -143,7 +143,7 @@ update_status ModulePhysics3D::PostUpdate(float dt)
 // Called before quitting
 bool ModulePhysics3D::CleanUp()
 {
-	LOG("Destroying 3D Physics simulation");
+	/*LOG("Destroying 3D Physics simulation");
 
 	// Remove from the world all collision bodies
 	for(int i = world->getNumCollisionObjects() - 1; i >= 0; i--)
@@ -181,12 +181,12 @@ bool ModulePhysics3D::CleanUp()
 	vehicles.clear();
 
 	delete vehicle_raycaster;
-	delete world;
+	delete world;*/
 
 	return true;
 }
 
-// ---------------------------------------------------------
+/*// ---------------------------------------------------------
 PhysBody3D* ModulePhysics3D::AddBody(const Primitive_Sphere& sphere, float mass, bool isSensor)
 {
 	btCollisionShape* colShape = new btSphereShape(sphere.radius);
@@ -372,7 +372,7 @@ void ModulePhysics3D::AddConstraintHinge(PhysBody3D& bodyA, PhysBody3D& bodyB, c
 	world->addConstraint(hinge, disable_collision);
 	constraints.push_back(hinge);
 	hinge->setDbgDrawSize(2.0f);
-}
+}*/
 
 // =============================================
 void DebugDrawer::drawLine(const btVector3& from, const btVector3& to, const btVector3& color)

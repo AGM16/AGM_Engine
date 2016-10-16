@@ -1,7 +1,7 @@
 #ifndef _GAMEOBJECT_H_
 #define _GAMEOBJECT_H_
 
-#include <list>
+#include <vector>
 #include "MathGeoLib\include\MathGeoLib.h"
 class Components;
 enum Components_Type;
@@ -23,10 +23,12 @@ public:
 	Components* Get_Component(Components_Type type);
 
 
-	std::list<GameObject*>* Get_Children();
-	std::list<Components*>* Get_Components();
+	std::vector<GameObject*>* Get_Children();
+	std::vector<Components*>* Get_Components();
 	GameObject* Get_Parent()const;
 	const char* Get_Name()const;
+
+	
 
 	
 	
@@ -35,8 +37,8 @@ private:
 
 	//Variables
 	GameObject* Parent = nullptr;
-	std::list<GameObject*> children;
-    std::list<Components*> components_list;
+	std::vector<GameObject*> children;
+    std::vector<Components*> components_list;
 	const char* name = NULL;
 	bool Open_components_panel = true;
 

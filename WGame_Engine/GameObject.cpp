@@ -15,6 +15,20 @@ GameObject::GameObject(GameObject* Parent_, const char* name_): Parent(Parent_),
 
 GameObject::~GameObject()
 {
+	for (vector<Components*>::iterator compo = components_list.begin(); compo != components_list.end(); ++compo)
+	{
+		delete (*compo);
+		(*compo) = nullptr;
+	}
+	components_list.clear();
+
+	for (vector<GameObject*>::iterator child = children.begin(); child != children.end(); ++child)
+	{
+		delete (*child);
+		(*child) = nullptr;
+	}
+
+	children.clear();
 
 }
 
@@ -82,7 +96,7 @@ void GameObject::Update_Go_Components()
 {
 	if (children.size() > 0)
 	{
-		list<GameObject*>::iterator node_children = children.begin();
+		vector<GameObject*>::iterator node_children = children.begin();
 		while (node_children != children.end())
 		{
 			(*node_children)->Update_Go_Components();
@@ -92,7 +106,7 @@ void GameObject::Update_Go_Components()
 
 	if (components_list.size() > 0)
 	{
-		list<Components*>::iterator node_comp = components_list.begin();
+		vector<Components*>::iterator node_comp = components_list.begin();
 		
 		ImVec2 size_w;
 		float2 pos;
@@ -124,7 +138,7 @@ bool GameObject::Exist_Component(Components_Type type)
 {
 	if (components_list.size() > 0)
 	{
-		list<Components*>::iterator node_com = components_list.begin();
+		vector<Components*>::iterator node_com = components_list.begin();
 
 		while (node_com != components_list.end())
 		{
@@ -145,7 +159,7 @@ bool GameObject::Exist_Component(Components_Type type)
 Components* GameObject::Get_Component(Components_Type type)
 {
 	
-		list<Components*>::iterator itme_component = components_list.begin();
+	    vector<Components*>::iterator itme_component = components_list.begin();
 
 		while (itme_component != components_list.end())
 		{
@@ -162,12 +176,12 @@ Components* GameObject::Get_Component(Components_Type type)
 	return NULL;
 }
 
-std::list<GameObject*>* GameObject::Get_Children()
+std::vector<GameObject*>* GameObject::Get_Children()
 {
 	return &children;
 }
 
-std::list<Components*>* GameObject::Get_Components()
+std::vector<Components*>* GameObject::Get_Components()
 {
 	return &components_list;
 }
@@ -181,3 +195,4 @@ const char* GameObject::Get_Name()const
 {
 	return name;
 }
+

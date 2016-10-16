@@ -5,6 +5,7 @@
 #include "Component_Transformation.h"
 #include "Component_Material.h"
 #include "GameObject.h"
+#include "p2Defs.h"
 
 
 Component_Mesh::Component_Mesh(Components_Type type, GameObject* game_object, Mesh* mesh_) : Components(type, game_object), mesh(mesh_)
@@ -14,7 +15,7 @@ Component_Mesh::Component_Mesh(Components_Type type, GameObject* game_object, Me
 
 Component_Mesh::~Component_Mesh()
 {
-
+	RELEASE(mesh);
 }
 
 void Component_Mesh::Update()

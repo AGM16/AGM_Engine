@@ -100,7 +100,7 @@ void Component_Transformation::Modify_Children()
 				transformation_matrix_to_draw = par_comp_transform->transformation_matrix_to_draw * transformation_matrix;
 			}
 						
-				for (std::list<GameObject*>::iterator g_object_children = go->Get_Children()->begin(); g_object_children != go->Get_Children()->end(); g_object_children++)
+				for (std::vector<GameObject*>::iterator g_object_children = go->Get_Children()->begin(); g_object_children != go->Get_Children()->end(); g_object_children++)
 				{
 					if ((*g_object_children)->Exist_Component(TRANSFORMATION))
 					{

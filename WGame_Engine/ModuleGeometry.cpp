@@ -170,7 +170,7 @@ void ModuleGeometry::Load_Nodes_For_Hierarchy(aiNode* node_child, const aiScene*
 					material->GetTexture(aiTextureType_DIFFUSE, 0, &path_);
 
 					
-					m->dir_texture.assign("Game/Assets/Textures/");
+					m->dir_texture.assign("Assets/Textures/");
 					m->name_texture.assign(App->filesystem->Get_FileName_From_Path(path_.data));
 					m->dir_texture.append(m->name_texture.c_str());
 

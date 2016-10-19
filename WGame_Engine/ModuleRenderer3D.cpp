@@ -184,17 +184,19 @@ void ModuleRenderer3D::OnResize(int width, int height, float fovy)
 	glLoadIdentity();
 }
 
-void ModuleRenderer3D::Draw_Geometry(const Mesh* mesh, uint texture, float4x4 transformation_matrix)
-{
-	
-	/*if (wire == true)
+void ModuleRenderer3D::Draw_Geometry(const Mesh* mesh, uint texture, float4x4 transformation_matrix, bool wire)
+{	
+	if (wire == true)
 	{
        glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
-	}*/
+	}
+	else
+	{
+		glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
+	}
 
 	glColor4f(1.0f, 1.0f, 1.0f, 1.0f);
 	glPushMatrix();
-	//glTranslatef(transformation_matrix.x, transformation_matrix.y, transformation_matrix.z);
 	glMultMatrixf(*transformation_matrix.v);
 	
 	//Enables

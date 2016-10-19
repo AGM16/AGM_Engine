@@ -51,6 +51,7 @@ void Component_Mesh::Update()
 			mesh_parent = (Component_Mesh*)Get_Game_Object()->Get_Parent()->Get_Component(MESH);
 			material_parent = (Component_Material*)Get_Game_Object()->Get_Parent()->Get_Component(MATERIAL);
 
+			//Check the material parent
 			if (material_parent->active == true)
 			{
 				material->active = true;
@@ -63,6 +64,7 @@ void Component_Mesh::Update()
 				id_image = material->id_texture;
 			}
 
+			//Check the mesh parent
 			if (mesh_parent->active == true)
 				active = true;
 			
@@ -71,6 +73,16 @@ void Component_Mesh::Update()
 				active = false;
 			}
 
+			//Check the wireframe parent
+			if (mesh_parent->wireframe == true)
+				wireframe = true;
+
+			if (last_active_wireframe == true && mesh_parent->wireframe == false)
+			{
+				wireframe = false;
+			}
+
+			last_active_wireframe = mesh_parent->wireframe;
 			last_active_mesh = mesh_parent->active;
 			last_active_texture = material_parent->active;
 
@@ -132,6 +144,8 @@ void Component_Mesh::Update()
 			}
 
 			ImGui::Checkbox("Active##foo1", &active);
+			ImGui::SameLine();
+			ImGui::Checkbox("Wireframe##faa1", &wireframe);
 		}
 	}
 
@@ -141,7 +155,7 @@ void Component_Mesh::Update()
 	{
 		if (active == false && mesh_parent->active == false)
 		{
-			App->renderer3D->Draw_Geometry(mesh, id_image, transformation->Get_Tranformation_Matrix().Transposed());
+			App->renderer3D->Draw_Geometry(mesh, id_image, transformation->Get_Tranformation_Matrix().Transposed(), wireframe);
 		}
 	}
 

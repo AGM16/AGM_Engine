@@ -19,10 +19,14 @@ public:
 public:
 
 	Mesh* mesh = nullptr;
+	unsigned int id_image = 0;
+
+	//Booleans use to parents
 	bool active = false;
 	bool last_active_mesh = false;
 	bool last_active_texture = false;
-	unsigned int id_image = 0;
+	bool last_active_wireframe = false;
+	bool wireframe = false;
 };
 
 #endif // !_COMPONENT_MESH_H_

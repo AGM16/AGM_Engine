@@ -33,6 +33,7 @@ private:
 	bool render_aabb;
 	bool render_bounding_sphere;
 
+	AABB aabb_box;
 };
 
 #endif // !_PANEL_MATHGEOLIB_TOOLS_H_

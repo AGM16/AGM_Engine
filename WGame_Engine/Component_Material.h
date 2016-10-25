@@ -17,8 +17,8 @@ public:
 
 public:
     
-	const char* name_texture = NULL;
-	const char* dir_path_texture = NULL;
+	const char* name_texture = nullptr;
+	const char* dir_path_texture = nullptr;
 	unsigned int num_textures = 0;
 	unsigned int id_texture = 0;
 	bool active = false;

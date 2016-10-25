@@ -81,7 +81,7 @@ bool GameObject::Add_Component_Material(const char* name_textu, const char* path
 
 bool GameObject::Add_Child(GameObject* child)
 {
-	if (child != NULL)
+	if (child != nullptr)
 	{
 		children.push_back(child);
 		LOG("The GameObject %s is the child of GameObject %s", child->name, name);
@@ -174,7 +174,7 @@ Components* GameObject::Get_Component(Components_Type type)
 		}
 	
 
-	return NULL;
+	return nullptr;
 }
 
 std::vector<GameObject*>* GameObject::Get_Children()

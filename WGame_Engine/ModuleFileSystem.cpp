@@ -87,7 +87,7 @@ bool ModuleFileSystem::Delete(const char* file_name)
 {
 	bool ret = false;
 
-	if (file_name != NULL)
+	if (file_name != nullptr)
 	{   //Delete files form write dir
 		if (PHYSFS_delete(file_name) == 0)
 		{
@@ -103,7 +103,7 @@ bool ModuleFileSystem::Delete(const char* file_name)
 bool ModuleFileSystem::Create_Dir(const char* name_dir)
 {
 	bool ret = false;
-	if (name_dir != NULL)
+	if (name_dir != nullptr)
 	{   //Create a dir into the write dir
 		if (PHYSFS_mkdir(name_dir) == 0)
 		{
@@ -118,15 +118,15 @@ bool ModuleFileSystem::Create_Dir(const char* name_dir)
 
 const char* ModuleFileSystem::Get_Base_Dir()const
 {
-	const char* dir = NULL;
+	const char* dir = nullptr;
 
 	dir = PHYSFS_getBaseDir();
 
-	if (dir == NULL)
+	if (dir == nullptr)
 	{
 		//Get the directory where the aplication resides
 		LOG("File System error while getting the base dir : %s\n", PHYSFS_getLastError());
-		return NULL;
+		return nullptr;
 	}
 
 	return dir;
@@ -134,14 +134,14 @@ const char* ModuleFileSystem::Get_Base_Dir()const
 
 const char* ModuleFileSystem::Get_User_Dir()const
 {
-	const char* dir = NULL;
+	const char* dir = nullptr;
 
 	dir = PHYSFS_getUserDir();
 
-	if (dir == NULL)
+	if (dir == nullptr)
 	{
 		LOG("File System error while creatring the user dir : %s\n", PHYSFS_getLastError());
-		return NULL;
+		return nullptr;
 	}
 
 	return dir;
@@ -149,13 +149,13 @@ const char* ModuleFileSystem::Get_User_Dir()const
 
 const char* ModuleFileSystem::Get_Write_dir()const
 {
-	const char* write_dir = NULL;
+	const char* write_dir = nullptr;
 
 	write_dir = PHYSFS_getWriteDir();
-	if (write_dir == NULL)
+	if (write_dir == nullptr)
 	{   //Get the write dir
 		LOG("File System error while getting the write dir : %s\n", PHYSFS_getLastError());
-		return NULL;
+		return nullptr;
 	}
 
 	return write_dir;
@@ -181,15 +181,15 @@ char** ModuleFileSystem::Get_Search_path()const
 	char** search_path = PHYSFS_getSearchPath();
 	char** i;
 	//Search all the archieve that we have in the dir where aplication runs
-	for (i = search_path; *i != NULL; i++)
+	for (i = search_path; *i != nullptr; i++)
 		LOG("[%s] is in the search path.\n", *i);
 
 	PHYSFS_freeList(search_path);
 
-	if (i == NULL)
+	if (i == nullptr)
 	{
 		LOG("File System error while searching paths: %s\n", PHYSFS_getLastError());
-		return NULL;
+		return nullptr;
 	}
 
 	return i;
@@ -211,11 +211,11 @@ bool ModuleFileSystem::Add_to_Search_path(const char* file, int apendtopath)
 
 const char* ModuleFileSystem::Get_Real_dir(const char* filename)const
 {
-	const char* dir = NULL;
+	const char* dir = nullptr;
 
 	dir = PHYSFS_getRealDir(filename);
 
-	if (dir == NULL)
+	if (dir == nullptr)
 	{
 		LOG("File System error while getting the real dir of a file(%s): %s\n", filename, PHYSFS_getLastError());
 	}
@@ -230,7 +230,7 @@ int ModuleFileSystem::Enumerate_files(const char* dir)const
 	char** files = PHYSFS_enumerateFiles(dir);
 	char** i;
 
-	for (i = files; *i != NULL; i++)
+	for (i = files; *i != nullptr; i++)
 	{
 		LOG("*We have got [%s]", *i);
 		ret++;
@@ -251,7 +251,7 @@ int ModuleFileSystem::Get_Last_Mod(const char* file)const
 	if (ret == -1)
 	{
 		LOG(" The last time modification of this file(%s) can't be determinated.", file, PHYSFS_getLastError());
-		return NULL;
+		return 0;
 	}
 
 	LOG(" The last time modification of this file(%s) was %i.", file, ret, PHYSFS_getLastError());
@@ -287,7 +287,7 @@ unsigned int ModuleFileSystem::Load(const char* file, char** buffer) const
 
 	PHYSFS_file* fs_file = PHYSFS_openRead(file);
 
-	if (fs_file != NULL)
+	if (fs_file != nullptr)
 	{
 		PHYSFS_sint64 size = PHYSFS_fileLength(fs_file);
 
@@ -322,13 +322,13 @@ SDL_RWops* ModuleFileSystem::Load(const char* file) const
 	if (size > 0)
 	{
 		SDL_RWops* r = SDL_RWFromConstMem(buffer, size);
-		if (r != NULL)
+		if (r != nullptr)
 			r->close = close_sdl_rwops;
 
 		return r;
 	}
 	else
-		return NULL;
+		return nullptr;
 }
 
 int close_sdl_rwops(SDL_RWops *rw)
@@ -345,7 +345,7 @@ unsigned int ModuleFileSystem::Save(const char* file, const char* buffer, unsign
 
 	PHYSFS_file* fs_file = PHYSFS_openWrite(file);
 
-	if (fs_file != NULL)
+	if (fs_file != nullptr)
 	{
 		PHYSFS_sint64 written = PHYSFS_write(fs_file, (const void*)buffer, 1, size);
 		if (written != size)

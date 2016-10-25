@@ -25,7 +25,7 @@ public:
 
 	// Utility functions
 	//bool Delete(const char* filename);
-	bool AddPath(const char* path_or_zip, const char* mount_point = NULL);
+	bool AddPath(const char* path_or_zip, const char* mount_point = nullptr);
 	bool Is_Init()const;
 	bool Exists(const char* file) const;
 	bool IsDirectory(const char* file) const;

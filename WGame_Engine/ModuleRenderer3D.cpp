@@ -206,16 +206,16 @@ void ModuleRenderer3D::Draw_Geometry(const Mesh* mesh, uint texture, float4x4 tr
 
 	//Vertexs
 	glBindBuffer(GL_ARRAY_BUFFER, mesh->id_vertices);
-	glVertexPointer(3, GL_FLOAT, 0, NULL);
+	glVertexPointer(3, GL_FLOAT, 0, nullptr);
 
 	//Normals
 	glBindBuffer(GL_ARRAY_BUFFER, mesh->id_normals);
-	glNormalPointer(GL_FLOAT, 0, NULL);
+	glNormalPointer(GL_FLOAT, 0, nullptr);
 
 	
 	//Uvs
 	glBindBuffer(GL_ARRAY_BUFFER, mesh->id_uvs_texture_coords);
-	glTexCoordPointer(2, GL_FLOAT, 0, NULL);
+	glTexCoordPointer(2, GL_FLOAT, 0, nullptr);
 
 
 	if (mesh->num_uvs_texture_coords > 0)
@@ -229,7 +229,7 @@ void ModuleRenderer3D::Draw_Geometry(const Mesh* mesh, uint texture, float4x4 tr
 
 	//Index
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, mesh->id_indices);
-	glDrawElements(GL_TRIANGLES, mesh->num_indices, GL_UNSIGNED_INT, NULL);
+	glDrawElements(GL_TRIANGLES, mesh->num_indices, GL_UNSIGNED_INT, nullptr);
 
     glBindTexture(GL_TEXTURE_2D, 0); 
     

@@ -10,7 +10,7 @@ using namespace std;
 float Random::F_Random()
 {
 	//Use time(NULL) to generate a diferent random number every time that we call the function
-	mt19937 generator(time(NULL));
+	mt19937 generator(time(0));
 	uniform_real_distribution<float> distributor(0.0f, 1.0f);
 
 	//Generate Float Random Number
@@ -22,7 +22,7 @@ float Random::F_Random()
 float Random::Min_Max_Random(float min_a, float max_b)
 {
 	//Generator
-	mt19937 generator(time(NULL));
+	mt19937 generator(time(0));
 	uniform_real_distribution<float> distributor(min_a, max_b);
 	
 	//Generate Int Random Number

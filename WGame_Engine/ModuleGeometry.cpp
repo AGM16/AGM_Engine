@@ -64,7 +64,7 @@ bool ModuleGeometry::Load_Geometry(const char* path, bool drop)
 		if (size_file != 0)
 		{
 			//Import Geometry File
-			scene = aiImportFileFromMemory(buffer, size_file, aiProcessPreset_TargetRealtime_MaxQuality, NULL);
+			scene = aiImportFileFromMemory(buffer, size_file, aiProcessPreset_TargetRealtime_MaxQuality, nullptr);
 		}
 	}
 	else
@@ -83,7 +83,7 @@ bool ModuleGeometry::Load_Geometry(const char* path, bool drop)
 			for( int i = 0; i < parent->mNumChildren; i++)
 			{
 				//Visit each child to obtain the mesh information using Load
-				Load_Nodes_For_Hierarchy(parent->mChildren[i], scene, NULL);
+				Load_Nodes_For_Hierarchy(parent->mChildren[i], scene, nullptr);
 			}
 		
 			ret = true;

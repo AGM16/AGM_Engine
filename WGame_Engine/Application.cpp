@@ -192,7 +192,7 @@ void Application::AddModule(Module* mod)
 
 void Application::RquestBrowser(const char* url)
 {
-	ShellExecuteA(NULL, "open", url, NULL, NULL, SW_SHOWNORMAL);
+	ShellExecuteA(nullptr, "open", url, nullptr, nullptr, SW_SHOWNORMAL);
 }
 
 bool Application::Sec_Counter(double time)
@@ -255,7 +255,7 @@ void Application::Log_Console(const char* text)
 {
 	if (console_exists == true)
 	{
-		if (console != NULL)
+		if (console != nullptr)
 			console->Save_Log(text);
 	}
 

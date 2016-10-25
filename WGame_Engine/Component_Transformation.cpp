@@ -61,10 +61,8 @@ void Component_Transformation::Update()
 
 void Component_Transformation::Set_Position()
 {
-
 	transformation_matrix = Create_New_Matrix_Transformation();
 	Modify_Children();
-
 }
 
 void Component_Transformation::Set_Rotation()

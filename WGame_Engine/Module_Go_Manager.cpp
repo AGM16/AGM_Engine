@@ -8,7 +8,7 @@ using namespace std;
 
 Module_Go_Manager::Module_Go_Manager(Application* app, bool start_enabled) : Module(app, start_enabled)
 {
-	root_game_object = new GameObject(NULL, "Root_Game_Object");
+	root_game_object = new GameObject(nullptr, "Root_Game_Object");
 	root_game_object->Add_Component_Transformation(float3::zero, float3::one, Quat::identity, float3::zero);
 	root_game_object->Add_Component_Mesh(nullptr);
 	root_game_object->Add_Component_Material("", "", 0, 0);
@@ -26,7 +26,7 @@ Module_Go_Manager::~Module_Go_Manager()
 
 GameObject* Module_Go_Manager::Create_Game_Object(Mesh* m, GameObject* Parent)
 {
-	if (Parent == NULL)
+	if (Parent == nullptr)
 	{
 		Parent = root_game_object;
     }
@@ -112,7 +112,7 @@ void Module_Go_Manager::Window_Hierarchy(GameObject* Root_node)
 			{
 				if (ImGui::IsItemClicked(0))
 				{   
-					if (game_object_selected != NULL)
+					if (game_object_selected != nullptr)
 					{
 						Search_GameObject_To_Deactive(game_object_selected);
 					}
@@ -134,7 +134,7 @@ void Module_Go_Manager::Window_Hierarchy(GameObject* Root_node)
 			{
 				if (ImGui::IsItemClicked(0))
 				{
-					if (game_object_selected != NULL)
+					if (game_object_selected != nullptr)
 					{
 						Search_GameObject_To_Deactive(game_object_selected);
 					}
@@ -164,7 +164,7 @@ void Module_Go_Manager::Search_GameObject_To_Active( GameObject* root_go)
 
 void Module_Go_Manager::Search_GameObject_To_Deactive( GameObject* root_go)
 {
-	if (last_game_object_selected != NULL)
+	if (last_game_object_selected != nullptr)
 	{
 		vector<Components*>::iterator node_comp = last_game_object_selected->Get_Components()->begin();
 		while (node_comp != last_game_object_selected->Get_Components()->end())

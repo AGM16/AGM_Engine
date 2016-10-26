@@ -47,7 +47,3 @@ GameObject* Components::Get_Game_Object()const
 	return game_object;
 }
 
-bool Components::Get_Panel_Opened()const
-{
-	return panels_open;
-}

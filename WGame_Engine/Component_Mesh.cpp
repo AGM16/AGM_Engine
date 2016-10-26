@@ -34,8 +34,8 @@ void Component_Mesh::Update()
 	Component_Material* material = (Component_Material*)Get_Game_Object()->Get_Component(MATERIAL);
     
 	//Check if the material checkbox is active
-	id_image = material->id_texture;
-	if (material->active == true)
+	id_image = material->Get_Id_Texture();
+	if (material->Is_Checkbox_Active() == true)
 	{
 		id_image = 0;
 	}
@@ -52,25 +52,25 @@ void Component_Mesh::Update()
 			material_parent = (Component_Material*)Get_Game_Object()->Get_Parent()->Get_Component(MATERIAL);
 
 			//Check the material parent
-			if (material_parent->active == true)
+			if (material_parent->Is_Checkbox_Active() == true)
 			{
-				material->active = true;
+				material->Set_Checkbox(true);
 				id_image = 0;
 			}
 
-			if (last_active_texture == true && material_parent->active == false)
+			if (last_active_texture == true && material_parent->Is_Checkbox_Active() == false)
 			{
-				material->active = false;
-				id_image = material->id_texture;
+				material->Set_Checkbox(false);
+				id_image = material->Get_Id_Texture();
 			}
 
 			//Check the mesh parent
-			if (mesh_parent->active == true)
-				active = true;
+			if (mesh_parent->Is_Checkbox_Active() == true)
+				active_checkbox = true;
 			
-			if (last_active_mesh == true && mesh_parent->active == false)
+			if (last_active_mesh == true && mesh_parent->active_checkbox == false)
 			{
-				active = false;
+				active_checkbox = false;
 			}
 
 			//Check the wireframe parent
@@ -83,8 +83,8 @@ void Component_Mesh::Update()
 			}
 
 			last_active_wireframe = mesh_parent->wireframe;
-			last_active_mesh = mesh_parent->active;
-			last_active_texture = material_parent->active;
+			last_active_mesh = mesh_parent->active_checkbox;
+			last_active_texture = material_parent->Is_Checkbox_Active();
 
 		}
 		
@@ -94,7 +94,7 @@ void Component_Mesh::Update()
 	{
 		if (ImGui::CollapsingHeader("Mesh", ImGuiTreeNodeFlags_DefaultOpen))
 		{
-			if (active == false)
+			if (active_checkbox == false)
 			{
 				//--------------------------------------------------------------------
 				ImGui::Text("Name : ");
@@ -143,7 +143,7 @@ void Component_Mesh::Update()
 
 			}
 
-			ImGui::Checkbox("Active##foo1", &active);
+			ImGui::Checkbox("Active##foo1", &active_checkbox);
 			ImGui::SameLine();
 			ImGui::Checkbox("Wireframe##faa1", &wireframe);
 		}
@@ -153,15 +153,21 @@ void Component_Mesh::Update()
 
 	if (mesh_parent != nullptr)
 	{
-		if (active == false && mesh_parent->active == false)
+		if (active_checkbox == false && mesh_parent->active_checkbox == false)
 		{
 			App->renderer3D->Draw_Geometry(mesh, id_image, transformation->Get_Tranformation_Matrix().Transposed(), wireframe);
 		}
 	}
+}
 
 
+bool Component_Mesh::Is_Checkbox_Active()const
+{
+	return active_checkbox;
+}
 
-	
-	
-
+bool Component_Mesh::Set_Checkbox(bool on)
+{
+	active_checkbox = on;
+	return active_checkbox;
 }

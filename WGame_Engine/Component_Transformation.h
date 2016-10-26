@@ -12,16 +12,21 @@ public:
 
 	void Update();
 
-	void Set_Position();
-	void Set_Rotation();
-	void Set_Scale();
+	void Set_Position(math::float3 pos);
+	void Set_Rotation(math::float3 rot_degrees);
+	void Set_Scale(math::float3 scal);
 
 	math::float3 Get_Position()const;
 
-	math::float4x4 Create_New_Matrix_Transformation();
+	math::float4x4 Create_New_Matrix_Transformation(math::float3 pos, math::Quat q_rotation, math::float3 scal);
 	math::float4x4 Get_Tranformation_Matrix()const;
 
 	void Modify_Children();
+
+
+	//Checkbox bool
+	bool Is_Checkbox_Active()const;
+	bool Set_Checkbox(bool on);
 
 
 private:
@@ -38,7 +43,7 @@ private:
 	math::float4x4 transformation_matrix = math::float4x4::identity;
 	math::float4x4 transformation_matrix_to_draw = math::float4x4::identity;
 
-	bool active = false;
+	bool active_checkbox = false;
 
 };
 #endif // ! _COMPONENT_TRANSFORMATION_H_

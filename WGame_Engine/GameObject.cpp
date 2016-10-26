@@ -137,11 +137,11 @@ void GameObject::Update_Go_Components()
 	}
 }
 
-bool GameObject::Exist_Component(Components_Type type)
+bool GameObject::Exist_Component(Components_Type type)const
 {
 	if (components_list.size() > 0)
 	{
-		vector<Components*>::iterator node_com = components_list.begin();
+		vector<Components*>::const_iterator node_com = components_list.begin();
 
 		while (node_com != components_list.end())
 		{
@@ -158,10 +158,10 @@ bool GameObject::Exist_Component(Components_Type type)
 }
 
 
-Components* GameObject::Get_Component(Components_Type type)
+Components* GameObject::Get_Component(Components_Type type)const
 {
 	
-	    vector<Components*>::iterator itme_component = components_list.begin();
+	    vector<Components*>::const_iterator itme_component = components_list.begin();
 
 		while (itme_component != components_list.end())
 		{
@@ -177,12 +177,12 @@ Components* GameObject::Get_Component(Components_Type type)
 	return nullptr;
 }
 
-std::vector<GameObject*>* GameObject::Get_Children()
+const vector<GameObject*>* GameObject::Get_Children()
 {
 	return &children;
 }
 
-std::vector<Components*>* GameObject::Get_Components()
+const vector<Components*>* GameObject::Get_Components()
 {
 	return &components_list;
 }

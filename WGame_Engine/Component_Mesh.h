@@ -16,13 +16,16 @@ public:
 	void Update();
 	void Clean_Up();
 
-public:
+	bool Is_Checkbox_Active()const;
+	bool Set_Checkbox(bool on);
+
+private:
 
 	Mesh* mesh = nullptr;
 	unsigned int id_image = 0;
 
 	//Booleans use to parents
-	bool active = false;
+	bool active_checkbox = false;//Use it to the checkbox
 	bool last_active_mesh = false;
 	bool last_active_texture = false;
 	bool last_active_wireframe = false;

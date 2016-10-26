@@ -24,7 +24,7 @@ Module_Go_Manager::~Module_Go_Manager()
 }
 
 
-GameObject* Module_Go_Manager::Create_Game_Object(Mesh* m, GameObject* Parent)
+GameObject* Module_Go_Manager::Create_Game_Object( Mesh* m, GameObject* Parent)
 {
 	if (Parent == nullptr)
 	{
@@ -61,7 +61,7 @@ update_status Module_Go_Manager::Update(float dt)
 
 	if (root_game_object->Get_Children()->size() > 0)
 	{
-		vector<GameObject*>::iterator node_game_obj = root_game_object->Get_Children()->begin();
+		vector<GameObject*>::const_iterator node_game_obj = root_game_object->Get_Children()->begin();
 
 		while (node_game_obj != root_game_object->Get_Children()->end())
 		{
@@ -100,7 +100,7 @@ update_status Module_Go_Manager::Update(float dt)
 void Module_Go_Manager::Window_Hierarchy(GameObject* Root_node)
 {
 
-	for (vector<GameObject*>::iterator node_go = Root_node->Get_Children()->begin(); node_go != Root_node->Get_Children()->end(); node_go++)
+	for (vector<GameObject*>::const_iterator node_go = Root_node->Get_Children()->begin(); node_go != Root_node->Get_Children()->end(); node_go++)
 	{
 		uint flags = 0;
 		if ((*node_go) == game_object_selected)
@@ -152,9 +152,9 @@ void Module_Go_Manager::Window_Hierarchy(GameObject* Root_node)
 
 }
 
-void Module_Go_Manager::Search_GameObject_To_Active( GameObject* root_go)
+void Module_Go_Manager::Search_GameObject_To_Active( GameObject* root_go)const
 {
-	vector<Components*>::iterator node_comp = root_go->Get_Components()->begin();
+	vector<Components*>::const_iterator node_comp = root_go->Get_Components()->begin();
 	while (node_comp != root_go->Get_Components()->end())
 	{
 		(*node_comp)->Enable();
@@ -162,11 +162,11 @@ void Module_Go_Manager::Search_GameObject_To_Active( GameObject* root_go)
 	}
 }
 
-void Module_Go_Manager::Search_GameObject_To_Deactive( GameObject* root_go)
+void Module_Go_Manager::Search_GameObject_To_Deactive( GameObject* root_go)const
 {
 	if (last_game_object_selected != nullptr)
 	{
-		vector<Components*>::iterator node_comp = last_game_object_selected->Get_Components()->begin();
+		vector<Components*>::const_iterator node_comp = last_game_object_selected->Get_Components()->begin();
 		while (node_comp != last_game_object_selected->Get_Components()->end())
 		{
 			(*node_comp)->Disable();

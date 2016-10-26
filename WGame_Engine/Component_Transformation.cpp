@@ -7,7 +7,7 @@
 
 Component_Transformation::Component_Transformation(Components_Type type, GameObject* game_object, float3 pos, float3 scale_, Quat rot_quat, float3 angles) : Components(type, game_object), position(pos), scale(scale_), quat_rotation(rot_quat), rotation_degrees(angles)
 {
-	transformation_matrix = Create_New_Matrix_Transformation();
+	transformation_matrix = Create_New_Matrix_Transformation(position, quat_rotation, scale);
 	Modify_Children();
 }
 
@@ -23,22 +23,22 @@ void Component_Transformation::Update()
 	{
 		if (ImGui::CollapsingHeader("Local Transform", ImGuiTreeNodeFlags_DefaultOpen))
 		{
-			if (active == false)
+			if (active_checkbox == false)
 			{
 				if (ImGui::DragFloat3("Postion", position.ptr()))
 				{
-					Set_Position();
+					Set_Position(position);
 				}
 
 				if (ImGui::DragFloat3("Rotation", rotation_degrees.ptr()))
 				{
-					Set_Rotation();
+					Set_Rotation(rotation_degrees);
 				}
 
 
 				if (ImGui::DragFloat3("Scale", scale.ptr()))
 				{
-					Set_Scale();
+					Set_Scale(scale);
 				}
 			}
 			else
@@ -52,33 +52,33 @@ void Component_Transformation::Update()
 				ImGui::DragFloat3("Scale", float3(0.f, 0.f, 0.f).ptr());	
 			}
 
-			ImGui::Checkbox("Active##foo2", &active);
+			ImGui::Checkbox("Active##foo2", &active_checkbox);
 		}
 	}
 }
 
 
 
-void Component_Transformation::Set_Position()
+void Component_Transformation::Set_Position(math::float3 pos)
 {
-	transformation_matrix = Create_New_Matrix_Transformation();
+	transformation_matrix = Create_New_Matrix_Transformation(pos, quat_rotation, scale);
 	Modify_Children();
 }
 
-void Component_Transformation::Set_Rotation()
+void Component_Transformation::Set_Rotation(math::float3 rot_degrees)
 {
 	rotation_radians = DegToRad(rotation_degrees);
 
 	quat_rotation = quat_rotation.FromEulerXYZ(rotation_radians.x, rotation_radians.y, rotation_radians.z);
 
-	transformation_matrix = Create_New_Matrix_Transformation();
+	transformation_matrix = Create_New_Matrix_Transformation(position, quat_rotation , scale );
 
 	Modify_Children();
 }
 
-void Component_Transformation::Set_Scale()
+void Component_Transformation::Set_Scale(math::float3 scal)
 {
-	transformation_matrix = Create_New_Matrix_Transformation();
+	transformation_matrix = Create_New_Matrix_Transformation(position, quat_rotation, scal);
 	Modify_Children();
 }
 
@@ -98,7 +98,7 @@ void Component_Transformation::Modify_Children()
 				transformation_matrix_to_draw = par_comp_transform->transformation_matrix_to_draw * transformation_matrix;
 			}
 						
-				for (std::vector<GameObject*>::iterator g_object_children = go->Get_Children()->begin(); g_object_children != go->Get_Children()->end(); g_object_children++)
+				for (std::vector<GameObject*>::const_iterator g_object_children = go->Get_Children()->begin(); g_object_children != go->Get_Children()->end(); g_object_children++)
 				{
 					if ((*g_object_children)->Exist_Component(TRANSFORMATION))
 					{
@@ -115,9 +115,9 @@ void Component_Transformation::Modify_Children()
 	}
 }
 
-math::float4x4 Component_Transformation::Create_New_Matrix_Transformation()
+math::float4x4 Component_Transformation::Create_New_Matrix_Transformation(math::float3 pos, math::Quat q_rotation, math::float3 scale)
 {
-	 return transformation_matrix.FromTRS(position, quat_rotation, scale);	
+	 return transformation_matrix.FromTRS(pos, q_rotation, scale);
 }
 
 math::float4x4 Component_Transformation::Get_Tranformation_Matrix()const
@@ -128,4 +128,15 @@ math::float4x4 Component_Transformation::Get_Tranformation_Matrix()const
 math::float3 Component_Transformation::Get_Position()const
 {
 	return position;
+}
+
+bool Component_Transformation::Is_Checkbox_Active()const
+{
+	return active_checkbox;
+}
+
+bool Component_Transformation::Set_Checkbox(bool on)
+{
+	active_checkbox = on;
+	return active_checkbox;
 }

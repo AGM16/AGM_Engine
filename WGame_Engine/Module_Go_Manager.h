@@ -17,9 +17,9 @@ public:
 
 	GameObject* Create_Game_Object(Mesh* m, GameObject* Parent);
 	update_status Update(float dt);
-	//Functions used to active and 
-	void Search_GameObject_To_Active( GameObject* root_go);
-	void Search_GameObject_To_Deactive( GameObject* root_go);
+	//Functions used to active and deactive components
+	void Search_GameObject_To_Active(GameObject* root_go)const;
+	void Search_GameObject_To_Deactive(GameObject* root_go)const;
 
 	void Window_Hierarchy(GameObject* Root_node);
 

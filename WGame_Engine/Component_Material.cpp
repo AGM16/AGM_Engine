@@ -32,7 +32,7 @@ void Component_Material::Update()
 		 
 		if (ImGui::CollapsingHeader("Material", ImGuiTreeNodeFlags_DefaultOpen))
 		{
-			if (active == false)
+			if (active_checkbox == false)
 			{
 				ImGui::Image((ImTextureID)id_texture, ImVec2(200, 200));
 
@@ -66,9 +66,25 @@ void Component_Material::Update()
 
 			}
 
-			ImGui::Checkbox("Active", &active);
+			ImGui::Checkbox("Active", &active_checkbox);
 
 		}
 	}
 
+}
+
+unsigned int Component_Material::Get_Id_Texture()const
+{
+	return id_texture;
+}
+
+bool Component_Material::Is_Checkbox_Active()const
+{
+	return active_checkbox;
+}
+
+bool Component_Material::Set_Checkbox(bool on)
+{
+	active_checkbox = on;
+	return active_checkbox;
 }

@@ -12,16 +12,22 @@ public:
 	~Component_Material();
 
 	void Update();
-
 	void Clean_Up();
 
-public:
+
+	//Getters
+	unsigned int Get_Id_Texture()const;
+	bool Is_Checkbox_Active()const;
+	bool Set_Checkbox(bool on);
+
+
+private:
     
 	const char* name_texture = nullptr;
 	const char* dir_path_texture = nullptr;
 	unsigned int num_textures = 0;
 	unsigned int id_texture = 0;
-	bool active = false;
+	bool active_checkbox = false;
 };
 
 #endif

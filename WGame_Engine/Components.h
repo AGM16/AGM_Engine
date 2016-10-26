@@ -31,8 +31,6 @@ public:
 	Components_Type Get_Type()const;
 	GameObject* Get_Game_Object()const;
 
-
-	bool Get_Panel_Opened()const;
 	bool Is_Active()const;
 
 private:
@@ -40,8 +38,7 @@ private:
 	Components_Type type_c;
 	bool active_component;
 	GameObject* game_object = nullptr;
-	bool panels_open = true;
-
+	
 };
 
 #endif // !_COMPONENTS_H_

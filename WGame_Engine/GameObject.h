@@ -19,12 +19,12 @@ public:
 	bool Add_Child(GameObject* child);
 
 	void Update_Go_Components();
-	bool Exist_Component(Components_Type type);
-	Components* Get_Component(Components_Type type);
+	bool Exist_Component(Components_Type type)const;
+	Components* Get_Component(Components_Type type)const;
 
 	//Getters
-	std::vector<GameObject*>* Get_Children();
-	std::vector<Components*>* Get_Components();
+	const std::vector<GameObject*>* Get_Children();
+	const std::vector<Components*>* Get_Components();
 	GameObject* Get_Parent()const;
 	const char* Get_Name()const;
 

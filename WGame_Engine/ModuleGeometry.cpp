@@ -155,10 +155,16 @@ void ModuleGeometry::Load_Nodes_For_Hierarchy(aiNode* node_child, const aiScene*
 			//Check Hierarchy and local transform of every mesh
 			if (new_mesh->HasPositions() == true)
 			{	
-				Hierarchy_And_Local_Transform(m, node_child);
-
-				game_obj = App->go_manager->Create_Game_Object(m, parent);
+				Hierarchy_And_Local_Transform(m, node_child);	
 			}
+
+			//Generate AABB
+			m->bounding_box.SetNegativeInfinity();
+			m->bounding_box.Enclose((float3*)m->vertices, m->num_vertices);
+
+			game_obj = App->go_manager->Create_Game_Object(m, parent);
+
+			
 		}
 	}
 	else

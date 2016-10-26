@@ -156,6 +156,7 @@ void Component_Mesh::Update()
 		if (active_checkbox == false && mesh_parent->active_checkbox == false)
 		{
 			App->renderer3D->Draw_Geometry(mesh, id_image, transformation->Get_Tranformation_Matrix().Transposed(), wireframe);
+			App->renderer3D->Render_Cube(transformation->Get_Tranformation_Matrix().Transposed(), mesh->bounding_box.Size(), mesh->bounding_box.CenterPoint());
 		}
 	}
 }

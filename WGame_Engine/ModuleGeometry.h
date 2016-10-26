@@ -62,6 +62,11 @@ struct Mesh
 	string name_texture = "";
 	string dir_texture = "";
 
+
+	//Bounding Box
+	AABB bounding_box;
+
+
 };
 
 

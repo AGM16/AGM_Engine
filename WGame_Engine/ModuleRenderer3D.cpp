@@ -243,57 +243,123 @@ void ModuleRenderer3D::Draw_Geometry(const Mesh* mesh, uint texture, float4x4 tr
 }
 
 
-void ModuleRenderer3D::Render_Cube(float4x4 transform, math::float3 size, math::float3 center) const
+void ModuleRenderer3D::Render_AABB_Cube(math::AABB aabb_box)
 {
-	glPushMatrix();
-	transform.v[3][1] *= 2;
-	glMultMatrixf(*transform.v);
+	glDisable(GL_LIGHTING);
+	vec corners[8];
+	aabb_box.GetCornerPoints(corners);
 
-	float sx = size.x * 0.5f;
-	float sy = size.y * 0.5f;
-	float sz = size.z * 0.5f;
+	glLineWidth(2.0f);
+	glColor4f(0.0f, 1.0f, 0.0f, 1.0f);
 
-    glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
 
-	glBegin(GL_QUADS);
+	if (corners->Length() > 0)
+	{
+		
+		glBegin(GL_LINES);
 
-	glNormal3f(0.0f, 0.0f, 1.0f);
-	glVertex3f(-sx, -sy, sz);
-	glVertex3f(sx, -sy, sz);
-	glVertex3f(sx, sy, sz);
-	glVertex3f(-sx, sy, sz);
+		//Back Lines
+		glVertex3f(corners[4].x, corners[4].y, corners[4].z);
+		glVertex3f(corners[0].x, corners[0].y, corners[0].z);
+		glVertex3f(corners[2].x, corners[2].y, corners[2].z);
+		glVertex3f(corners[6].x, corners[6].y, corners[6].z);
 
-	glNormal3f(0.0f, 0.0f, -1.0f);
-	glVertex3f(sx, -sy, -sz);
-	glVertex3f(-sx, -sy, -sz);
-	glVertex3f(-sx, sy, -sz);
-	glVertex3f(sx, sy, -sz);
+		//Front Lines
+		glVertex3f(corners[1].x, corners[1].y, corners[1].z);
+		glVertex3f(corners[5].x, corners[5].y, corners[5].z);
+		glVertex3f(corners[7].x, corners[7].y, corners[7].z);
+		glVertex3f(corners[3].x, corners[3].y, corners[3].z);
 
-	glNormal3f(1.0f, 0.0f, 0.0f);
-	glVertex3f(sx, -sy, sz);
-	glVertex3f(sx, -sy, -sz);
-	glVertex3f(sx, sy, -sz);
-	glVertex3f(sx, sy, sz);
+		//Left Lines
+		glVertex3f(corners[5].x, corners[5].y, corners[5].z);
+		glVertex3f(corners[4].x, corners[4].y, corners[4].z);
+		glVertex3f(corners[6].x, corners[6].y, corners[6].z);
+		glVertex3f(corners[7].x, corners[7].y, corners[7].z);
 
-	glNormal3f(-1.0f, 0.0f, 0.0f);
-	glVertex3f(-sx, -sy, -sz);
-	glVertex3f(-sx, -sy, sz);
-	glVertex3f(-sx, sy, sz);
-	glVertex3f(-sx, sy, -sz);
+		//Right Lines
+		glVertex3f(corners[0].x, corners[0].y, corners[0].z);
+		glVertex3f(corners[1].x, corners[1].y, corners[1].z);
+		glVertex3f(corners[3].x, corners[3].y, corners[3].z);
+		glVertex3f(corners[2].x, corners[2].y, corners[2].z);
 
-	glNormal3f(0.0f, 1.0f, 0.0f);
-	glVertex3f(-sx, sy, sz);
-	glVertex3f(sx, sy, sz);
-	glVertex3f(sx, sy, -sz);
-	glVertex3f(-sx, sy, -sz);
+		//Vertical Back Lines
+		glVertex3f(corners[2].x, corners[2].y, corners[2].z);
+		glVertex3f(corners[0].x, corners[0].y, corners[0].z);
+		glVertex3f(corners[6].x, corners[6].y, corners[6].z);
+		glVertex3f(corners[4].x, corners[4].y, corners[4].z);
 
-	glNormal3f(0.0f, -1.0f, 0.0f);
-	glVertex3f(-sx, -sy, -sz);
-	glVertex3f(sx, -sy, -sz);
-	glVertex3f(sx, -sy, sz);
-	glVertex3f(-sx, -sy, sz);
+		//Vertical Front Lines
+		glVertex3f(corners[3].x, corners[3].y, corners[3].z);
+		glVertex3f(corners[1].x, corners[1].y, corners[1].z);
+		glVertex3f(corners[5].x, corners[5].y, corners[5].z);
+		glVertex3f(corners[7].x, corners[7].y, corners[7].z);
 
-	glEnd();
+		glEnd();
+	}
 
-	glPopMatrix();
+	glEnable(GL_LIGHTING);
+    
+}
+
+
+
+void ModuleRenderer3D::Render_OBB_Cube(math::OBB aabb_box)
+{
+
+	vec corners[8];
+	aabb_box.GetCornerPoints(corners);
+
+	glDisable(GL_LIGHTING);
+
+	glLineWidth(2.0f);
+	glColor4f(9.0f, 1.0f, 0.0f, 1.0f);
+
+
+	if (corners->Length() > 0)
+	{
+
+		glBegin(GL_LINES);
+
+		//Back Lines
+		glVertex3f(corners[4].x, corners[4].y, corners[4].z);
+		glVertex3f(corners[0].x, corners[0].y, corners[0].z);
+		glVertex3f(corners[2].x, corners[2].y, corners[2].z);
+		glVertex3f(corners[6].x, corners[6].y, corners[6].z);
+
+		//Front Lines
+		glVertex3f(corners[1].x, corners[1].y, corners[1].z);
+		glVertex3f(corners[5].x, corners[5].y, corners[5].z);
+		glVertex3f(corners[7].x, corners[7].y, corners[7].z);
+		glVertex3f(corners[3].x, corners[3].y, corners[3].z);
+
+		//Left Face
+		glVertex3f(corners[5].x, corners[5].y, corners[5].z);
+		glVertex3f(corners[4].x, corners[4].y, corners[4].z);
+		glVertex3f(corners[6].x, corners[6].y, corners[6].z);
+		glVertex3f(corners[7].x, corners[7].y, corners[7].z);
+
+		//Right Lines
+		glVertex3f(corners[0].x, corners[0].y, corners[0].z);
+		glVertex3f(corners[1].x, corners[1].y, corners[1].z);
+		glVertex3f(corners[3].x, corners[3].y, corners[3].z);
+		glVertex3f(corners[2].x, corners[2].y, corners[2].z);
+
+		//Vertical Back Lines
+		glVertex3f(corners[2].x, corners[2].y, corners[2].z);
+		glVertex3f(corners[0].x, corners[0].y, corners[0].z);
+		glVertex3f(corners[6].x, corners[6].y, corners[6].z);
+		glVertex3f(corners[4].x, corners[4].y, corners[4].z);
+
+		//Vertical Front Lines
+		glVertex3f(corners[3].x, corners[3].y, corners[3].z);
+		glVertex3f(corners[1].x, corners[1].y, corners[1].z);
+		glVertex3f(corners[5].x, corners[5].y, corners[5].z);
+		glVertex3f(corners[7].x, corners[7].y, corners[7].z);
+
+		glEnd();
+
+
+	}
+
+	glEnable(GL_LIGHTING);
 }

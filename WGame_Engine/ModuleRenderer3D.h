@@ -23,7 +23,8 @@ public:
 
 	void OnResize(int width, int height, float fovy);
 	void Draw_Geometry(const Mesh* mesh, uint texture, float4x4 transformation_matrix, bool wire);
-	void Render_Cube(float4x4 transform, math::float3 size, math::float3 center)const;
+	void Render_AABB_Cube(math::AABB aabb_box);
+	void Render_OBB_Cube(math::OBB obb_box);
 
 public:
 

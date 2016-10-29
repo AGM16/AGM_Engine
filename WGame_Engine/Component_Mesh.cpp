@@ -10,6 +10,13 @@
 
 Component_Mesh::Component_Mesh(Components_Type type, GameObject* game_object, Mesh* mesh_) : Components(type, game_object), mesh(mesh_)
 {
+	if (mesh_ != NULL)
+	{
+		//Generate AABB
+		bounding_box.SetNegativeInfinity();
+		bounding_box.Enclose((float3*)mesh->vertices, mesh->num_vertices);
+
+	}
 
 }
 
@@ -29,23 +36,65 @@ void Component_Mesh::Clean_Up()
 
 void Component_Mesh::Update()
 {	
-	//Render the Meshes
-	Component_Transformation* transformation = (Component_Transformation*)Get_Game_Object()->Get_Component(TRANSFORMATION);
-	Component_Material* material = (Component_Material*)Get_Game_Object()->Get_Component(MATERIAL);
-    
+	//To Render the Meshes
+	Component_Transformation* transformation = (Component_Transformation*)Get_Game_Object()->Get_Component(TRANSFORMATION);	
+	Component_Material* material = (Component_Material*)Get_Game_Object()->Get_Component(MATERIAL);  
+
 	//Check if the material checkbox is active
 	id_image = material->Get_Id_Texture();
 	if (material->Is_Checkbox_Active() == true)
 	{
 		id_image = 0;
 	}
+
+	//Check if the global matrix has changed to recalculate the bounding box
+	Is_Matrix_Transformation_Changed(transformation);
 	
-	//Check the checkbox of the parent_mesh
+	//Check the checkbox of the parent components
 	Component_Mesh* mesh_parent = nullptr;
 	Component_Material* material_parent = nullptr;
-	const char* root = "RootNode";
-    if (Get_Game_Object()->Get_Parent() != App->go_manager->Get_Root())
-	{	
+	Check_Parent_Checkboxes(mesh_parent, material_parent, material);
+
+	//Render Info Mesh
+	Render_Mesh_Panel();
+
+	//Render Mesh and bounding boxes
+	if (mesh_parent != nullptr)
+	{
+		if (active_checkbox == false && mesh_parent->active_checkbox == false)
+		{
+			App->renderer3D->Draw_Geometry(mesh, id_image, transformation->Get_Tranformation_Matrix().Transposed(), wireframe);
+			App->renderer3D->Render_AABB_Cube(new_bounding_box);
+			App->renderer3D->Render_OBB_Cube(obb_box);
+		}
+	}
+	else
+	{
+		if (mesh != nullptr)
+		{
+			App->renderer3D->Draw_Geometry(mesh, id_image, transformation->Get_Tranformation_Matrix().Transposed(), wireframe);
+			App->renderer3D->Render_AABB_Cube(new_bounding_box);
+			App->renderer3D->Render_OBB_Cube(obb_box);
+		}
+	}
+}
+
+
+bool Component_Mesh::Is_Checkbox_Active()const
+{
+	return active_checkbox;
+}
+
+bool Component_Mesh::Set_Checkbox(bool on)
+{
+	active_checkbox = on;
+	return active_checkbox;
+}
+
+void Component_Mesh::Check_Parent_Checkboxes(Component_Mesh* mesh_parent, Component_Material* material_parent, Component_Material* material)
+{
+	if (Get_Game_Object()->Get_Parent() != App->go_manager->Get_Root())
+	{
 		if (Get_Game_Object()->Get_Parent()->Exist_Component(MESH))
 		{
 			mesh_parent = (Component_Mesh*)Get_Game_Object()->Get_Parent()->Get_Component(MESH);
@@ -67,7 +116,7 @@ void Component_Mesh::Update()
 			//Check the mesh parent
 			if (mesh_parent->Is_Checkbox_Active() == true)
 				active_checkbox = true;
-			
+
 			if (last_active_mesh == true && mesh_parent->active_checkbox == false)
 			{
 				active_checkbox = false;
@@ -82,13 +131,34 @@ void Component_Mesh::Update()
 				wireframe = false;
 			}
 
+			//Modify the last results
 			last_active_wireframe = mesh_parent->wireframe;
 			last_active_mesh = mesh_parent->active_checkbox;
 			last_active_texture = material_parent->Is_Checkbox_Active();
 
 		}
-		
 	}
+}
+
+void Component_Mesh::Is_Matrix_Transformation_Changed(Component_Transformation* transformation)
+{
+	//Compare both matrixs
+	if (last_transformation_matrix.Equals(transformation->Get_Tranformation_Matrix()) == false)
+	{
+		//Build the new OBB
+		obb_box = bounding_box.ToOBB();
+		obb_box.Transform(transformation->Get_Tranformation_Matrix());
+
+		//Build the new AABB
+		new_bounding_box.SetNegativeInfinity();
+		new_bounding_box.Enclose(obb_box);
+
+		last_transformation_matrix = transformation->Get_Tranformation_Matrix();
+	}
+}
+
+void Component_Mesh::Render_Mesh_Panel()
+{
 
 	if (Is_Active())
 	{
@@ -149,26 +219,4 @@ void Component_Mesh::Update()
 		}
 	}
 
-	
-
-	if (mesh_parent != nullptr)
-	{
-		if (active_checkbox == false && mesh_parent->active_checkbox == false)
-		{
-			App->renderer3D->Draw_Geometry(mesh, id_image, transformation->Get_Tranformation_Matrix().Transposed(), wireframe);
-			App->renderer3D->Render_Cube(transformation->Get_Tranformation_Matrix().Transposed(), mesh->bounding_box.Size(), mesh->bounding_box.CenterPoint());
-		}
-	}
-}
-
-
-bool Component_Mesh::Is_Checkbox_Active()const
-{
-	return active_checkbox;
-}
-
-bool Component_Mesh::Set_Checkbox(bool on)
-{
-	active_checkbox = on;
-	return active_checkbox;
 }

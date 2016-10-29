@@ -96,7 +96,10 @@ bool ModuleGeometry::Load_Geometry(const char* path, bool drop)
 			ret = false;
 		}
 		
-		delete[] buffer;
+		if (drop == false)
+		{
+			delete[] buffer;
+		}
 	}
 	else
 	{
@@ -157,10 +160,6 @@ void ModuleGeometry::Load_Nodes_For_Hierarchy(aiNode* node_child, const aiScene*
 			{	
 				Hierarchy_And_Local_Transform(m, node_child);	
 			}
-
-			//Generate AABB
-			m->bounding_box.SetNegativeInfinity();
-			m->bounding_box.Enclose((float3*)m->vertices, m->num_vertices);
 
 			game_obj = App->go_manager->Create_Game_Object(m, parent);
 

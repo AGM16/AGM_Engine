@@ -78,6 +78,7 @@ void Component_Transformation::Update()
 
 void Component_Transformation::Set_Position(math::float3 pos)
 {
+	position = pos;
 	transformation_matrix = Create_New_Matrix_Transformation(pos, quat_rotation, scale);
 	Modify_Children();
 }

@@ -297,6 +297,7 @@ void ModuleGeometry::Load_texture_From_FBX(Mesh* m, aiMesh* new_mesh, const aiSc
 			m->name_texture.assign(App->filesystem->Get_FileName_From_Path(path_.data));
 			m->dir_texture.append(m->name_texture.c_str());
 
+
 			if (path_.length > 0)
 			{
 				ILuint id;

@@ -22,9 +22,12 @@ public:
 	bool CleanUp();
 
 	void OnResize(int width, int height, float fovy);
+
+	//Renders
 	void Draw_Geometry(const Mesh* mesh, uint texture, float4x4 transformation_matrix, bool wire);
 	void Render_AABB_Cube(math::AABB aabb_box);
 	void Render_OBB_Cube(math::OBB obb_box);
+	void Render_Frustum_Cube(math::Frustum fst);
 
 public:
 

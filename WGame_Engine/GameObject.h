@@ -12,10 +12,12 @@ class GameObject
 public:
 	GameObject(GameObject* Parent_, const char* name_);
 	~GameObject();
+
 	//Add Functions
 	bool Add_Component_Mesh( Mesh* m);
 	bool Add_Component_Transformation(math::float3 pos, math::float3 scale_, math::Quat rot_quat, math::float3 angles);
 	bool Add_Component_Material(const char* name_textu, const char* path_texture, unsigned int num_textu, unsigned int id_textu);
+	bool Add_Component_Camera(const char* name_camera);
 	bool Add_Child(GameObject* child);
 
 	void Update_Go_Components();

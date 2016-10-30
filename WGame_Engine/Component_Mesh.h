@@ -18,6 +18,7 @@ public:
 	void Update();
 	void Clean_Up();
 
+	//Checkbox bool
 	bool Is_Checkbox_Active()const;
 	bool Set_Checkbox(bool on);
 

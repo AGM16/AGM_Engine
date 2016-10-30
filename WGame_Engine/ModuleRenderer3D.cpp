@@ -363,3 +363,62 @@ void ModuleRenderer3D::Render_OBB_Cube(math::OBB aabb_box)
 
 	glEnable(GL_LIGHTING);
 }
+
+void ModuleRenderer3D::Render_Frustum_Cube(math::Frustum fst)
+{
+	vec corners[8];
+	fst.GetCornerPoints(corners);
+
+	glDisable(GL_LIGHTING);
+
+	glLineWidth(2.0f);
+	glColor4f(9.0f, 0.0f, 0.0f, 1.0f);
+
+	if (corners->Length() > 0)
+	{
+
+		glBegin(GL_LINES);
+
+		//Back Lines
+		glVertex3f(corners[4].x, corners[4].y, corners[4].z);
+		glVertex3f(corners[0].x, corners[0].y, corners[0].z);
+		glVertex3f(corners[2].x, corners[2].y, corners[2].z);
+		glVertex3f(corners[6].x, corners[6].y, corners[6].z);
+
+		//Front Lines
+		glVertex3f(corners[1].x, corners[1].y, corners[1].z);
+		glVertex3f(corners[5].x, corners[5].y, corners[5].z);
+		glVertex3f(corners[7].x, corners[7].y, corners[7].z);
+		glVertex3f(corners[3].x, corners[3].y, corners[3].z);
+
+		//Left Face
+		glVertex3f(corners[5].x, corners[5].y, corners[5].z);
+		glVertex3f(corners[4].x, corners[4].y, corners[4].z);
+		glVertex3f(corners[6].x, corners[6].y, corners[6].z);
+		glVertex3f(corners[7].x, corners[7].y, corners[7].z);
+
+		//Right Lines
+		glVertex3f(corners[0].x, corners[0].y, corners[0].z);
+		glVertex3f(corners[1].x, corners[1].y, corners[1].z);
+		glVertex3f(corners[3].x, corners[3].y, corners[3].z);
+		glVertex3f(corners[2].x, corners[2].y, corners[2].z);
+
+		//Vertical Back Lines
+		glVertex3f(corners[2].x, corners[2].y, corners[2].z);
+		glVertex3f(corners[0].x, corners[0].y, corners[0].z);
+		glVertex3f(corners[6].x, corners[6].y, corners[6].z);
+		glVertex3f(corners[4].x, corners[4].y, corners[4].z);
+
+		//Vertical Front Lines
+		glVertex3f(corners[3].x, corners[3].y, corners[3].z);
+		glVertex3f(corners[1].x, corners[1].y, corners[1].z);
+		glVertex3f(corners[5].x, corners[5].y, corners[5].z);
+		glVertex3f(corners[7].x, corners[7].y, corners[7].z);
+
+		glEnd();
+
+
+	}
+
+	glEnable(GL_LIGHTING);
+}

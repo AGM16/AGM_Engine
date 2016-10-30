@@ -17,6 +17,8 @@ public:
 
 	//Getters
 	unsigned int Get_Id_Texture()const;
+
+	//Checkbox bool
 	bool Is_Checkbox_Active()const;
 	bool Set_Checkbox(bool on);
 

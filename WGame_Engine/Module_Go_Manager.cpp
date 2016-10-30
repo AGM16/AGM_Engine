@@ -56,6 +56,33 @@ GameObject* Module_Go_Manager::Create_Game_Object( Mesh* m, GameObject* Parent)
 
 }
 
+GameObject* Module_Go_Manager::Create_Camera_Game_Object(GameObject* Parent, const char* name_camera)
+{
+	if (Parent == nullptr)
+	{
+		Parent = root_game_object;
+	}
+
+	GameObject* new_game_object = new GameObject(Parent, name_camera);
+
+	//Add Child to the parent
+	Parent->Add_Child(new_game_object);
+	LOG("The GameObject %s has a new child : %s ", new_game_object->Get_Parent()->Get_Name(), new_game_object->Get_Name());
+
+
+	//Add Component Transformation
+	new_game_object->Add_Component_Transformation(float3::zero, float3::one, Quat::identity, float3::zero);
+	LOG("The GameObject %s has a new component : %s ", new_game_object->Get_Name(), "TRANSFORMATION");
+
+	//Add Component Camera
+	new_game_object->Add_Component_Camera(name_camera);
+	LOG("The GameObject %s has a new component : %s ", new_game_object->Get_Name(), "TRANSFORMATION");
+
+
+
+	return new_game_object;
+}
+
 update_status Module_Go_Manager::Update(float dt)
 {
 

@@ -85,6 +85,8 @@ bool ModuleGeometry::Load_Geometry(const char* path, bool drop)
 				//Visit each child to obtain the mesh information using Load
 				Load_Nodes_For_Hierarchy(parent->mChildren[i], scene, nullptr);
 			}
+
+			App->go_manager->Create_Camera_Game_Object(nullptr, "Camera_2");
 		
 			ret = true;
 
@@ -249,7 +251,6 @@ void ModuleGeometry::Hierarchy_And_Local_Transform(Mesh* m, aiNode* node)
 	m->parent = node->mParent->mName.C_Str();
 	m->num_children = node->mNumChildren;
 	m->name_node = node->mName.C_Str();
-	LOG("The %s mesh is the child of the gameobject %s", m->name_node.c_str(), m->parent);
 
 	//Delete the assimp from the strings
 	m->name_node = Delete_$Assimp$_word(m->name_node);

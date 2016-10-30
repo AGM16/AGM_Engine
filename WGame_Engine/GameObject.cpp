@@ -4,6 +4,7 @@
 #include "Component_Mesh.h"
 #include "Component_Transformation.h"
 #include "Component_Material.h"
+#include "Component_Camera.h"
 #include "p2Defs.h"
 #include "Imgui\imgui.h"
 
@@ -77,6 +78,18 @@ bool GameObject::Add_Component_Material(const char* name_textu, const char* path
 	}
 
 	return false;
+}
+
+bool GameObject::Add_Component_Camera(const char* name_camera)
+{
+	if (Exist_Component(CAMERA) == false)
+	{
+		Components* new_component = new Component_Camera(CAMERA, this, name_camera);
+		LOG("The GameObject %s component %s has been created", this->name, "CAMERA");
+
+		components_list.push_back(new_component);
+		return true;
+	}
 }
 
 bool GameObject::Add_Child(GameObject* child)

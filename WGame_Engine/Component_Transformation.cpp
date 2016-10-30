@@ -25,31 +25,48 @@ void Component_Transformation::Update()
 		{
 			if (active_checkbox == false)
 			{
-				if (ImGui::DragFloat3("Postion", position.ptr()))
+				if (Get_Game_Object()->Exist_Component(CAMERA) == false)
 				{
-					Set_Position(position);
+
+					if (ImGui::DragFloat3("Postion", position.ptr()))
+					{
+						Set_Position(position);
+					}
+
+					if (ImGui::DragFloat3("Rotation", rotation_degrees.ptr()))
+					{
+						Set_Rotation(rotation_degrees);
+					}
+
+					if (ImGui::DragFloat3("Scale", scale.ptr()))
+					{
+						Set_Scale(scale);
+					}
 				}
-
-				if (ImGui::DragFloat3("Rotation", rotation_degrees.ptr()))
+				else
 				{
-					Set_Rotation(rotation_degrees);
-				}
-
-
-				if (ImGui::DragFloat3("Scale", scale.ptr()))
-				{
-					Set_Scale(scale);
+					if (ImGui::DragFloat3("Postion", position.ptr()))
+					{
+						Set_Position(position);
+					}
 				}
 			}
 			else
 			{
-				ImGui::DragFloat3("Postion", float3(0.f, 0.f, 0.f).ptr());
-				
+				if (Get_Game_Object()->Exist_Component(CAMERA) == false)
+				{
+					ImGui::DragFloat3("Postion", float3(0.f, 0.f, 0.f).ptr());
 
-				ImGui::DragFloat3("Rotation", float3(0.f, 0.f, 0.f).ptr());
-				
 
-				ImGui::DragFloat3("Scale", float3(0.f, 0.f, 0.f).ptr());	
+					ImGui::DragFloat3("Rotation", float3(0.f, 0.f, 0.f).ptr());
+
+
+					ImGui::DragFloat3("Scale", float3(0.f, 0.f, 0.f).ptr());
+				}
+				else
+				{
+					ImGui::DragFloat3("Postion", float3(0.f, 0.f, 0.f).ptr());
+				}
 			}
 
 			ImGui::Checkbox("Active##foo2", &active_checkbox);

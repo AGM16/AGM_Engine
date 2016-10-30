@@ -9,6 +9,7 @@ enum Components_Type
 	TRANSFORMATION,
 	MESH,
 	MATERIAL,
+	CAMERA,
 	UNKOWN
 };
 

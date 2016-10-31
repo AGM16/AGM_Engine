@@ -18,8 +18,6 @@ bool Editor::Start()
 {
 	LOG("Loading Intro assets");
 
-	App->camera->Move(float3(5.0f, 6.0f, 15.0f));
-	App->camera->LookAt(float3(0, 0, 0));
 
 
 	show_test_window = false;

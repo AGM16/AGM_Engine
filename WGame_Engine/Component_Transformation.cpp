@@ -49,6 +49,11 @@ void Component_Transformation::Update()
 					{
 						Set_Position(position);
 					}
+
+					if (ImGui::DragFloat3("Rotation", rotation_degrees.ptr()))
+					{
+						Set_Rotation(rotation_degrees);
+					}
 				}
 			}
 			else
@@ -85,6 +90,7 @@ void Component_Transformation::Set_Position(math::float3 pos)
 
 void Component_Transformation::Set_Rotation(math::float3 rot_degrees)
 {
+	rotation_degrees = rot_degrees;
 	rotation_radians = DegToRad(rotation_degrees);
 
 	quat_rotation = quat_rotation.FromEulerXYZ(rotation_radians.x, rotation_radians.y, rotation_radians.z);

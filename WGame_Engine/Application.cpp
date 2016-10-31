@@ -33,9 +33,9 @@ Application::Application()
 	AddModule(go_manager);
 	AddModule(geometry);
 	AddModule(camera);
-	AddModule(input);
 	AddModule(audio);
-	AddModule(physics);	
+	AddModule(physics);
+	AddModule(input);
 
 
 	// Scenes

@@ -39,8 +39,8 @@ bool ModuleSceneIntro::Start()
 	LOG("Loading Intro assets");
 	bool ret = true;
 
-	App->camera->Move(vec(140.0f, 40.0f, 0.0f));
-	App->camera->LookAt(vec(0, 0, 0));	
+	//App->camera->Move(vec(140.0f, 40.0f, 0.0f));
+	//App->camera->LookAt(vec(0, 0, 0));	
 	
 	//Load 3D model
 	App->geometry->Load_Geometry("Assets/3D_Models/Street environment_V01.fbx",false);

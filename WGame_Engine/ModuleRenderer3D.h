@@ -21,7 +21,8 @@ public:
 	update_status PostUpdate(float dt);
 	bool CleanUp();
 
-	void OnResize(int width, int height, float fovy);
+	void OnResize(int width, int height);
+	void Update_Matrix_Projection();
 
 	//Renders
 	void Draw_Geometry(const Mesh* mesh, uint texture, float4x4 transformation_matrix, bool wire);
@@ -34,7 +35,7 @@ public:
 	Light lights[MAX_LIGHTS];
 	SDL_GLContext context;
 	float3x3 NormalMatrix;
-	float4x4 ModelMatrix, ViewMatrix, ProjectionMatrix;
+	float4x4 ModelMatrix, ViewMatrix;
 };
 
 #endif

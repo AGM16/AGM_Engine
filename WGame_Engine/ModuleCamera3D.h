@@ -6,6 +6,10 @@
 #include "MathGeoLib\include\MathGeoLib.h"
 #include <list>
 #include "p2Point.h"
+#include "Component_Camera.h"
+
+class GameObject;
+
 
 #define PIXELS_PER_METER 50.0f // if touched change METER_PER_PIXEL too
 #define METER_PER_PIXEL 0.02f // this is 1 / PIXELS_PER_METER !
@@ -27,33 +31,23 @@ public:
 	ModuleCamera3D(Application* app, bool start_enabled = true);
 	~ModuleCamera3D();
 
-	bool Start();
+	bool Init();
 	update_status Update(float dt);
 	bool CleanUp();
 
-	void Look(const vec &Position, const vec &Reference, bool RotateAroundReference = false);
+
 	void LookAt(const vec &Spot);
-	void Move(const vec &Movement);
-	void Move(Direction d, float speed);
+	void Set_Position(const vec &position);
+
+
 	float* GetViewMatrix();
-
-	void Rotate(float x, float y);
-
-
-	//Transform a 3D point to a point of the screen
-	void From3Dto2D(vec point, int& x, int& y); 
+	float* Get_Projection_Matrix()const;
+	Component_Camera* Get_Camera_Component()const;
 
 private:
 
-	void CalculateViewMatrix();
-
-public:
-	
-	vec X, Y, Z, Position, Reference;
-
-private:
-
-	float4x4 ViewMatrix, ViewMatrixInverse;
+	GameObject* camera_go = nullptr;
+	Component_Camera* camera_component = nullptr;
 };
 
 #endif

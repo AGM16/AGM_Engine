@@ -10,7 +10,6 @@ Module_Go_Manager::Module_Go_Manager(Application* app, bool start_enabled) : Mod
 {
 	root_game_object = new GameObject(nullptr, "Root_Game_Object");
 	root_game_object->Add_Component_Transformation(float3::zero, float3::one, Quat::identity, float3::zero);
-	root_game_object->Add_Component_Mesh(nullptr);
 	root_game_object->Add_Component_Material("", "", 0, 0);
 }
 

@@ -55,7 +55,8 @@ void Component_Camera::Update()
 
 			ImGui::Text("Aspect_Ratio :  %f", aspect_ratio);
 			ImGui::Checkbox("Active Culling##foo1", &active_culling);
-
+			ImGui::Checkbox("Active AABB Bounding Boxes##fee2", &active_all_aabb_bounding_boxes);
+			ImGui::Checkbox("Active OBB Bounding Boxes##fee3", &active_all_obb_bounding_boxes);
 		
 		}
 	}
@@ -234,6 +235,28 @@ bool Component_Camera::Intersect_Frustum_AABB(const AABB &b)
 	{
 		return false;
 	}
+}
+
+//Check Box that active all the bounding boxes
+//AABB
+void Component_Camera::Set_Checkbox_AABB_Bounding_Boxes(bool on)
+{
+	active_all_aabb_bounding_boxes = on;
+}
+
+bool Component_Camera::Get_Checkbox_AABB_Bounding_Boxes()const
+{
+	return active_all_aabb_bounding_boxes;
+}
+
+void Component_Camera::Set_Checkbox_OBB_Bounding_Boxes(bool on)
+{
+	active_all_obb_bounding_boxes = on;
+}
+
+bool Component_Camera::Get_Checkbox_OBB_Bounding_Boxes()const
+{
+	return active_all_obb_bounding_boxes;
 }
 
 

@@ -43,6 +43,15 @@ public:
 	void Look_At(const math::float3 &position);
 	bool Intersect_Frustum_AABB(const AABB &b);
 
+
+	//Check Box that active all the bounding boxes
+	//AABB
+	void Set_Checkbox_AABB_Bounding_Boxes(bool on);
+	bool Get_Checkbox_AABB_Bounding_Boxes()const;
+	//OBB
+	void Set_Checkbox_OBB_Bounding_Boxes(bool on);
+	bool Get_Checkbox_OBB_Bounding_Boxes()const;
+
 private:
 
 	math::Frustum frustum;
@@ -57,6 +66,8 @@ private:
 	float vertical_fov;
 	float aspect_ratio;
 	bool active_culling = true;
+	bool active_all_aabb_bounding_boxes = false;
+	bool active_all_obb_bounding_boxes = false;
 
 };
 

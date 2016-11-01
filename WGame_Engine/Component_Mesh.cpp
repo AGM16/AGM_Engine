@@ -68,10 +68,10 @@ void Component_Mesh::Update()
 			{
 				App->renderer3D->Draw_Geometry(mesh, id_image, transformation->Get_Tranformation_Matrix().Transposed(), wireframe);
 
-				if(aabb_checkbox == false)
+				if(aabb_checkbox == true || App->camera->Get_Camera_Component()->Get_Checkbox_AABB_Bounding_Boxes())
 					App->renderer3D->Render_AABB_Cube(new_bounding_box);
 
-				if (obb_checkbox == false)
+				if (obb_checkbox == true || App->camera->Get_Camera_Component()->Get_Checkbox_OBB_Bounding_Boxes())
 					App->renderer3D->Render_OBB_Cube(obb_box);
 
 			}
@@ -80,13 +80,16 @@ void Component_Mesh::Update()
 		{
 			if (mesh != nullptr)
 			{
-				App->renderer3D->Draw_Geometry(mesh, id_image, transformation->Get_Tranformation_Matrix().Transposed(), wireframe);
+				if (active_checkbox == false)
+				{
+					App->renderer3D->Draw_Geometry(mesh, id_image, transformation->Get_Tranformation_Matrix().Transposed(), wireframe);
 
-				if (aabb_checkbox == false)
-					App->renderer3D->Render_AABB_Cube(new_bounding_box);
+					if (aabb_checkbox == true || App->camera->Get_Camera_Component()->Get_Checkbox_AABB_Bounding_Boxes())
+						App->renderer3D->Render_AABB_Cube(new_bounding_box);
 
-				if (obb_checkbox == false)
-					App->renderer3D->Render_OBB_Cube(obb_box);
+					if (obb_checkbox == true || App->camera->Get_Camera_Component()->Get_Checkbox_OBB_Bounding_Boxes())
+						App->renderer3D->Render_OBB_Cube(obb_box);
+				}
 
 			}
 		}
@@ -249,7 +252,7 @@ void Component_Mesh::Render_Bounding_Box_Panel()
 		{
 			if (ImGui::CollapsingHeader("AABB Box", ImGuiTreeNodeFlags_DefaultOpen))
 			{
-				if (aabb_checkbox == false)
+				if (aabb_checkbox == true)
 				{
 					ImGui::Text("MinPoint : ");
 					ImGui::SameLine();
@@ -276,7 +279,7 @@ void Component_Mesh::Render_Bounding_Box_Panel()
 
 			if (ImGui::CollapsingHeader("OBB Box", ImGuiTreeNodeFlags_DefaultOpen))
 			{
-				if (obb_checkbox == false)
+				if (obb_checkbox == true)
 				{
 					ImGui::Text("Center Position : ");
 					ImGui::SameLine();

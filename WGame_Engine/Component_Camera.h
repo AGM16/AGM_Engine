@@ -43,7 +43,7 @@ public:
 
 	void Look_At(const math::float3 &position);
 
-    math::float3 reference = float3::zero;
+	bool Intersect_Frustum_AABB(const AABB &b);
 
 private:
 
@@ -51,13 +51,14 @@ private:
 	const char* id_camera;
 	Component_Transformation* transformation;
 	math::float4x4 last_fst_transformation = float4x4::identity;
-	
+	math::float3 reference = float3::zero;
 
 	//Frustum Variables
 	float near_plane;
 	float far_plane;
 	float vertical_fov;
 	float aspect_ratio;
+	bool active_culling = true;
 
 };
 

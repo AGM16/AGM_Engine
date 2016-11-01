@@ -59,22 +59,25 @@ void Component_Mesh::Update()
 	Render_Mesh_Panel();
 
 	//Render Mesh and bounding boxes
-	if (mesh_parent != nullptr)
+	if (App->camera->camera_component_test->Intersect_Frustum_AABB(new_bounding_box) == true)
 	{
-		if (active_checkbox == false && mesh_parent->active_checkbox == false)
+		if (mesh_parent != nullptr)
 		{
-			App->renderer3D->Draw_Geometry(mesh, id_image, transformation->Get_Tranformation_Matrix().Transposed(), wireframe);
-			App->renderer3D->Render_AABB_Cube(new_bounding_box);
-			App->renderer3D->Render_OBB_Cube(obb_box);
+			if (active_checkbox == false && mesh_parent->active_checkbox == false)
+			{
+				App->renderer3D->Draw_Geometry(mesh, id_image, transformation->Get_Tranformation_Matrix().Transposed(), wireframe);
+				App->renderer3D->Render_AABB_Cube(new_bounding_box);
+				App->renderer3D->Render_OBB_Cube(obb_box);
+			}
 		}
-	}
-	else
-	{
-		if (mesh != nullptr)
+		else
 		{
-			App->renderer3D->Draw_Geometry(mesh, id_image, transformation->Get_Tranformation_Matrix().Transposed(), wireframe);
-			App->renderer3D->Render_AABB_Cube(new_bounding_box);
-			App->renderer3D->Render_OBB_Cube(obb_box);
+			if (mesh != nullptr)
+			{
+				App->renderer3D->Draw_Geometry(mesh, id_image, transformation->Get_Tranformation_Matrix().Transposed(), wireframe);
+				App->renderer3D->Render_AABB_Cube(new_bounding_box);
+				App->renderer3D->Render_OBB_Cube(obb_box);
+			}
 		}
 	}
 }

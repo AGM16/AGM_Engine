@@ -2,9 +2,11 @@
 #include "Application.h"
 #include "Components.h"
 #include "Component_Transformation.h"
+#include "MathGeoLib\include\Math\MathFunc.h"
 #include "MathGeoLib\include\MathGeoLib.h"
 #include "GameObject.h"
 
+using namespace std;
 
 Component_Camera::Component_Camera(Components_Type type, GameObject* game_object, const char* name_id_camera) : Components(type, game_object), id_camera(name_id_camera), vertical_fov(40.f), near_plane(10.f), far_plane(180.f), aspect_ratio(0.f)
 {
@@ -52,6 +54,7 @@ void Component_Camera::Update()
 			}
 
 			ImGui::Text("Aspect_Ratio :  %f", aspect_ratio);
+			ImGui::Checkbox("Active Culling##foo1", &active_culling);
 
 		
 		}
@@ -98,12 +101,18 @@ void Component_Camera::Set_Near_Plane(float new_near_plane)
 {
 	if(new_near_plane > 1.0f && new_near_plane < frustum.FarPlaneDistance())
 		frustum.SetViewPlaneDistances(new_near_plane, frustum.FarPlaneDistance());
+
+	//To update the information panel of the editor
+	near_plane = new_near_plane;
 }
 
 void Component_Camera::Set_Far_Plane(float new_far_plane)
 {
 	if (new_far_plane > frustum.NearPlaneDistance())
 		frustum.SetViewPlaneDistances(frustum.NearPlaneDistance(), new_far_plane);
+
+	//To update the information panel of the editor
+	far_plane = new_far_plane;
 	
 }
 
@@ -176,6 +185,51 @@ float3 Component_Camera::Get_Front()const
 float3 Component_Camera::Get_World_Right()const
 {
 	return frustum.WorldRight();
+}
+
+bool Component_Camera::Intersect_Frustum_AABB(const AABB &b)
+{
+	if (active_culling == true)
+	{
+		float3 corners_aabb[8];
+		b.GetCornerPoints(corners_aabb);
+
+		Plane planes_fst[6];
+		frustum.GetPlanes(planes_fst);
+
+		//Check every plane of the frustum
+		for (int n_planes = 0; n_planes < 6; ++n_planes)
+		{
+			int in_count_corners = 8;
+			
+          //If all the bounding box is not in front of the frustum
+			//If it is samller than  0.f means that is inside the frustum
+			//As a result, it won't be necessary check each corner of the bounding box
+			if (planes_fst[n_planes].SignedDistance(b) >= 0.f)
+			{
+				for (int i = 0; i < 8; ++i)
+				{
+					//If the corner of the bounding box is behind with the frustum
+					if (planes_fst[n_planes].SignedDistance(corners_aabb[i]) >= 0.f)
+					{
+						--in_count_corners;
+					}
+				}
+			}
+
+			if (in_count_corners == 0)
+			{
+				return false;
+			}
+		}
+
+		return true;
+
+	}
+	else
+	{
+		return false;
+	}
 }
 
 

@@ -50,10 +50,6 @@ void Component_Transformation::Update()
 						Set_Position(position);
 					}
 
-					if (ImGui::DragFloat3("Rotation", rotation_degrees.ptr()))
-					{
-						Set_Rotation(rotation_degrees);
-					}
 				}
 			}
 			else

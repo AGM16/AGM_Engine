@@ -44,10 +44,14 @@ public:
 	float* Get_Projection_Matrix()const;
 	Component_Camera* Get_Camera_Component()const;
 
+	GameObject* camera_go_camera_test = nullptr;
+	Component_Camera* camera_component_test = nullptr;
+
 private:
 
 	GameObject* camera_go = nullptr;
 	Component_Camera* camera_component = nullptr;
+	
 };
 
 #endif

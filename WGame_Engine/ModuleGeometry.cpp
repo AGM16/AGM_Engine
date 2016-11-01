@@ -85,8 +85,6 @@ bool ModuleGeometry::Load_Geometry(const char* path, bool drop)
 				//Visit each child to obtain the mesh information using Load
 				Load_Nodes_For_Hierarchy(parent->mChildren[i], scene, nullptr);
 			}
-
-			App->go_manager->Create_Camera_Game_Object(nullptr, "Camera_2");
 		
 			ret = true;
 

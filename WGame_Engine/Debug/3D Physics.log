@@ -1,47 +1,7 @@
-﻿  ModuleRenderer3D.cpp
+﻿  Component_Camera.cpp
 c:\program files (x86)\microsoft visual studio 14.0\vc\include\xlocale(341): warning C4530: Se ha utilizado el controlador de excepciones de C++, pero la semántica de desenredo no está habilitada. Especifique /EHsc
 c:\users\pc1\desktop\wgame_engine\wgame_engine\mathgeolib\include\geometry\aabb2d.h(132): warning C4996: 'sprintf': This function or variable may be unsafe. Consider using sprintf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
   c:\program files (x86)\windows kits\10\include\10.0.10240.0\ucrt\stdio.h(1769): note: vea la declaración de 'sprintf'
 c:\program files (x86)\microsoft visual studio 14.0\vc\include\cmath(35): warning C4577: si se usa 'noexcept' sin ningún modo de control de excepciones especificado, la finalización de la excepción no está garantizada. Especifique /EHsc
-  ModuleCamera3D.cpp
-c:\program files (x86)\microsoft visual studio 14.0\vc\include\xlocale(341): warning C4530: Se ha utilizado el controlador de excepciones de C++, pero la semántica de desenredo no está habilitada. Especifique /EHsc
-c:\users\pc1\desktop\wgame_engine\wgame_engine\mathgeolib\include\geometry\aabb2d.h(132): warning C4996: 'sprintf': This function or variable may be unsafe. Consider using sprintf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
-  c:\program files (x86)\windows kits\10\include\10.0.10240.0\ucrt\stdio.h(1769): note: vea la declaración de 'sprintf'
-c:\program files (x86)\microsoft visual studio 14.0\vc\include\cmath(35): warning C4577: si se usa 'noexcept' sin ningún modo de control de excepciones especificado, la finalización de la excepción no está garantizada. Especifique /EHsc
-  Component_Camera.cpp
-c:\program files (x86)\microsoft visual studio 14.0\vc\include\xlocale(341): warning C4530: Se ha utilizado el controlador de excepciones de C++, pero la semántica de desenredo no está habilitada. Especifique /EHsc
-c:\users\pc1\desktop\wgame_engine\wgame_engine\mathgeolib\include\geometry\aabb2d.h(132): warning C4996: 'sprintf': This function or variable may be unsafe. Consider using sprintf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
-  c:\program files (x86)\windows kits\10\include\10.0.10240.0\ucrt\stdio.h(1769): note: vea la declaración de 'sprintf'
-c:\program files (x86)\microsoft visual studio 14.0\vc\include\cmath(35): warning C4577: si se usa 'noexcept' sin ningún modo de control de excepciones especificado, la finalización de la excepción no está garantizada. Especifique /EHsc
-  Generando código...
-  Compilando...
-  Application.cpp
-c:\program files (x86)\microsoft visual studio 14.0\vc\include\xlocale(341): warning C4530: Se ha utilizado el controlador de excepciones de C++, pero la semántica de desenredo no está habilitada. Especifique /EHsc
-c:\users\pc1\desktop\wgame_engine\wgame_engine\mathgeolib\include\geometry\aabb2d.h(132): warning C4996: 'sprintf': This function or variable may be unsafe. Consider using sprintf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
-  c:\program files (x86)\windows kits\10\include\10.0.10240.0\ucrt\stdio.h(1769): note: vea la declaración de 'sprintf'
-c:\users\pc1\desktop\wgame_engine\wgame_engine\application.cpp(115): warning C4244: '=': conversión de 'int' a 'float'; posible pérdida de datos
-c:\users\pc1\desktop\wgame_engine\wgame_engine\application.cpp(217): warning C4244: 'argumento': conversión de 'double' a 'Uint32'; posible pérdida de datos
-c:\program files (x86)\microsoft visual studio 14.0\vc\include\cmath(35): warning C4577: si se usa 'noexcept' sin ningún modo de control de excepciones especificado, la finalización de la excepción no está garantizada. Especifique /EHsc
-  Generando código...
-  Omitiendo... (no se detectaron cambios relevantes)
-  log.cpp
-  Panel_MathGeolib_Tools.cpp
-  Panel_Application.cpp
-  Module_Go_Manager.cpp
-  ModuleWindow.cpp
-  ModuleSceneIntro.cpp
-  ModulePhysics3D.cpp
-  ModuleInput.cpp
-  ModuleGeometry.cpp
-  ModuleFileSystem.cpp
-  ModuleAudio.cpp
-  Main.cpp
-  Hardware_Info.cpp
-  GameObject.cpp
-  FPS_Info.cpp
-  Editor.cpp
-  Console.cpp
-  Component_Mesh.cpp
-  Component_Material.cpp
   3D Physics.vcxproj -> C:\Users\PC1\Desktop\WGame_Engine\WGame_Engine\Debug\WGame_Engine.exe
   3D Physics.vcxproj -> C:\Users\PC1\Desktop\WGame_Engine\WGame_Engine\Debug\WGame_Engine.pdb (Full PDB)

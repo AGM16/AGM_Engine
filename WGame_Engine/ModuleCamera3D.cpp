@@ -24,11 +24,20 @@ bool ModuleCamera3D::Init()
 	LOG("Setting up the camera");
 	bool ret = true;
 
+	//Main Camera
 	camera_go = App->go_manager->Create_Camera_Game_Object(nullptr, "Main Camera");
 	camera_component = (Component_Camera*)camera_go->Get_Component(Components_Type::CAMERA);
 
 	camera_component->Get_Component_Transformation_Camera()->Set_Position(float3(30.f, 40.f, -100.f));
+	camera_component->Set_Far_Plane(230.f);
 	camera_component->Look_At(float3::zero);
+	
+	//Camera Test
+	camera_go_camera_test = App->go_manager->Create_Camera_Game_Object(nullptr, "Camera_2");
+	camera_component_test = (Component_Camera*)camera_go_camera_test->Get_Component(Components_Type::CAMERA);
+	camera_component_test->Get_Component_Transformation_Camera()->Set_Position(float3(0.f, 15.f, -100.f));
+	camera_component_test->Set_FOV(DegToRad(100.f));
+
 	return ret;
 }
 
@@ -75,7 +84,7 @@ update_status ModuleCamera3D::Update(float dt)
 
 	if (App->input->GetMouseButton(SDL_BUTTON_RIGHT) == KEY_REPEAT)
 	{	
-		float sensitivity = 0.005f;
+		float sensitivity = 0.025f;
 
 		if (dx != 0)
 		{

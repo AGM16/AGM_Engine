@@ -16,6 +16,8 @@ If you press "Shift" the velocity of the movement will increase.
 
 If you press the right button the camera will rotate.
 
+You can only active all the AABBs o OBBs from the main camera or active each AABB or OBB from the panel editor of each gameobject.
+
 Finally, you can drag any file to load it in the engine.
 
 

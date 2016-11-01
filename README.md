@@ -18,6 +18,8 @@ If you press the right button the camera will rotate.
 
 You can only active all the AABBs o OBBs from the main camera or active each AABB or OBB from the panel editor of each gameobject.
 
+The button active of the editor panel is to deactivate the components.For instance, if you active the checkbox "Active" of the local transform component you won't be able to move the gameobject.
+
 Finally, you can drag any file to load it in the engine.
 
 

@@ -27,6 +27,7 @@ public:
 	void Set_Up(const float3 &new_up);
 	void Set_Front(const float3 &new_front);
 	void Frustum_Translate(const float3 &position);
+	void Set_Draw_Frustum(bool on);
 
 	//Getters
 	float* Get_View_Matrix()const;
@@ -68,6 +69,7 @@ private:
 	bool active_culling = true;
 	bool active_all_aabb_bounding_boxes = false;
 	bool active_all_obb_bounding_boxes = false;
+	bool draw_frustum = false;
 
 };
 

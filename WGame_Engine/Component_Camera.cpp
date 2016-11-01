@@ -57,12 +57,15 @@ void Component_Camera::Update()
 			ImGui::Checkbox("Active Culling##foo1", &active_culling);
 			ImGui::Checkbox("Active AABB Bounding Boxes##fee2", &active_all_aabb_bounding_boxes);
 			ImGui::Checkbox("Active OBB Bounding Boxes##fee3", &active_all_obb_bounding_boxes);
-		
+			ImGui::Checkbox("Active Draw Frustum##fee4", &draw_frustum);
 		}
 	}
 		
 	//Render Camera
-	App->renderer3D->Render_Frustum_Cube(frustum);
+	if (draw_frustum)
+	{
+		App->renderer3D->Render_Frustum_Cube(frustum);
+	}
 }
 
 void Component_Camera::Clean_Up()
@@ -237,6 +240,12 @@ bool Component_Camera::Intersect_Frustum_AABB(const AABB &b)
 	}
 }
 
+
+void Component_Camera::Set_Draw_Frustum(bool on)
+{
+	draw_frustum = on;
+}
+
 //Check Box that active all the bounding boxes
 //AABB
 void Component_Camera::Set_Checkbox_AABB_Bounding_Boxes(bool on)
@@ -258,6 +267,9 @@ bool Component_Camera::Get_Checkbox_OBB_Bounding_Boxes()const
 {
 	return active_all_obb_bounding_boxes;
 }
+
+
+
 
 
 

@@ -37,6 +37,9 @@ bool ModuleCamera3D::Init()
 	camera_component_test = (Component_Camera*)camera_go_camera_test->Get_Component(Components_Type::CAMERA);
 	camera_component_test->Get_Component_Transformation_Camera()->Set_Position(float3(0.f, 15.f, -100.f));
 
+	//Draw frustum camera test
+	camera_component_test->Set_Draw_Frustum(true);
+
 	return ret;
 }
 

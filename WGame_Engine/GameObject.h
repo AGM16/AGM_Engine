@@ -15,8 +15,8 @@ public:
 
 	//Add Functions
 	bool Add_Component_Mesh( Mesh* m);
-	bool Add_Component_Transformation(math::float3 pos, math::float3 scale_, math::Quat rot_quat, math::float3 angles);
-	bool Add_Component_Material(const char* name_textu, const char* path_texture, unsigned int num_textu, unsigned int id_textu);
+	bool Add_Component_Transformation(const math::float3 &pos, const math::float3 &scale_, const math::Quat &rot_quat, const math::float3 &angles);
+	bool Add_Component_Material(const char* name_textu, const char* path_texture, const unsigned int &num_textu,const unsigned int &id_textu);
 	bool Add_Component_Camera(const char* name_camera);
 	bool Add_Child(GameObject* child);
 
@@ -26,13 +26,12 @@ public:
 
 	//Getters
 	const std::vector<GameObject*>* Get_Children();
-	const std::vector<Components*>* Get_Components();
+	const std::vector<Components*>* Get_List_Components();
 	GameObject* Get_Parent()const;
 	const char* Get_Name()const;
 
 private:
 
-	//Variables
 	GameObject* Parent = nullptr;
 	std::vector<GameObject*> children;
     std::vector<Components*> components_list;

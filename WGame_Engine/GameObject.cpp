@@ -51,7 +51,7 @@ bool GameObject::Add_Component_Mesh(Mesh* m)
 	return false;
 }
 
-bool GameObject::Add_Component_Transformation(math::float3 pos, math::float3 scale_, math::Quat rot_quat, math::float3 angles)
+bool GameObject::Add_Component_Transformation(const math::float3 &pos, const math::float3 &scale_, const math::Quat &rot_quat, const math::float3 &angles)
 {
 	if (Exist_Component(TRANSFORMATION) == false)
 	{
@@ -66,7 +66,7 @@ bool GameObject::Add_Component_Transformation(math::float3 pos, math::float3 sca
 }
 
 
-bool GameObject::Add_Component_Material(const char* name_textu, const char* path_texture, unsigned int num_textu, unsigned int id_textu)
+bool GameObject::Add_Component_Material(const char* name_textu, const char* path_texture, const unsigned int &num_textu, const unsigned int &id_textu)
 {
 	if (Exist_Component(MATERIAL) == false)
 	{
@@ -195,7 +195,7 @@ const vector<GameObject*>* GameObject::Get_Children()
 	return &children;
 }
 
-const vector<Components*>* GameObject::Get_Components()
+const vector<Components*>* GameObject::Get_List_Components()
 {
 	return &components_list;
 }

@@ -10,9 +10,10 @@
 
 Component_Mesh::Component_Mesh(Components_Type type, GameObject* game_object, Mesh* mesh_) : Components(type, game_object), mesh(mesh_)
 {
-	if (mesh_ != NULL)
+	//To build only the bounding box to the GO that have mesh
+	if (mesh != nullptr)
 	{
-		//Generate AABB
+		//Generate the initial AABB
 		bounding_box.SetNegativeInfinity();
 		bounding_box.Enclose((float3*)mesh->vertices, mesh->num_vertices);
 
@@ -48,7 +49,7 @@ void Component_Mesh::Update()
 	}
 
 	//Check if the global matrix has changed to recalculate the bounding box
-	Is_Matrix_Transformation_Changed(transformation);
+	Recalculate_Properties_Bounding_Box(transformation);
 	
 	//Check the checkbox of the parent components
 	Component_Mesh* mesh_parent = nullptr;
@@ -66,8 +67,13 @@ void Component_Mesh::Update()
 			if (active_checkbox == false && mesh_parent->active_checkbox == false)
 			{
 				App->renderer3D->Draw_Geometry(mesh, id_image, transformation->Get_Tranformation_Matrix().Transposed(), wireframe);
-				App->renderer3D->Render_AABB_Cube(new_bounding_box);
-				App->renderer3D->Render_OBB_Cube(obb_box);
+
+				if(aabb_checkbox == false)
+					App->renderer3D->Render_AABB_Cube(new_bounding_box);
+
+				if (obb_checkbox == false)
+					App->renderer3D->Render_OBB_Cube(obb_box);
+
 			}
 		}
 		else
@@ -75,8 +81,13 @@ void Component_Mesh::Update()
 			if (mesh != nullptr)
 			{
 				App->renderer3D->Draw_Geometry(mesh, id_image, transformation->Get_Tranformation_Matrix().Transposed(), wireframe);
-				App->renderer3D->Render_AABB_Cube(new_bounding_box);
-				App->renderer3D->Render_OBB_Cube(obb_box);
+
+				if (aabb_checkbox == false)
+					App->renderer3D->Render_AABB_Cube(new_bounding_box);
+
+				if (obb_checkbox == false)
+					App->renderer3D->Render_OBB_Cube(obb_box);
+
 			}
 		}
 	}
@@ -143,7 +154,7 @@ void Component_Mesh::Check_Parent_Checkboxes(Component_Mesh* mesh_parent, Compon
 	}
 }
 
-void Component_Mesh::Is_Matrix_Transformation_Changed(Component_Transformation* transformation)
+void Component_Mesh::Recalculate_Properties_Bounding_Box(Component_Transformation* transformation)
 {
 	//Compare both matrixs
 	if (last_transformation_matrix.Equals(transformation->Get_Tranformation_Matrix()) == false)
@@ -219,7 +230,78 @@ void Component_Mesh::Render_Mesh_Panel()
 			ImGui::Checkbox("Active##foo1", &active_checkbox);
 			ImGui::SameLine();
 			ImGui::Checkbox("Wireframe##faa1", &wireframe);
+
+			//Render Bounding Boxes
+			Render_Bounding_Box_Panel();
 		}
 	}
 
+}
+
+
+
+void Component_Mesh::Render_Bounding_Box_Panel()
+{
+	//Check if the GO have a mesh
+	if (mesh->num_vertices != 0)
+	{
+		if (ImGui::CollapsingHeader("Bounding Box", ImGuiTreeNodeFlags_DefaultOpen))
+		{
+			if (ImGui::CollapsingHeader("AABB Box", ImGuiTreeNodeFlags_DefaultOpen))
+			{
+				if (aabb_checkbox == false)
+				{
+					ImGui::Text("MinPoint : ");
+					ImGui::SameLine();
+					ImGui::TextColored(ImVec4(1, 1, 1, 1), "%f , %f, %f", new_bounding_box.minPoint.x, new_bounding_box.minPoint.y, new_bounding_box.minPoint.z);
+
+					ImGui::Text("MaxPoint : ");
+					ImGui::SameLine();
+					ImGui::TextColored(ImVec4(1, 1, 1, 1), "%f , %f, %f", new_bounding_box.maxPoint.x, new_bounding_box.maxPoint.y, new_bounding_box.maxPoint.z);
+				}
+				else
+				{
+					ImGui::Text("MinPoint : ");
+					ImGui::SameLine();
+					ImGui::TextColored(ImVec4(1, 1, 1, 1), "%f , %f, %f", 0.f, 0.f, 0.f);
+
+					ImGui::Text("MaxPoint : ");
+					ImGui::SameLine();
+					ImGui::TextColored(ImVec4(1, 1, 1, 1), "%f , %f, %f", 0.f, 0.f, 0.f);
+				}
+
+				ImGui::Checkbox("Active AABB##foo1", &aabb_checkbox);
+
+			}
+
+			if (ImGui::CollapsingHeader("OBB Box", ImGuiTreeNodeFlags_DefaultOpen))
+			{
+				if (obb_checkbox == false)
+				{
+					ImGui::Text("Center Position : ");
+					ImGui::SameLine();
+					ImGui::TextColored(ImVec4(1, 1, 1, 1), "%f , %f, %f", obb_box.pos.x, obb_box.pos.y, obb_box.pos.z);
+
+					ImGui::Text("Axis : ");
+					ImGui::SameLine();
+					ImGui::TextColored(ImVec4(1, 1, 1, 1), "%f , %f, %f", obb_box.axis->x, obb_box.axis->y, obb_box.axis->z);
+				}
+				else
+				{
+					ImGui::Text("Center Position : ");
+					ImGui::SameLine();
+					ImGui::TextColored(ImVec4(1, 1, 1, 1), "%f , %f, %f", 0.f, 0.f, 0.f);
+
+					ImGui::Text("Axis : ");
+					ImGui::SameLine();
+					ImGui::TextColored(ImVec4(1, 1, 1, 1), "%f , %f, %f", 0.f, 0.f, 0.f);
+				}
+
+				ImGui::Checkbox("Active OBB##foo1", &obb_checkbox);
+			}
+
+
+		}
+	}
+	
 }

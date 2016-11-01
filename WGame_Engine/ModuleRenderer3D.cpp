@@ -304,7 +304,7 @@ void ModuleRenderer3D::Render_OBB_Cube(math::OBB aabb_box)
 	glDisable(GL_LIGHTING);
 
 	glLineWidth(2.0f);
-	glColor4f(9.0f, 1.0f, 0.0f, 1.0f);
+	glColor4f(0.0f, 0.0f, 9.0f, 1.0f);
 
 
 	if (corners->Length() > 0)

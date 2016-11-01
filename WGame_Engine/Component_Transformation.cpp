@@ -77,14 +77,14 @@ void Component_Transformation::Update()
 
 
 
-void Component_Transformation::Set_Position(math::float3 pos)
+void Component_Transformation::Set_Position(const math::float3 &pos)
 {
 	position = pos;
 	transformation_matrix = Create_New_Matrix_Transformation(pos, quat_rotation, scale);
 	Modify_Children();
 }
 
-void Component_Transformation::Set_Rotation(math::float3 rot_degrees)
+void Component_Transformation::Set_Rotation(const math::float3 &rot_degrees)
 {
 	rotation_degrees = rot_degrees;
 	rotation_radians = DegToRad(rotation_degrees);
@@ -96,7 +96,7 @@ void Component_Transformation::Set_Rotation(math::float3 rot_degrees)
 	Modify_Children();
 }
 
-void Component_Transformation::Set_Scale(math::float3 scal)
+void Component_Transformation::Set_Scale(const math::float3 &scal)
 {
 	transformation_matrix = Create_New_Matrix_Transformation(position, quat_rotation, scal);
 	Modify_Children();
@@ -135,7 +135,7 @@ void Component_Transformation::Modify_Children()
 	}
 }
 
-math::float4x4 Component_Transformation::Create_New_Matrix_Transformation(math::float3 pos, math::Quat q_rotation, math::float3 scale)
+math::float4x4 Component_Transformation::Create_New_Matrix_Transformation(const math::float3 &pos, const math::Quat &q_rotation, const math::float3 &scal)
 {
 	 return transformation_matrix.FromTRS(pos, q_rotation, scale);
 }

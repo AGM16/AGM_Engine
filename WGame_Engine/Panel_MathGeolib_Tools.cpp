@@ -125,7 +125,7 @@ void Panel_MathGeolib_Tools::Create_AABB_Box()
 }
 
 
-void Panel_MathGeolib_Tools::Rotate_Bounding_Box(float x, float y, float z)
+void Panel_MathGeolib_Tools::Rotate_Bounding_Box(const float &x, const float &y, const float &z)
 {
 	Quat quaternion;
 

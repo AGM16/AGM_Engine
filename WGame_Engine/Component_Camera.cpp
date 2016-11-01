@@ -97,7 +97,7 @@ void Component_Camera::Look_At(const float3 &position)
 }
 
 //Set Functions
-void Component_Camera::Set_Near_Plane(float new_near_plane)
+void Component_Camera::Set_Near_Plane(const float &new_near_plane)
 {
 	if(new_near_plane > 1.0f && new_near_plane < frustum.FarPlaneDistance())
 		frustum.SetViewPlaneDistances(new_near_plane, frustum.FarPlaneDistance());
@@ -106,7 +106,7 @@ void Component_Camera::Set_Near_Plane(float new_near_plane)
 	near_plane = new_near_plane;
 }
 
-void Component_Camera::Set_Far_Plane(float new_far_plane)
+void Component_Camera::Set_Far_Plane(const float &new_far_plane)
 {
 	if (new_far_plane > frustum.NearPlaneDistance())
 		frustum.SetViewPlaneDistances(frustum.NearPlaneDistance(), new_far_plane);
@@ -116,24 +116,23 @@ void Component_Camera::Set_Far_Plane(float new_far_plane)
 	
 }
 
-void Component_Camera::Set_FOV(float new_fov)
+void Component_Camera::Set_FOV(const float &new_fov)
 {
 	frustum.SetVerticalFovAndAspectRatio(new_fov, frustum.AspectRatio());
 }
 
-void Component_Camera::Set_Up(float3 new_up)
+void Component_Camera::Set_Up(const float3 &new_up)
 {
 	frustum.SetUp(new_up);
 }
 
-void Component_Camera::Set_Front(float3 new_front)
+void Component_Camera::Set_Front(const float3 &new_front)
 {
 	frustum.SetFront(new_front);
 }
 
-void Component_Camera::Frustum_Translate(float3 position)
+void Component_Camera::Frustum_Translate(const float3 &position)
 {
-	frustum.Translate(position);
 	transformation->Set_Position(position);
 }
 
@@ -187,6 +186,11 @@ float3 Component_Camera::Get_World_Right()const
 	return frustum.WorldRight();
 }
 
+float3 Component_Camera::Get_Position()const
+{
+	return transformation->Get_Position();
+}
+
 bool Component_Camera::Intersect_Frustum_AABB(const AABB &b)
 {
 	if (active_culling == true)
@@ -202,9 +206,9 @@ bool Component_Camera::Intersect_Frustum_AABB(const AABB &b)
 		{
 			int in_count_corners = 8;
 			
-          //If all the bounding box is not in front of the frustum
-			//If it is samller than  0.f means that is inside the frustum
-			//As a result, it won't be necessary check each corner of the bounding box
+          //If all the bounding box is not in front of the frustum.
+			//If it is samller than  0.f means that is inside the frustum.
+			//As a result, it won't be necessary check each corner of the bounding box.
 			if (planes_fst[n_planes].SignedDistance(b) >= 0.f)
 			{
 				for (int i = 0; i < 8; ++i)

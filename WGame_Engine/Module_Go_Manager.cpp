@@ -181,8 +181,8 @@ void Module_Go_Manager::Window_Hierarchy(GameObject* Root_node)
 
 void Module_Go_Manager::Search_GameObject_To_Active( GameObject* root_go)const
 {
-	vector<Components*>::const_iterator node_comp = root_go->Get_Components()->begin();
-	while (node_comp != root_go->Get_Components()->end())
+	vector<Components*>::const_iterator node_comp = root_go->Get_List_Components()->begin();
+	while (node_comp != root_go->Get_List_Components()->end())
 	{
 		(*node_comp)->Enable();
 		node_comp++;
@@ -193,8 +193,8 @@ void Module_Go_Manager::Search_GameObject_To_Deactive( GameObject* root_go)const
 {
 	if (last_game_object_selected != nullptr)
 	{
-		vector<Components*>::const_iterator node_comp = last_game_object_selected->Get_Components()->begin();
-		while (node_comp != last_game_object_selected->Get_Components()->end())
+		vector<Components*>::const_iterator node_comp = last_game_object_selected->Get_List_Components()->begin();
+		while (node_comp != last_game_object_selected->Get_List_Components()->end())
 		{
 			(*node_comp)->Disable();
 			node_comp++;

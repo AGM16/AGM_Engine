@@ -23,13 +23,14 @@ public:
 	bool Set_Checkbox(bool on);
 
 	void Check_Parent_Checkboxes(Component_Mesh* mesh_parent, Component_Material* material_parent, Component_Material* material);
-	void Is_Matrix_Transformation_Changed(Component_Transformation* transformation);
+	void Recalculate_Properties_Bounding_Box(Component_Transformation* transformation);
 
 	void Render_Mesh_Panel();
+	void Render_Bounding_Box_Panel();
 
 private:
 
-	Mesh* mesh = nullptr;
+	Mesh* mesh;
 	unsigned int id_image = 0;
 
 	//Bounding Box
@@ -44,6 +45,8 @@ private:
 	bool last_active_texture = false;
 	bool last_active_wireframe = false;
 	bool wireframe = false;
+	bool aabb_checkbox = false;
+	bool obb_checkbox = false;
 
 };
 

@@ -43,7 +43,10 @@ public:
 	float* GetViewMatrix();
 	float* Get_Projection_Matrix()const;
 	Component_Camera* Get_Camera_Component()const;
+	float3 Get_Camera_Position()const;
 
+
+	//These variables are public to check if the frustum culling works
 	GameObject* camera_go_camera_test = nullptr;
 	Component_Camera* camera_component_test = nullptr;
 

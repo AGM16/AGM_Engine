@@ -70,7 +70,7 @@ bool Panel_Application::Draw_Panel_Application()
 			App->hardware->Render_Hardware_Info();
 		}
 
-		//------------------------------------_WINDOWS_------------------------------------------
+		//------------------------------------_WINDOW_------------------------------------------
 		if (ImGui::CollapsingHeader("Window"))
 		{
 			if (ImGui::Checkbox("FULLSCREEN", &fullscreen))

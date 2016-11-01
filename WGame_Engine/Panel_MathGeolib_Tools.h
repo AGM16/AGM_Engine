@@ -17,7 +17,7 @@ public:
 
 	void Create_Points(int amount);
 	void Create_AABB_Box();
-	void Rotate_Bounding_Box(float x, float y, float z);
+	void Rotate_Bounding_Box(const float &x,const float &y, const float &z);
 	void Sphere_Bounding_Box();
 
 	void Render();

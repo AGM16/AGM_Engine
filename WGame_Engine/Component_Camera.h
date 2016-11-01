@@ -21,12 +21,12 @@ public:
 	void Initialize_Frustum_Components();
 
 	//Setters
-	void Set_Near_Plane(float new_near_plane);
-	void Set_Far_Plane(float new_far_plane);
-	void Set_FOV(float new_fov);
-	void Set_Up(float3 new_up);
-	void Set_Front(float3 new_front);
-	void Frustum_Translate(float3 position);
+	void Set_Near_Plane(const float &new_near_plane);
+	void Set_Far_Plane(const float &new_far_plane);
+	void Set_FOV(const float &new_fov);
+	void Set_Up(const float3 &new_up);
+	void Set_Front(const float3 &new_front);
+	void Frustum_Translate(const float3 &position);
 
 	//Getters
 	float* Get_View_Matrix()const;
@@ -37,12 +37,10 @@ public:
 	float3 Get_Up()const;
 	float3 Get_Front()const;
 	float3 Get_World_Right()const;
-
+	float3 Get_Position()const;
 
 	Component_Transformation* Get_Component_Transformation_Camera()const;
-
 	void Look_At(const math::float3 &position);
-
 	bool Intersect_Frustum_AABB(const AABB &b);
 
 private:

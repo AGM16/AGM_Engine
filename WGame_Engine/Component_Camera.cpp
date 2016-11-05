@@ -210,14 +210,14 @@ bool Component_Camera::Intersect_Frustum_AABB(const AABB &b)
 		{
 			int in_count_corners = 8;
 			
-          //If all the bounding box is not in front of the frustum.
-			//If it is samller than  0.f means that is inside the frustum.
-			//As a result, it won't be necessary check each corner of the bounding box.
+          //If all the bounding box is not in front of the plane.
+			//If it is samller than  0.f means that is inside/front the plane the min and max of bounding box.
+			//As a result, it won't be necessary check each corner of the bounding box with this plane.
 			if (planes_fst[n_planes].SignedDistance(b) >= 0.f)
 			{
 				for (int i = 0; i < 8; ++i)
 				{
-					//If the corner of the bounding box is behind with the frustum
+					//If the corner of the bounding box is behind we dont consider this corner in this plane
 					if (planes_fst[n_planes].SignedDistance(corners_aabb[i]) >= 0.f)
 					{
 						--in_count_corners;

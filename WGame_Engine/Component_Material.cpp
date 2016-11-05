@@ -66,7 +66,7 @@ void Component_Material::Update()
 
 			}
 
-			ImGui::Checkbox("Active", &active_checkbox);
+			ImGui::Checkbox("Deactivate##fcc2", &active_checkbox);
 
 		}
 	}

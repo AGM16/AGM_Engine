@@ -83,7 +83,7 @@ bool ModuleGeometry::Load_Geometry(const char* path, bool drop)
 			for( int i = 0; i < parent->mNumChildren; i++)
 			{
 				//Visit each child to obtain the mesh information using Load
-				Load_Nodes_For_Hierarchy(parent->mChildren[i], scene, nullptr);
+				Load_Nodes_For_Hierarchy(parent->mChildren[i], scene, nullptr, path);
 			}
 		
 			ret = true;
@@ -114,7 +114,7 @@ bool ModuleGeometry::Load_Geometry(const char* path, bool drop)
 
 }
 
-void ModuleGeometry::Load_Nodes_For_Hierarchy(aiNode* node_child, const aiScene* scene, GameObject* parent)
+void ModuleGeometry::Load_Nodes_For_Hierarchy(aiNode* node_child, const aiScene* scene, GameObject* parent, const char* path )
 { 
 	
     GameObject* game_obj = nullptr;
@@ -126,8 +126,22 @@ void ModuleGeometry::Load_Nodes_For_Hierarchy(aiNode* node_child, const aiScene*
 			aiMesh* new_mesh = scene->mMeshes[node_child->mMeshes[i]];
 			Mesh* m = new Mesh();
 
+            //Check Hierarchy and local transform of every mesh
+			if (new_mesh->HasPositions() == true)
+			{	
+				Hierarchy_And_Local_Transform(m, node_child);	
+			}
+
+
 			//Load Mesh
-			Load_Info_Mesh(m, new_mesh);
+			//Load_Info_Mesh(m, new_mesh);
+
+			//Import Mesh
+			string path_file;
+			Import_Mesh(new_mesh, path_file, m->name_node.c_str());
+
+			Load_Mesh(m, path_file.c_str());
+			
 
 			//Texture
 			Load_texture_From_FBX(m, new_mesh, scene);
@@ -155,11 +169,7 @@ void ModuleGeometry::Load_Nodes_For_Hierarchy(aiNode* node_child, const aiScene*
 			glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(uint) *  m->num_indices, m->indices, GL_STATIC_DRAW);
 
 
-			//Check Hierarchy and local transform of every mesh
-			if (new_mesh->HasPositions() == true)
-			{	
-				Hierarchy_And_Local_Transform(m, node_child);	
-			}
+			
 
 			game_obj = App->go_manager->Create_Game_Object(m, parent);
 
@@ -180,7 +190,7 @@ void ModuleGeometry::Load_Nodes_For_Hierarchy(aiNode* node_child, const aiScene*
 	{
 		for (int i = 0; i < node_child->mNumChildren; i++)
 		{
-			Load_Nodes_For_Hierarchy(node_child->mChildren[i], scene, game_obj);
+			Load_Nodes_For_Hierarchy(node_child->mChildren[i], scene, game_obj, path);
 		}
 
 	}
@@ -189,59 +199,6 @@ void ModuleGeometry::Load_Nodes_For_Hierarchy(aiNode* node_child, const aiScene*
 
 
 //-------------------------------LOAD_FUNCTIONS-------------------------------------
-void ModuleGeometry::Load_Info_Mesh(Mesh* m, aiMesh* new_mesh)
-{
-	//Vertices
-	m->num_vertices = new_mesh->mNumVertices;
-	m->vertices = new float[m->num_vertices * 3];
-	memcpy(m->vertices, new_mesh->mVertices, sizeof(float) * m->num_vertices * 3);
-	LOG("New mesh with %d vertices", m->num_vertices);
-
-	//Check if our mesh have normals
-	if (new_mesh->HasNormals())
-	{
-
-		m->num_normals = new_mesh->mNumVertices;
-		m->normals = new float[m->num_normals * 3];
-		memcpy(m->normals, new_mesh->mNormals, sizeof(float) * m->num_normals * 3);
-		LOG("New mesh with %d normals", m->num_normals);
-	}
-
-	//Check if the mesh have uvs coordenates
-	if (new_mesh->HasTextureCoords(m->uvs_index_texture_coords))
-	{
-		m->num_uvs_texture_coords = new_mesh->mNumVertices;
-		m->uvs_texture_coords = new float2[m->num_uvs_texture_coords];
-
-		for (int i = 0; i < m->num_uvs_texture_coords; i++)
-		{
-			//Assign uv to the uvs_array<float2>
-			m->uvs_texture_coords[i].x = new_mesh->mTextureCoords[m->uvs_index_texture_coords][i].x;
-			m->uvs_texture_coords[i].y = new_mesh->mTextureCoords[m->uvs_index_texture_coords][i].y;
-		}
-
-		LOG("New mesh with %d uvs_texture_coords", m->num_uvs_texture_coords);
-	}
-
-	//Faces
-	if (new_mesh->HasFaces())
-	{
-		//We assume that each face is a triangle
-		m->num_indices = new_mesh->mNumFaces * 3;
-		m->indices = new uint[m->num_indices];
-		for (uint i = 0; i < new_mesh->mNumFaces; ++i)
-		{
-			//Check the number of indices of each face
-			if (new_mesh->mFaces[i].mNumIndices != 3)
-			{
-				LOG("WARNING, geometry face with != 3indices!");
-			}
-			else
-				memcpy(&m->indices[i * 3], new_mesh->mFaces[i].mIndices, 3 * sizeof(uint));
-
-		}
-	}
-}
 
 void ModuleGeometry::Hierarchy_And_Local_Transform(Mesh* m, aiNode* node)
 {
@@ -327,3 +284,186 @@ string ModuleGeometry::Delete_$Assimp$_word(string str)
 	
 	return name_node;
 }
+
+//-------------------------------------------------------------------------
+//-------------------------------------------------------------------------
+//-------------------------------------------------------------------------
+
+bool ModuleGeometry::Import_Mesh(const aiMesh* new_mesh, string& out_p, const char* name_mesh)
+{
+	Mesh m;
+
+	//Vertices
+	m.num_vertices = new_mesh->mNumVertices;
+	m.vertices = new float[m.num_vertices * 3];
+	memcpy(m.vertices, new_mesh->mVertices, sizeof(float) * m.num_vertices * 3);
+	LOG("New mesh with %d vertices", m.num_vertices);
+
+	//Check if our mesh have normals
+	if (new_mesh->HasNormals())
+	{
+
+		m.num_normals = new_mesh->mNumVertices;
+		m.normals = new float[m.num_normals * 3];
+		memcpy(m.normals, new_mesh->mNormals, sizeof(float) * m.num_normals * 3);
+		LOG("New mesh with %d normals", m.num_normals);
+	}
+
+	//Check if the mesh have uvs coordenates
+	if (new_mesh->HasTextureCoords(m.uvs_index_texture_coords))
+	{
+		m.num_uvs_texture_coords = new_mesh->mNumVertices;
+		m.uvs_texture_coords = new float2[m.num_uvs_texture_coords];
+
+		for (int i = 0; i < m.num_uvs_texture_coords; i++)
+		{
+			//Assign uv to the uvs_array<float2>
+			m.uvs_texture_coords[i].x = new_mesh->mTextureCoords[m.uvs_index_texture_coords][i].x;
+			m.uvs_texture_coords[i].y = new_mesh->mTextureCoords[m.uvs_index_texture_coords][i].y;
+		}
+
+		LOG("New mesh with %d uvs_texture_coords", m.num_uvs_texture_coords);
+	}
+
+	//Faces
+	if (new_mesh->HasFaces())
+	{
+		//We assume that each face is a triangle
+		m.num_indices = new_mesh->mNumFaces * 3;
+		m.indices = new uint[m.num_indices];
+		for (uint i = 0; i < new_mesh->mNumFaces; ++i)
+		{
+			//Check the number of indices of each face
+			if (new_mesh->mFaces[i].mNumIndices != 3)
+			{
+				LOG("WARNING, geometry face with != 3indices!");
+			}
+			else
+				memcpy(&m.indices[i * 3], new_mesh->mFaces[i].mIndices, 3 * sizeof(uint));
+
+		}
+	}
+
+	return Save_Mesh(m, out_p, name_mesh);
+
+}
+
+bool ModuleGeometry::Save_Mesh(const Mesh& mesh, string& out_p, const char* name_mesh)
+{
+	uint amount_infor_mesh[4] = { mesh.num_indices,  mesh.num_vertices,  (mesh.normals) ? mesh.num_vertices : 0,  mesh.num_uvs_texture_coords};
+
+	//Size 
+	uint size = sizeof(amount_infor_mesh);
+	size += sizeof(uint) * amount_infor_mesh[0] + sizeof(float) * amount_infor_mesh[1] * 3;
+	if (amount_infor_mesh[2] != 0)
+		size += sizeof(float) * amount_infor_mesh[2] * 3;
+
+	if (amount_infor_mesh[3] != 0)
+		size += sizeof(float) * amount_infor_mesh[3] * 2;
+
+	
+	//Allocate with size and fill it
+	char* data = new char[size];
+	char* cursor = data;
+
+	//Store information from mesh to cursor variable
+	//amount_infor_mesh
+	uint bytes = sizeof(amount_infor_mesh);
+	memcpy(cursor, amount_infor_mesh, bytes);
+	cursor += bytes;
+
+	//STORE: Indices
+	bytes = sizeof(uint) * amount_infor_mesh[0];
+	memcpy(cursor, mesh.indices, bytes);
+	cursor += bytes;
+
+	//STORE: Vertices
+	bytes = sizeof(float) * amount_infor_mesh[1] * 3;
+	memcpy(cursor, mesh.vertices, bytes);
+	cursor += bytes;
+
+	//STORE: Normals
+	if (mesh.normals != nullptr)
+	{
+		memcpy(cursor, mesh.normals, bytes);
+		cursor += bytes;
+	}
+
+	if (mesh.num_uvs_texture_coords != 0)
+	{
+		//Store: Texture Coords(uvs)
+		bytes = sizeof(float) * mesh.num_vertices * 2;
+		memcpy(cursor, mesh.uvs_texture_coords, bytes);
+	}
+
+
+	string name_file = name_mesh;
+	bool ret = App->filesystem->Save_Unique(name_file, data, size, "/Library/Meshes/", "wge", out_p);
+
+	delete[] data;
+	data = nullptr;
+
+	return ret;
+
+}
+
+bool ModuleGeometry::Load_Mesh(Mesh* mesh, const char* file_path)
+{
+	char* buffer;
+
+	//Check if we have the correct path_file
+	uint size_file = App->filesystem->Load(file_path, &buffer);
+	if (size_file == 0)
+	{
+		return false;
+	}
+	else
+	{
+		uint amount_infor_mesh[4];
+		char* cursor = buffer;
+
+		uint bytes = sizeof(amount_infor_mesh);
+		memcpy(amount_infor_mesh, cursor, bytes);
+        cursor += bytes;
+
+		//Tranfer information to the mesh
+		//Indices
+		mesh->num_indices = amount_infor_mesh[0];
+		bytes = sizeof(uint) * mesh->num_indices;
+		mesh->indices = new uint[mesh->num_indices];
+		memcpy(mesh->indices, cursor, bytes);
+		cursor += bytes;
+
+		//Vertices
+		mesh->num_vertices = amount_infor_mesh[1];
+		bytes = sizeof(float) * mesh->num_vertices * 3;
+		mesh->vertices = new float[mesh->num_vertices * 3];
+		memcpy(mesh->vertices, cursor, bytes);
+		cursor += bytes;
+
+		//Normals
+		mesh->num_normals = amount_infor_mesh[2];
+		if (amount_infor_mesh[2] != 0)
+		{
+			bytes = sizeof(float) * mesh->num_normals * 3;
+			mesh->normals = new float[mesh->num_normals * 3];
+			memcpy(mesh->normals, cursor, bytes);
+			cursor += bytes;
+		}
+
+		//Texture Coords(uvs)
+		mesh->num_uvs_texture_coords = amount_infor_mesh[3];
+		if (mesh->num_uvs_texture_coords != 0)
+		{
+			bytes = sizeof(float) * mesh->num_uvs_texture_coords * 2;
+			mesh->uvs_texture_coords = new float2[mesh->num_uvs_texture_coords * 2];
+			memcpy(mesh->uvs_texture_coords, cursor, bytes);
+		}
+
+		delete[] buffer;
+		buffer = nullptr;
+	}
+
+	return true;
+}
+

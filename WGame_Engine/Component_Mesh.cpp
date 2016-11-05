@@ -212,6 +212,11 @@ void Component_Mesh::Render_Mesh_Panel()
 				ImGui::Text("NumNormals : ");
 				ImGui::SameLine();
 				ImGui::TextColored(ImVec4(1, 1, 1, 1), "%i", mesh->num_normals);
+
+				//--------------------------------------------------------------------
+				ImGui::Text("NumUvs : ");
+				ImGui::SameLine();
+				ImGui::TextColored(ImVec4(1, 1, 1, 1), "%i", mesh->num_uvs_texture_coords);
 			}
 			else
 			{
@@ -227,10 +232,12 @@ void Component_Mesh::Render_Mesh_Panel()
 				ImGui::Text("NumVertices : ");
 				//--------------------------------------------------------------------
 				ImGui::Text("NumNormals : ");
+				//--------------------------------------------------------------------
+				ImGui::Text("NumUvs : ");
 
 			}
 
-			ImGui::Checkbox("Active##foo1", &active_checkbox);
+			ImGui::Checkbox("Deactivate##foo1", &active_checkbox);
 			ImGui::SameLine();
 			ImGui::Checkbox("Wireframe##faa1", &wireframe);
 

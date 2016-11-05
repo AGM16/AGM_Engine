@@ -38,7 +38,7 @@ public:
 	char** Get_Search_path()const;
 	bool Add_to_Search_path(const char* file, int apendtopath = 1);
 	const char* Get_Real_dir(const char* filename)const;
-	int Enumerate_files(const char* dir)const;
+	int Enumerate_files(const char* dir, std::vector<std::string>& buffer)const;
 	int Get_Last_Mod(const char* file)const;
 	const char* GetSaveDirectory() const
 	{
@@ -51,7 +51,8 @@ public:
 	unsigned int Load(const char* file, char** buffer) const;
 	SDL_RWops* Load(const char* file) const;
 
-	unsigned int Save(const char* file, const char* buffer, unsigned int size) const;
+	unsigned int Save(const char* file, const void* buffer, unsigned int size) const;
+	bool Save_Unique(string& name, const void* buffer, uint size, const char* path, const char* extension, string& out_p);
 
 private:
 

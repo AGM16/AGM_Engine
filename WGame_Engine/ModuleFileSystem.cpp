@@ -35,23 +35,22 @@ bool ModuleFileSystem::Init()
 	LOG("Loading File System");
 	bool ret = true;
 
-	// Ask SDL for a write dir
-	char* write_path = SDL_GetPrefPath(ORGANIZATION, TITLE);
-
-	if (PHYSFS_setWriteDir(write_path) == 0)
+	if (PHYSFS_setWriteDir(".") == 0)
 	{
 		LOG("File System error while creating write dir: %s\n", PHYSFS_getLastError());
 	}
 	else
 	{
 		// We add the writing directory as a reading directory too with speacial mount point
-		LOG("Writing directory is %s\n", write_path);
-		AddPath(write_path, GetSaveDirectory());
-		AddPath("Assets/3D_Models", "3D_Models");
-		AddPath("Assets/Textures", "Textures");
+		//Creation of folders that will save FBX information
+		if(Exists("/Library") == false)
+		PHYSFS_mkdir("/Library");
+
+		if (Exists("/Library/Meshes") == false)
+		PHYSFS_mkdir("/Library/Meshes");
 	}
 
-	SDL_free(write_path);
+	//SDL_free(write_path);
 
 	return ret;
 }
@@ -223,7 +222,7 @@ const char* ModuleFileSystem::Get_Real_dir(const char* filename)const
 	return dir;
 }
 
-int ModuleFileSystem::Enumerate_files(const char* dir)const
+int ModuleFileSystem::Enumerate_files(const char* dir, std::vector<std::string>& buffer)const
 {
 	int ret = 0;
 
@@ -233,6 +232,7 @@ int ModuleFileSystem::Enumerate_files(const char* dir)const
 	for (i = files; *i != nullptr; i++)
 	{
 		LOG("*We have got [%s]", *i);
+		buffer.push_back(*i);
 		ret++;
 	}
 
@@ -339,7 +339,7 @@ int close_sdl_rwops(SDL_RWops *rw)
 }
 
 // Save a whole buffer to disk
-unsigned int ModuleFileSystem::Save(const char* file, const char* buffer, unsigned int size) const
+unsigned int ModuleFileSystem::Save(const char* file, const void* buffer, unsigned int size) const
 {
 	unsigned int ret = 0;
 
@@ -362,4 +362,42 @@ unsigned int ModuleFileSystem::Save(const char* file, const char* buffer, unsign
 		LOG("File System error while opening file %s: %s\n", file, PHYSFS_getLastError());
 
 	return ret;
+}
+
+bool ModuleFileSystem::Save_Unique(string& name, const void* buffer, uint size, const char* path, const char* extension, string& out_p)
+{
+	char save_name[50];
+	sprintf_s(save_name, 50, "%s.%s", name.c_str(), extension);
+	char name_file[200];
+	sprintf_s(name_file, 200, "%s%s", path, save_name);
+
+	if (Exists(name_file))
+	{
+		int copy = 0;
+		bool is_repeated = true;
+		while (is_repeated)
+		{
+			//Change the name of the mesh
+			++copy;
+			sprintf_s(save_name, 50, "%s_m_%d.%s", name.c_str(), copy, extension);
+			sprintf_s(name_file, 50, "%s%s", path, save_name);
+			is_repeated = false;
+
+			//Check if exist the new name of the file
+			if (Exists(name_file))
+			{
+				is_repeated = true;
+			}
+			
+		}
+	}
+
+	if (Save(name_file, buffer, size) > 0)
+	{
+		out_p = name_file;
+		return true;
+	}
+
+	return false;
+
 }

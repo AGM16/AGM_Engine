@@ -70,7 +70,7 @@ void Component_Transformation::Update()
 				}
 			}
 
-			ImGui::Checkbox("Active##foo2", &active_checkbox);
+			ImGui::Checkbox("Deactivate##foo2", &active_checkbox);
 		}
 	}
 }

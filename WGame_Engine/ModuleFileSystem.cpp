@@ -43,11 +43,8 @@ bool ModuleFileSystem::Init()
 	{
 		// We add the writing directory as a reading directory too with speacial mount point
 		//Creation of folders that will save FBX information
-		if(Exists("/Library") == false)
-		PHYSFS_mkdir("/Library");
+		Create_Dir("/Library");
 
-		if (Exists("/Library/Meshes") == false)
-		PHYSFS_mkdir("/Library/Meshes");
 	}
 
 	//SDL_free(write_path);
@@ -102,8 +99,8 @@ bool ModuleFileSystem::Delete(const char* file_name)
 bool ModuleFileSystem::Create_Dir(const char* name_dir)
 {
 	bool ret = false;
-	if (name_dir != nullptr)
-	{   //Create a dir into the write dir
+	if (name_dir != nullptr && Exists(name_dir) == false)
+	{   //Create a dir(folder) into the write dir
 		if (PHYSFS_mkdir(name_dir) == 0)
 		{
 			LOG("File System error while creatring a new dir (%s): %s\n", name_dir, PHYSFS_getLastError());
@@ -111,9 +108,14 @@ bool ModuleFileSystem::Create_Dir(const char* name_dir)
 		else
 			ret = true;
 	}
+	else
+	{
+		LOG("The %s already exists: %s\n", name_dir, PHYSFS_getLastError());
+	}
 
 	return ret;
 }
+
 
 const char* ModuleFileSystem::Get_Base_Dir()const
 {
@@ -366,29 +368,37 @@ unsigned int ModuleFileSystem::Save(const char* file, const void* buffer, unsign
 
 bool ModuleFileSystem::Save_Unique(string& name, const void* buffer, uint size, const char* path, const char* extension, string& out_p)
 {
-	char save_name[50];
+	char save_name[100];
 	sprintf_s(save_name, 50, "%s.%s", name.c_str(), extension);
 	char name_file[200];
 	sprintf_s(name_file, 200, "%s%s", path, save_name);
 
-	if (Exists(name_file))
-	{
-		int copy = 0;
-		bool is_repeated = true;
-		while (is_repeated)
-		{
-			//Change the name of the mesh
-			++copy;
-			sprintf_s(save_name, 50, "%s_m_%d.%s", name.c_str(), copy, extension);
-			sprintf_s(name_file, 50, "%s%s", path, save_name);
-			is_repeated = false;
 
-			//Check if exist the new name of the file
-			if (Exists(name_file))
+	//Check if the file is a texture
+	//If is it we don't have to create a new other one with different name.
+	//Several Meshes can share the same texture.
+	string extension_type = extension;
+	if (extension_type.compare("tex") != 0)
+	{
+		if (Exists(name_file))
+		{
+			int copy = 0;
+			bool is_repeated = true;
+			while (is_repeated)
 			{
-				is_repeated = true;
+				//Change the name of the mesh
+				++copy;
+				sprintf_s(save_name, 100, "%s_m_%d.%s", name.c_str(), copy, extension);
+				sprintf_s(name_file, 100, "%s%s", path, save_name);
+				is_repeated = false;
+
+				//Check if exist the new name of the file
+				if (Exists(name_file))
+				{
+					is_repeated = true;
+				}
+
 			}
-			
 		}
 	}
 

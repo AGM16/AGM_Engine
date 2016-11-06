@@ -79,19 +79,27 @@ class ModuleGeometry : public Module
 
 	   bool Load_Geometry(const char* path, bool drop);
 
-	   void Load_Nodes_For_Hierarchy(aiNode* node_child, const aiScene* scene, GameObject* parent, const char* path);
+	   void Load_Nodes_For_Hierarchy(aiNode* node_child, const aiScene* scene, GameObject* parent, const char* path, const char* dir_scene);
 	   
 	   std::string Delete_$Assimp$_word(std::string str);
-	  
 
-	   void Load_texture_From_FBX(Mesh* m, aiMesh* new_mesh, const aiScene* scene);
 	   void Hierarchy_And_Local_Transform(Mesh* m, aiNode* node);
 
 
-	   //Functions
-	   bool Import_Mesh(const aiMesh* new_mesh, std::string& out_p, const char* name_mesh);
-	   bool Save_Mesh(const Mesh& mesh, std::string& out_p, const char* name_mesh);
+	   //Functions Own Format
+	   //IMPORT
+	   bool Import_Mesh(const aiMesh* new_mesh, std::string& out_p, const char* name_mesh, const char* dir_scene);
+	   bool Import_Material(const char* name_file, const char* path, std::string& out_p, const char* dir_scene);
+       void Import_And_Load_Texture(Mesh* m, aiMesh* new_mesh, const aiScene* scene, const char* dir_scene);
+	   //Save
+	   bool Save(const Mesh& mesh, std::string& out_p, const char* name_mesh, const char* dir_scene);
+	   //LOAD
 	   bool Load_Mesh(Mesh* mesh, const char* file_path);
+
+ private:
+
+	 bool is_dir_scene_exist = false;
+
 };
 
 #endif

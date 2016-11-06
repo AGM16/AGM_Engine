@@ -56,6 +56,7 @@ bool ModuleGeometry::Load_Geometry(const char* path, bool drop)
 {
 	bool ret = false;
 	const aiScene* scene = nullptr;
+	string dir_scene; 
 	char* buffer;
 	if (drop == false)
 	{
@@ -63,6 +64,41 @@ bool ModuleGeometry::Load_Geometry(const char* path, bool drop)
 
 		if (size_file != 0)
 		{
+			
+			//Create the scene folder
+			 dir_scene = "/Library/";
+			 dir_scene.append(App->filesystem->Get_FileName_From_Path(path));
+			 size_t size = dir_scene.find(".fbx");
+			 if (size != string::npos)
+			 {
+				 dir_scene = dir_scene.substr(0, size);
+			 }
+			  
+			 //Chek is the scene folder already exists
+			 if (App->filesystem->Exists(dir_scene.c_str()) == false)
+			 {
+
+				 //Create the scene folder
+				 App->filesystem->Create_Dir(dir_scene.c_str());
+				 
+				 //Create the mesh folder of this scene
+				 string dir_meshes = dir_scene;
+				 dir_meshes.append("/Meshes");
+				 App->filesystem->Create_Dir(dir_meshes.c_str());
+
+				 //Create the texture folder of this scene
+				 string dir_textures = dir_scene;
+				 dir_textures.append("/Textures");
+				 App->filesystem->Create_Dir(dir_textures.c_str());
+			 }
+			 else
+			 {
+				 //We will import the scene that already exists
+				 LOG("The dir scene %s already exists", dir_scene.c_str()); 
+				 is_dir_scene_exist = true;
+			 }
+
+
 			//Import Geometry File
 			scene = aiImportFileFromMemory(buffer, size_file, aiProcessPreset_TargetRealtime_MaxQuality, nullptr);
 		}
@@ -83,10 +119,11 @@ bool ModuleGeometry::Load_Geometry(const char* path, bool drop)
 			for( int i = 0; i < parent->mNumChildren; i++)
 			{
 				//Visit each child to obtain the mesh information using Load
-				Load_Nodes_For_Hierarchy(parent->mChildren[i], scene, nullptr, path);
+				Load_Nodes_For_Hierarchy(parent->mChildren[i], scene, nullptr, path, dir_scene.c_str());
 			}
 		
 			ret = true;
+			is_dir_scene_exist = false;
 
 			aiReleaseImport(scene);		
 		}
@@ -114,7 +151,7 @@ bool ModuleGeometry::Load_Geometry(const char* path, bool drop)
 
 }
 
-void ModuleGeometry::Load_Nodes_For_Hierarchy(aiNode* node_child, const aiScene* scene, GameObject* parent, const char* path )
+void ModuleGeometry::Load_Nodes_For_Hierarchy(aiNode* node_child, const aiScene* scene, GameObject* parent, const char* path, const char* dir_scene)
 { 
 	
     GameObject* game_obj = nullptr;
@@ -126,25 +163,44 @@ void ModuleGeometry::Load_Nodes_For_Hierarchy(aiNode* node_child, const aiScene*
 			aiMesh* new_mesh = scene->mMeshes[node_child->mMeshes[i]];
 			Mesh* m = new Mesh();
 
+			
             //Check Hierarchy and local transform of every mesh
 			if (new_mesh->HasPositions() == true)
 			{	
 				Hierarchy_And_Local_Transform(m, node_child);	
 			}
 
-
-			//Load Mesh
-			//Load_Info_Mesh(m, new_mesh);
-
 			//Import Mesh
 			string path_file;
-			Import_Mesh(new_mesh, path_file, m->name_node.c_str());
+			string path_file_2;
 
-			Load_Mesh(m, path_file.c_str());
+			if (is_dir_scene_exist == false)
+			{
+				Import_Mesh(new_mesh, path_file, m->name_node.c_str(), dir_scene);
+				path_file_2 = path_file;
+			}
+			else
+			{
+				//if there is more than one mesh it means that there is a copy of this name with "_m_%d"
+				path_file_2 = dir_scene;
+				path_file_2.append("/Meshes/");
+				path_file_2.append(m->name_node.c_str());
+				if (i > 0)
+				{
+					char copy_name[10];
+					sprintf_s(copy_name, 10, "_m_%d", i);
+					path_file_2.append(copy_name);
+				}
+
+				path_file_2.append(".wge");
+			}
+
+			//Load Mesh
+			Load_Mesh(m, path_file_2.c_str());
 			
 
 			//Texture
-			Load_texture_From_FBX(m, new_mesh, scene);
+			Import_And_Load_Texture(m, new_mesh, scene, dir_scene);
 
 
 			//Load Mesh buffer to the VRAM
@@ -170,7 +226,7 @@ void ModuleGeometry::Load_Nodes_For_Hierarchy(aiNode* node_child, const aiScene*
 
 
 			
-
+			
 			game_obj = App->go_manager->Create_Game_Object(m, parent);
 
 			
@@ -190,7 +246,7 @@ void ModuleGeometry::Load_Nodes_For_Hierarchy(aiNode* node_child, const aiScene*
 	{
 		for (int i = 0; i < node_child->mNumChildren; i++)
 		{
-			Load_Nodes_For_Hierarchy(node_child->mChildren[i], scene, game_obj, path);
+			Load_Nodes_For_Hierarchy(node_child->mChildren[i], scene, game_obj, path, dir_scene);
 		}
 
 	}
@@ -234,7 +290,7 @@ void ModuleGeometry::Hierarchy_And_Local_Transform(Mesh* m, aiNode* node)
 
 }
 
-void ModuleGeometry::Load_texture_From_FBX(Mesh* m, aiMesh* new_mesh, const aiScene* scene)
+void ModuleGeometry::Import_And_Load_Texture(Mesh* m, aiMesh* new_mesh, const aiScene* scene, const char* dir_scene)
 {
 	aiMaterial* material = scene->mMaterials[new_mesh->mMaterialIndex];
 
@@ -252,7 +308,15 @@ void ModuleGeometry::Load_texture_From_FBX(Mesh* m, aiMesh* new_mesh, const aiSc
 			m->name_texture.assign(App->filesystem->Get_FileName_From_Path(path_.data));
 			m->dir_texture.append(m->name_texture.c_str());
 
+			if (is_dir_scene_exist == false)
+			{
+				//Import Texture
+				string dir_texture;
+				Import_Material(m->name_texture.c_str(), m->dir_texture.c_str(), dir_texture, dir_scene);
+			}
 
+
+			//Load Texture
 			if (path_.length > 0)
 			{
 				ILuint id;
@@ -289,7 +353,7 @@ string ModuleGeometry::Delete_$Assimp$_word(string str)
 //-------------------------------------------------------------------------
 //-------------------------------------------------------------------------
 
-bool ModuleGeometry::Import_Mesh(const aiMesh* new_mesh, string& out_p, const char* name_mesh)
+bool ModuleGeometry::Import_Mesh(const aiMesh* new_mesh, string& out_p, const char* name_mesh, const char* dir_scene)
 {
 	Mesh m;
 
@@ -344,11 +408,11 @@ bool ModuleGeometry::Import_Mesh(const aiMesh* new_mesh, string& out_p, const ch
 		}
 	}
 
-	return Save_Mesh(m, out_p, name_mesh);
+	return Save(m, out_p, name_mesh, dir_scene);
 
 }
 
-bool ModuleGeometry::Save_Mesh(const Mesh& mesh, string& out_p, const char* name_mesh)
+bool ModuleGeometry::Save(const Mesh& mesh, string& out_p, const char* name_mesh, const char* dir_scene)
 {
 	uint amount_infor_mesh[4] = { mesh.num_indices,  mesh.num_vertices,  (mesh.normals) ? mesh.num_vertices : 0,  mesh.num_uvs_texture_coords};
 
@@ -398,7 +462,9 @@ bool ModuleGeometry::Save_Mesh(const Mesh& mesh, string& out_p, const char* name
 
 
 	string name_file = name_mesh;
-	bool ret = App->filesystem->Save_Unique(name_file, data, size, "/Library/Meshes/", "wge", out_p);
+	string scene_path = dir_scene;
+	scene_path.append("/Meshes/");
+	bool ret = App->filesystem->Save_Unique(name_file, data, size, scene_path.c_str(), "wge", out_p);
 
 	delete[] data;
 	data = nullptr;
@@ -413,7 +479,7 @@ bool ModuleGeometry::Load_Mesh(Mesh* mesh, const char* file_path)
 
 	//Check if we have the correct path_file
 	uint size_file = App->filesystem->Load(file_path, &buffer);
-	if (size_file == 0)
+	if (size_file == 0) 
 	{
 		return false;
 	}
@@ -465,5 +531,40 @@ bool ModuleGeometry::Load_Mesh(Mesh* mesh, const char* file_path)
 	}
 
 	return true;
+}
+
+
+bool  ModuleGeometry::Import_Material(const char* name_file, const char* path, std::string& out_p, const char* dir_scene)
+{
+	bool ret = false;
+
+	ILuint id;
+	ilGenImages(1, &id);
+	ilBindImage(id);
+	ilLoadImage(path);
+
+	ILuint size;
+	ILubyte* data;
+	ilSetInteger(IL_DXTC_FORMAT, IL_DXT5);
+	size = ilSaveL(IL_DDS, NULL, 0);
+
+	if (size > 0)
+	{
+		data = new ILubyte[size];
+		if (ilSaveL(IL_DDS, data, size) > 0)
+		{
+			string name_f = name_file;
+			string scene_path = dir_scene;
+			scene_path.append("/Textures/");
+			ret = App->filesystem->Save_Unique(name_f, data, size, scene_path.c_str(), "tex", out_p);
+		}
+
+		delete[] data;
+		data = nullptr;
+	}
+
+	ilDeleteImages(1, &id);
+
+	return ret;
 }
 

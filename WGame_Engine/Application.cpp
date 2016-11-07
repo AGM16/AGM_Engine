@@ -1,22 +1,23 @@
 #include "Application.h"
+#include "JSon_Document.h"
 
 
 Application::Application()
 {
-	window = new ModuleWindow(this);
-	input = new ModuleInput(this);
-	audio = new ModuleAudio(this, true);
-	scene_intro = new ModuleSceneIntro(this);
-	renderer3D = new ModuleRenderer3D(this);
-	camera = new ModuleCamera3D(this);
-	physics = new ModulePhysics3D(this);
-	editor = new Editor(this);
-	fps_info = new FPS_Info(this);
-	console = new Console(this);
-	geometry = new ModuleGeometry(this);
-	filesystem = new ModuleFileSystem(this);
-	hardware = new Hardware_Info(this);
-	go_manager = new Module_Go_Manager(this);
+	window = new ModuleWindow();
+	input = new ModuleInput();
+	audio = new ModuleAudio();
+	scene_intro = new ModuleSceneIntro();
+	renderer3D = new ModuleRenderer3D();
+	camera = new ModuleCamera3D();
+	physics = new ModulePhysics3D();
+	editor = new Editor();
+	fps_info = new FPS_Info();
+	console = new Console();
+	geometry = new ModuleGeometry();
+	filesystem = new ModuleFileSystem();
+	hardware = new Hardware_Info();
+	go_manager = new Module_Go_Manager();
 
 	// The order of calls is very important!
 	// Modules will Init() Start() and Update in this order
@@ -74,6 +75,10 @@ bool Application::Init()
 	bool ret = true;
 
 	window_resized = false;
+
+	char* buffer = nullptr;
+	//It doesn't load the document. I have to solve it.
+	App->filesystem->Load("Configdocument.txt", &buffer);
 
 	// Call Init() in all modules
 	list<Module*>::iterator i = list_modules.begin();

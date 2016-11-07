@@ -9,7 +9,7 @@ class Hardware_Info : public Module
 {
 public:
 
-	Hardware_Info(Application* app, bool start_enabled = true);
+	Hardware_Info(bool start_enabled = true);
 	~Hardware_Info();
 
 	bool Init();

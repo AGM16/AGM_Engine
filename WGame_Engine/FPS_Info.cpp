@@ -4,8 +4,9 @@
 #include "Imgui\imgui.h"
 
 
-FPS_Info::FPS_Info(Application* app, bool start_enabled) : Module(app, start_enabled)
+FPS_Info::FPS_Info(bool start_enabled) : Module(start_enabled)
 {
+	Set_Name_Module("FPS_Info");
 }
 
 

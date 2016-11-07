@@ -8,9 +8,9 @@
 
 using namespace std;
 
-ModuleFileSystem::ModuleFileSystem(Application* app, bool start_enabled) : Module(app, start_enabled)
+ModuleFileSystem::ModuleFileSystem(bool start_enabled) : Module(start_enabled)
 {
-	
+	Set_Name_Module("File_System");
 
 	// need to be created before Awake so other modules can use it
 	// The dir where aplication runs
@@ -44,6 +44,7 @@ bool ModuleFileSystem::Init()
 		// We add the writing directory as a reading directory too with speacial mount point
 		//Creation of folders that will save FBX information
 		Create_Dir("/Library");
+		AddPath("Game/");
 
 	}
 

@@ -10,8 +10,9 @@
 #include "Devil\include\ilu.h"
 #include "Devil\include\ilut.h"
 
-ModuleWindow::ModuleWindow(Application* app, bool start_enabled) : Module(app, start_enabled)
+ModuleWindow::ModuleWindow(bool start_enabled) : Module(start_enabled) 
 {
+	Set_Name_Module("Window");
 	window = nullptr;
 	screen_surface = nullptr;
 }

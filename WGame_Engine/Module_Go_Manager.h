@@ -11,7 +11,7 @@ class Module_Go_Manager : public Module
 {
 public:
 
-	Module_Go_Manager(Application* app, bool start_enabled = true);
+	Module_Go_Manager( bool start_enabled = true);
 	~Module_Go_Manager();
 
 	GameObject* Create_Game_Object(Mesh* m, GameObject* Parent);

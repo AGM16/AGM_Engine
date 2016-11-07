@@ -12,7 +12,7 @@ class ModuleFileSystem : public Module
 {
 public:
 
-	ModuleFileSystem(Application* app, bool start_enabled = true);
+	ModuleFileSystem( bool start_enabled = true);
 
 	// Destructor
 	virtual ~ModuleFileSystem();

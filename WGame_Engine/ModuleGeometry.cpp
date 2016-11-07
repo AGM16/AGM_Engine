@@ -21,9 +21,9 @@
 using namespace std;
 
 
-ModuleGeometry::ModuleGeometry(Application* app, bool start_enabled) : Module(app, start_enabled)
+ModuleGeometry::ModuleGeometry( bool start_enabled) : Module(start_enabled)
 {
-
+	Set_Name_Module("Geometry");
 }
 ModuleGeometry::~ModuleGeometry()
 {

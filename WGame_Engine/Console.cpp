@@ -4,9 +4,9 @@
 #include "Imgui\imgui.h"
 
 
-Console::Console(Application* app, bool start_enabled) : Module(app, start_enabled), open_window(true)
+Console::Console(bool start_enabled) : Module(start_enabled), open_window(true)
 {
-
+	Set_Name_Module("Console");
 }
 
 Console::~Console()

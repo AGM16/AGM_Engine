@@ -15,8 +15,9 @@
 #include "Imgui\imgui_impl_sdl_gl3.h"
 
 
-ModuleRenderer3D::ModuleRenderer3D(Application* app, bool start_enabled) : Module(app, start_enabled)
+ModuleRenderer3D::ModuleRenderer3D(bool start_enabled) : Module(start_enabled)
 {
+	Set_Name_Module("Render");
 }
 
 // Destructor

@@ -6,8 +6,9 @@
 
 using namespace std;
 
-Editor::Editor(Application* app, bool start_enabled) : Module(app, start_enabled), plane(0,1,0,0)
+Editor::Editor( bool start_enabled) : Module(start_enabled), plane(0,1,0,0)
 {
+	Set_Name_Module("Editor");
 }
 
 Editor::~Editor()

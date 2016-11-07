@@ -10,7 +10,7 @@
 class Editor : public Module
 {
 public:
-	Editor(Application* app, bool start_enabled = true);
+	Editor(bool start_enabled = true);
 	~Editor();
 
 	bool Start();

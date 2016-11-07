@@ -8,11 +8,12 @@ class Module
 {
 private :
 	bool enabled;
+	std::string name;
 
 public:
-	Application* App;
+	
 
-	Module(Application* parent, bool start_enabled = true) : App(parent)
+	Module(bool start_enabled = true)
 	{}
 
 	virtual ~Module()
@@ -50,6 +51,16 @@ public:
 
 	virtual void OnCollision(PhysBody3D* body1, PhysBody3D* body2)
 	{}
+
+	const char* Get_Name_Module()const
+	{
+		return name.c_str();
+	}
+
+	void Set_Name_Module(const char* new_name)
+	{
+		name = new_name;
+	}
 };
 
 #endif

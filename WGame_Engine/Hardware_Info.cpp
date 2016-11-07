@@ -2,9 +2,9 @@
 #include "Hardware_Info.h"
 #include "SDL\include\SDL.h"
 
-Hardware_Info::Hardware_Info(Application* app, bool start_enabled) : Module(app, start_enabled), window_active(true), color(1.f,1.f,0.f,1.f)
+Hardware_Info::Hardware_Info(bool start_enabled) : Module(start_enabled), window_active(true), color(1.f,1.f,0.f,1.f)
 {
-
+	Set_Name_Module("Hardware");
 }
 
 Hardware_Info::~Hardware_Info()

@@ -48,15 +48,6 @@ Application::Application()
 	// Renderer last!
 	AddModule(renderer3D);
 
-
-	//FPS Info
-	prev_frames_per_sec = 0; 
-	frames_per_sec = 0;
-	max_frames = 60; 
-	
-
-	//Console
-	console_exists = false;
 }
 
 Application::~Application()
@@ -76,29 +67,42 @@ bool Application::Init()
 
 	window_resized = false;
 
+
 	pugi::xml_document config_file;
-	pugi::xml_node node_config;
+	pugi::xml_node root_node_config;
 
-	char* buffer = nullptr;
-	int size = App->filesystem->Load("Configdocument.xml", &buffer);
+	//Load the config document
+	root_node_config = LoadConfig(config_file);
 
-	//Load the file to our xml_document to access to the nodes
-	pugi::xml_parse_result result = config_file.load_buffer(buffer, size);
-
-	delete[] buffer;
-	buffer = nullptr;
-
-	if (result == NULL)
+	//Check if there is a root node
+	if (root_node_config.empty() == true)
 	{
-		LOG("Could not load map xml file config.xml. pugi error: %s", result.description());
+		LOG("ERROR: There is no rootnode in the document Config_File.xml");
+		ret = false;
 	}
 	else
-		ret = config_file.child("config");
+	{
+		//We enter into the node App to load the values
+		pugi::xml_node app_node = root_node_config.child("Application");
+
+		//Title and organization
+		title = app_node.attribute("title").as_string();
+		organization = app_node.attribute("organization").as_string();
+
+		//FPS Variables
+		prev_frames_per_sec = app_node.attribute("prev_frames_per_sec").as_int();
+		frames_per_sec = app_node.attribute("frames_per_sec").as_int();
+		max_frames = app_node.attribute("max_frames").as_int();
+
+		//Console variable
+		console_exists = app_node.attribute("console_exists ").as_bool();
+	}
 
 
 	// Call Init() in all modules
 	list<Module*>::iterator i = list_modules.begin();
 
+	//Activate the console
     console_exists = true;
 
 	while (i != list_modules.end() && ret == true)
@@ -119,12 +123,30 @@ bool Application::Init()
 		ret = (*i)->Start();
 		++i;
 	}
-
-	const char* dir = filesystem->Get_Base_Dir();
 	
 	last_sec_frame.Start();
 	ms_timer.Start();
 	return ret;
+}
+
+pugi::xml_node Application::LoadConfig(pugi::xml_document& config_file) const
+{
+	pugi::xml_node ret;
+
+	char* buffer = nullptr;
+	//Load the file xml
+	int size = App->filesystem->Load("Config_File.xml", &buffer);
+	pugi::xml_parse_result result = config_file.load_buffer(buffer, size);
+	
+
+	//Check if the document have been loaded correctly
+	
+		//Now we enter into the rootnode
+		ret = config_file.child("config");
+	
+
+	return ret;
+
 }
 
 // ---------------------------------------------
@@ -290,4 +312,114 @@ void Application::Windows_Resized()
 bool Application::Get_Windows_Resized()
 {
 	return window_resized;
+}
+
+
+// Load / Save XML
+void Application::LoadGame(const char* file)
+{
+	// we should be checking if that file actually exist
+	want_to_load = true;
+	char load[100];
+	sprintf_s(load, 100, "%s%s", filesystem->GetSaveDirectory(), file);
+	load_game.append(load);
+}
+
+// ---------------------------------------
+void Application::SaveGame(const char* file) const
+{
+	// we should be checking if that file actually exist
+	want_to_save = true;
+	char save[100];
+	sprintf_s(save, 100, "%s%s", filesystem->GetSaveDirectory(), file);
+	save_game.append(save);
+}
+
+bool Application::LoadGameNow()
+{
+	bool ret = false;
+
+	char* buffer;
+	uint size = filesystem->Load(load_game.c_str(), &buffer);
+
+	if (size > 0)
+	{
+		pugi::xml_document data;
+		pugi::xml_node root;
+
+		pugi::xml_parse_result result = data.load_buffer(buffer, size);
+		RELEASE(buffer);
+
+		if (result != NULL)
+		{
+			LOG("Loading new Game State from %s...", load_game.c_str());
+
+			root = data.child("game_state");
+
+			list<Module*>::iterator item = list_modules.begin();
+			ret = true;
+
+			while (item != list_modules.end() && ret == true)
+			{
+				ret = (*item)->Load(root.child((*item)->Get_Name_Module()));
+				++item;
+			}
+
+			data.reset();
+			if (ret == true)
+			{
+				LOG("...finished loading");
+			}
+			else
+			{
+				LOG("...loading process interrupted with error on module %s", ((*item) != NULL) ? (*item)->Get_Name_Module() : "unknown");
+			}
+		}
+		else
+		{
+			LOG("Could not parse game state xml file %s. pugi error: %s", load_game.c_str(), result.description());
+		}
+	}
+	else
+		LOG("Could not load game state xml file %s", load_game.c_str());
+
+	want_to_load = false;
+	return ret;
+}
+
+bool Application::SavegameNow() const
+{
+	bool ret = true;
+
+	LOG("Saving Game State to %s...", save_game.c_str());
+
+	// xml object were we will store all data
+	pugi::xml_document data;
+	pugi::xml_node root;
+
+	root = data.append_child("game_state");
+
+	list<Module*>::const_iterator item = list_modules.begin();
+
+	while (item != list_modules.end() && ret == true)
+	{
+		ret = (*item)->Save(root.append_child((*item)->Get_Name_Module()));
+		++item;
+	}
+
+	if (ret == true)
+	{
+		std::stringstream stream;
+		data.save(stream);
+
+		// we are done, so write data to disk
+		filesystem->Save(save_game.c_str(), stream.str().c_str(), stream.str().length());
+		LOG("... finished saving", save_game.c_str());
+	}
+	else
+		LOG("Save process halted from an error in module %s", ((*item) != NULL) ? (*item)->Get_Name_Module() : "unknown");
+
+	data.reset();
+	want_to_save = false;
+	return ret;
 }

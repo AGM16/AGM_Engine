@@ -1,6 +1,8 @@
 #ifndef _MODULE_H_
 #define _MODULE_H_
 
+#include "PugiXml\src\pugixml.hpp"
+
 class Application;
 struct PhysBody3D;
 
@@ -47,6 +49,16 @@ public:
 	virtual bool CleanUp() 
 	{ 
 		return true; 
+	}
+
+	virtual bool Load(pugi::xml_node& node)
+	{
+		return true;
+	}
+
+	virtual bool Save(pugi::xml_node& node) const
+	{
+		return true;
 	}
 
 	virtual void OnCollision(PhysBody3D* body1, PhysBody3D* body2)

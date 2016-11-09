@@ -1,0 +1,56 @@
+<!-- Config file for the game -->
+
+<config>
+ 
+  <Application
+       title = "WGame_Engine"
+       organization = "WGame_Engine_Organization"
+       prev_frames_per_sec = "0"
+       frames_per_sec = "0"
+       max_frames = "60"
+       console_exists = "false"
+  />
+
+  <Console>
+  </Console>
+
+  <Window>
+  </Window>
+
+  <Render>
+  </Render>
+
+  <Physics>
+  </Physics>
+  
+  <Input>
+  </Input>
+  
+  <Geometry>
+  </Geometry>
+  
+  <File_System>
+  </File_System>
+  
+  <Camera>
+  </Camera>
+  
+  <Audio>
+  </Audio>
+  
+  <Hardware>
+  </Hardware>
+  
+  <FPS_Info>
+  </FPS_Info>
+
+  <Scene_Intro>
+  </Scene_Intro>
+  
+  <Module_Go_Manager>
+  </Module_Go_Manager>
+
+</config>
+
+
+

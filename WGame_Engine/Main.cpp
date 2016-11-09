@@ -19,12 +19,10 @@ Application* App = nullptr;
 
 int main(int argc, char ** argv)
 {
-	LOG("Starting game '%s'...", TITLE);
+	LOG("Starting game...");
 
 	int main_return = EXIT_FAILURE;
 	main_states state = MAIN_CREATION;
-
-	
 
 	while (state != MAIN_EXIT)
 	{
@@ -86,6 +84,6 @@ int main(int argc, char ** argv)
 	}
 
 	delete App;
-	LOG("Exiting game '%s'...\n", TITLE);
+	LOG("Exiting game...\n");
 	return main_return;
 }

@@ -55,9 +55,6 @@
     <Filter Include="Sources\GameObject\Components">
       <UniqueIdentifier>{e1e44849-9fe1-4d7d-90f7-0f5ccb84a536}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Library_Resources\JSon_Parson">
-      <UniqueIdentifier>{1ad080b0-53c2-4152-b465-6f7fcf85556d}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Sources\Tools\PuguiXML">
       <UniqueIdentifier>{f83fbbd9-56be-40b6-ad8f-d4dc7bc45a01}</UniqueIdentifier>
     </Filter>
@@ -504,12 +501,6 @@
     <ClInclude Include="Component_Camera.h">
       <Filter>Sources\GameObject\Components</Filter>
     </ClInclude>
-    <ClInclude Include="parson.h">
-      <Filter>Library_Resources\JSon_Parson</Filter>
-    </ClInclude>
-    <ClInclude Include="JSon_Document.h">
-      <Filter>Sources\Tools</Filter>
-    </ClInclude>
     <ClInclude Include="PugiXml\src\pugiconfig.hpp">
       <Filter>Sources\Tools\PuguiXML</Filter>
     </ClInclude>
@@ -733,12 +724,6 @@
     </ClCompile>
     <ClCompile Include="Component_Camera.cpp">
       <Filter>Sources\GameObject\Components</Filter>
-    </ClCompile>
-    <ClCompile Include="parson.c">
-      <Filter>Library_Resources\JSon_Parson</Filter>
-    </ClCompile>
-    <ClCompile Include="JSon_Document.cpp">
-      <Filter>Sources\Tools</Filter>
     </ClCompile>
     <ClCompile Include="PugiXml\src\pugixml.cpp">
       <Filter>Sources\Tools\PuguiXML</Filter>

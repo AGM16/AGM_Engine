@@ -18,6 +18,7 @@
 #include "Console.h"
 #include "Hardware_Info.h"
 #include "Module_Go_Manager.h"
+#include "PugiXml\src\pugixml.hpp"
 
 
 
@@ -49,16 +50,24 @@ private:
 	Timer	last_sec_frame;
 	int     prev_frames_per_sec;
 	int     frames_per_sec;
-	
 	float     time_per_frame;
 	double     time_last_frame;
 	bool       console_exists;
 	int     max_frames;
-	bool    window_resized;
 
+	std::string		title;
+	std::string		organization;
+
+	bool    window_resized;
 
 	float	dt;
 	list<Module*> list_modules;
+
+	//XML Load/Save
+	mutable bool	        	want_to_save = false;
+	bool				        want_to_load = false;
+	std::string			        load_game;
+	mutable std::string     	save_game;
 
 public:
 
@@ -83,11 +92,24 @@ public:
 	void Windows_Resized();
 	bool Get_Windows_Resized();
 
+	//Console
 	bool Consoler_Exist();
 	bool Set_Console(bool exist);
 	void Log_Console(const char* text);
 
+	//XML
+	void LoadGame(const char* file);
+	void SaveGame(const char* file) const;
+
+	//Load / Save
+	bool LoadGameNow();
+	bool SavegameNow() const;
+
+
 private:
+	// Load config file
+	pugi::xml_node LoadConfig(pugi::xml_document&) const;
+
 
 	void AddModule(Module* mod);
 	void PrepareUpdate();

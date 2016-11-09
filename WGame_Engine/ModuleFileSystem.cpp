@@ -44,6 +44,7 @@ bool ModuleFileSystem::Init()
 		// We add the writing directory as a reading directory too with speacial mount point
 		//Creation of folders that will save FBX information
 		Create_Dir("/Library");
+		AddPath(Get_Write_dir(), GetSaveDirectory());
 
 	}
 

@@ -1,5 +1,5 @@
 #include "Application.h"
-#include "JSon_Document.h"
+#include "PugiXml\src\pugixml.hpp"
 
 
 Application::Application()
@@ -76,9 +76,25 @@ bool Application::Init()
 
 	window_resized = false;
 
+	pugi::xml_document config_file;
+	pugi::xml_node node_config;
+
 	char* buffer = nullptr;
-	//It doesn't load the document. I have to solve it.
-	App->filesystem->Load("Configdocument.txt", &buffer);
+	int size = App->filesystem->Load("Configdocument.xml", &buffer);
+
+	//Load the file to our xml_document to access to the nodes
+	pugi::xml_parse_result result = config_file.load_buffer(buffer, size);
+
+	delete[] buffer;
+	buffer = nullptr;
+
+	if (result == NULL)
+	{
+		LOG("Could not load map xml file config.xml. pugi error: %s", result.description());
+	}
+	else
+		ret = config_file.child("config");
+
 
 	// Call Init() in all modules
 	list<Module*>::iterator i = list_modules.begin();

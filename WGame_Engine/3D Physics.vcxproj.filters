@@ -58,6 +58,9 @@
     <Filter Include="Library_Resources\JSon_Parson">
       <UniqueIdentifier>{1ad080b0-53c2-4152-b465-6f7fcf85556d}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Sources\Tools\PuguiXML">
+      <UniqueIdentifier>{f83fbbd9-56be-40b6-ad8f-d4dc7bc45a01}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Module.h">
@@ -507,6 +510,12 @@
     <ClInclude Include="JSon_Document.h">
       <Filter>Sources\Tools</Filter>
     </ClInclude>
+    <ClInclude Include="PugiXml\src\pugiconfig.hpp">
+      <Filter>Sources\Tools\PuguiXML</Filter>
+    </ClInclude>
+    <ClInclude Include="PugiXml\src\pugixml.hpp">
+      <Filter>Sources\Tools\PuguiXML</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="ModuleAudio.cpp">
@@ -730,6 +739,9 @@
     </ClCompile>
     <ClCompile Include="JSon_Document.cpp">
       <Filter>Sources\Tools</Filter>
+    </ClCompile>
+    <ClCompile Include="PugiXml\src\pugixml.cpp">
+      <Filter>Sources\Tools\PuguiXML</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

@@ -11,5 +11,6 @@ public:
 	float F_Random();
 	float Min_Max_Random(float min_a, float max_b);
 	float3 Random_Float_Vector(float min_a, float max_b);
+	int Random_int(int min_a, int max_b);
 };
 #endif // !__RANDOM_H__

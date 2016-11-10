@@ -161,6 +161,11 @@ void Application::PrepareUpdate()
 // ---------------------------------------------
 void Application::FinishUpdate()
 {	
+	if (want_to_save == true)
+		SavegameNow();
+
+	if (want_to_load == true)
+		LoadGameNow();
 
 	Delay(ms_timer.Read(), time_per_frame);
 	

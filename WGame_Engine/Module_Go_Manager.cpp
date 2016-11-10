@@ -2,6 +2,7 @@
 #include "Module_Go_Manager.h"
 #include "GameObject.h"
 #include "Components.h"
+#include "Random.h"
 #include "p2Defs.h"
 
 using namespace std;
@@ -9,7 +10,8 @@ using namespace std;
 Module_Go_Manager::Module_Go_Manager( bool start_enabled) : Module(start_enabled)
 {
 	Set_Name_Module("Module_Go_Manager");
-	root_game_object = new GameObject(nullptr, "Root_Game_Object");
+	Random rand;
+	root_game_object = new GameObject(nullptr, "Root_Game_Objects", rand.Random_int(0, 2147483647));
 	root_game_object->Add_Component_Transformation(float3::zero, float3::one, Quat::identity, float3::zero);
 	root_game_object->Add_Component_Material("", "", 0, 0);
 }
@@ -30,8 +32,8 @@ GameObject* Module_Go_Manager::Create_Game_Object( Mesh* m, GameObject* Parent)
 	{
 		Parent = root_game_object;
     }
-		
-		GameObject* new_game_object = new GameObject(Parent, m->name_node.c_str());
+	Random rand;
+		GameObject* new_game_object = new GameObject(Parent, m->name_node.c_str(), rand.Random_int(0, 2147483647));
 
 		//Add Child to the parent
 		Parent->Add_Child(new_game_object);
@@ -62,8 +64,8 @@ GameObject* Module_Go_Manager::Create_Camera_Game_Object(GameObject* Parent, con
 	{
 		Parent = root_game_object;
 	}
-
-	GameObject* new_game_object = new GameObject(Parent, name_camera);
+	Random rand;
+	GameObject* new_game_object = new GameObject(Parent, name_camera, rand.Random_int(0, 2147483647));
 
 	//Add Child to the parent
 	Parent->Add_Child(new_game_object);
@@ -120,6 +122,12 @@ update_status Module_Go_Manager::Update(float dt)
 	}
 
 	ImGui::End();
+
+	if (App->input->GetKey(SDL_SCANCODE_L) == KEY_DOWN)
+		App->LoadGame("save_game.xml");
+
+	if (App->input->GetKey(SDL_SCANCODE_O) == KEY_DOWN)
+		App->SaveGame("save_game.xml");
 
 	return UPDATE_CONTINUE;
 }
@@ -206,4 +214,27 @@ void Module_Go_Manager::Search_GameObject_To_Deactive( GameObject* root_go)const
 GameObject* Module_Go_Manager::Get_Root()const
 {
 	return root_game_object;
+}
+
+bool  Module_Go_Manager::Load(pugi::xml_node& node)
+{
+	for (vector<GameObject*>::const_iterator node_go = root_game_object->Get_Children()->begin(); node_go != root_game_object->Get_Children()->end(); node_go++)
+	{
+		//First we load the parent and then the child
+		(*node_go)->Load(node);
+
+		if ((*node_go)->Get_Children()->size() > 0)
+			Load(node);
+	}
+	return true;
+}
+
+
+bool  Module_Go_Manager::Save(pugi::xml_node& node)const
+{
+		
+    //First we save the parent and then the child
+	root_game_object->Save(node);
+
+	return true;
 }

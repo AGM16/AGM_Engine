@@ -3,6 +3,8 @@
 
 #include <vector>
 #include "MathGeoLib\include\MathGeoLib.h"
+#include "PugiXml\src\pugixml.hpp"
+
 class Components;
 enum Components_Type;
 struct Mesh;
@@ -10,7 +12,7 @@ struct Mesh;
 class GameObject
 {
 public:
-	GameObject(GameObject* Parent_, const char* name_);
+	GameObject(GameObject* Parent_, const char* name_, int id_number);
 	~GameObject();
 
 	//Add Functions
@@ -30,12 +32,18 @@ public:
 	GameObject* Get_Parent()const;
 	const char* Get_Name()const;
 
+
+	//Load and save
+	bool Load(pugi::xml_node& node);
+	bool Save(pugi::xml_node& node)const;
+
 private:
 
 	GameObject* Parent = nullptr;
 	std::vector<GameObject*> children;
     std::vector<Components*> components_list;
 	const char* name = NULL;
+	int id = 0;
 
 };
 

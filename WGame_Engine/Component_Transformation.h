@@ -18,6 +18,8 @@ public:
 	void Set_Scale(const math::float3 &scal);
 
 	math::float3 Get_Position()const;
+	math::float3 Get_Rotation()const;
+	math::float3 Get_Scale()const;
 	math::float4x4 Get_Tranformation_Matrix()const;
 
 

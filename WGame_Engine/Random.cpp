@@ -29,6 +29,15 @@ float Random::Min_Max_Random(float min_a, float max_b)
 	return distributor(generator);
 }
 
+int Random::Random_int(int min_a, int max_b)
+{
+	int rand = 0;
+	LCG random;
+
+	rand = random.Int(min_a, max_b);
+	return rand;
+}
+
 float3 Random::Random_Float_Vector(float min_a, float max_b)
 {
 	//Generate a random with opengl LCG

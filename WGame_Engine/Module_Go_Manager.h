@@ -3,6 +3,7 @@
 
 #include "Module.h"
 #include "Globals.h"
+#include "PugiXml\src\pugixml.hpp"
 
 class GameObject;
 struct Mesh;
@@ -21,6 +22,12 @@ public:
 	//Functions used to active and deactive components
 	void Search_GameObject_To_Active(GameObject* root_go)const;
 	void Search_GameObject_To_Deactive(GameObject* root_go)const;
+
+	bool Load(pugi::xml_node& node);
+
+
+	bool Save(pugi::xml_node& node)const;
+	
 
 	void Window_Hierarchy(GameObject* Root_node);
 

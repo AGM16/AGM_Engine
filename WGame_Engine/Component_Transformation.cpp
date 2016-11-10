@@ -150,6 +150,16 @@ math::float3 Component_Transformation::Get_Position()const
 	return position;
 }
 
+math::float3 Component_Transformation::Get_Rotation()const
+{
+	return rotation_degrees;
+}
+
+math::float3 Component_Transformation::Get_Scale()const
+{
+	return scale;
+}
+
 bool Component_Transformation::Is_Checkbox_Active()const
 {
 	return active_checkbox;

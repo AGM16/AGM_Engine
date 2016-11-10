@@ -10,7 +10,7 @@
 
 using namespace std;
 
-GameObject::GameObject(GameObject* Parent_, const char* name_): Parent(Parent_), name(name_)
+GameObject::GameObject(GameObject* Parent_, const char* name_, int id_number): Parent(Parent_), name(name_), id(id_number)
 {
 
 }
@@ -210,3 +210,74 @@ const char* GameObject::Get_Name()const
 	return name;
 }
 
+
+bool GameObject::Load(pugi::xml_node& node)
+{
+	Component_Transformation* transform = (Component_Transformation*)Get_Component(TRANSFORMATION);
+
+	//Position
+	int pos_x = node.attribute("pos_x").as_float();
+	int pos_y = node.attribute("pos_y").as_float();
+	int pos_z = node.attribute("pos_z").as_float();
+	transform->Set_Position(math::float3(pos_x, pos_y, pos_z));
+
+	//Rotation
+	int rot_x = node.attribute("rot_x").as_float();
+	int rot_y = node.attribute("rot_y").as_float();
+	int rot_z = node.attribute("rot_z").as_float();
+	transform->Set_Rotation(math::float3(rot_x, rot_y, rot_z));
+
+	//Scale
+	int scale_x = node.attribute("scale_x").as_float();
+	int scale_y = node.attribute("scale_y").as_float();
+	int scale_z = node.attribute("scale_z").as_float();
+	transform->Set_Rotation(math::float3(scale_x, scale_y, scale_z));
+
+	if (children.size() > 0)
+	{
+		for (vector<GameObject*>::const_iterator node_go = children.begin(); node_go != children.end(); node_go++)
+		{
+			Load(node);
+		}
+	}
+	
+	return true;
+}
+
+bool GameObject::Save(pugi::xml_node& node)const
+{
+	
+		//First we save the parent and then the child
+		Component_Transformation* transform = (Component_Transformation*)Get_Component(TRANSFORMATION);
+		pugi::xml_node node_mgo = node.append_child("Module_Go_Manager");
+
+		char node_go[100];
+		sprintf_s(node_go, 100, "%s_%d", "GameObject", id);
+
+		node_mgo.append_child(node_go);
+
+		//Save Position
+		node_mgo.append_attribute("pos_x") = transform->Get_Position().x;
+		node_mgo.append_attribute("pos_y") = transform->Get_Position().y;
+		node_mgo.append_attribute("pos_z") = transform->Get_Position().z;
+
+		//Save Rotation
+		node_mgo.append_attribute("rot_x") = transform->Get_Rotation().x;
+		node_mgo.append_attribute("rot_y") = transform->Get_Rotation().y;
+		node_mgo.append_attribute("rot_z") = transform->Get_Rotation().z;
+
+		//Save Scale
+		node_mgo.append_attribute("scale_x") = transform->Get_Scale().x;
+		node_mgo.append_attribute("scale_y") = transform->Get_Scale().y;
+		node_mgo.append_attribute("scale_z") = transform->Get_Scale().z;
+
+		if (children.size() > 0)
+		{
+			for (vector<GameObject*>::const_iterator node_go = children.begin(); node_go != children.end(); node_go++)
+			{
+				Save(node);
+			}
+		}
+
+	return true;
+}

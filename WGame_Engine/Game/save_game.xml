@@ -1,0 +1,22 @@
+<?xml version="1.0"?>
+<game_state>
+	<Window />
+	<File_System />
+	<Console />
+	<Hardware />
+	<FPS_Info />
+	<Module_Go_Manager>
+		<GameObject id="650723584" pos_x="0" pos_y="0" pos_z="0" rot_x="0" rot_y="0" rot_z="0" scale_x="1" scale_y="1" scale_z="1" Checkbox_Deactive_Transform="false" />
+		<GameObject id="143693568" pos_x="0.026560463" pos_y="-0.00801254716" pos_z="8.30839539" rot_x="16" rot_y="0" rot_z="-0" scale_x="1" scale_y="1" scale_z="1" Checkbox_Deactive_Transform="true" Checkbox_Deactive_Mesh="false" Checkbox_wireframe="false" Checkbox_AABB="false" Checkbox_OBB="true" Checkbox_Deactive_Material="true" />
+		<GameObject id="214985472" pos_x="1.80920172" pos_y="16.4811859" pos_z="-39.7342796" rot_x="-0" rot_y="0" rot_z="-0" scale_x="1" scale_y="1" scale_z="1" Checkbox_Deactive_Transform="false" Checkbox_Deactive_Mesh="false" Checkbox_wireframe="false" Checkbox_AABB="false" Checkbox_OBB="false" Checkbox_Deactive_Material="false" />
+		<GameObject id="250631424" pos_x="-70.6011124" pos_y="7.27624512" pos_z="1.24804139" rot_x="-0" rot_y="0" rot_z="-0" scale_x="1" scale_y="1" scale_z="1" Checkbox_Deactive_Transform="false" Checkbox_Deactive_Mesh="false" Checkbox_wireframe="false" Checkbox_AABB="false" Checkbox_OBB="false" Checkbox_Deactive_Material="false" />
+	</Module_Go_Manager>
+	<Geometry />
+	<Camera />
+	<Audio />
+	<Physics />
+	<Input />
+	<Editor />
+	<Scene_Intro />
+	<Render />
+</game_state>

@@ -218,14 +218,8 @@ GameObject* Module_Go_Manager::Get_Root()const
 
 bool  Module_Go_Manager::Load(pugi::xml_node& node)
 {
-	for (vector<GameObject*>::const_iterator node_go = root_game_object->Get_Children()->begin(); node_go != root_game_object->Get_Children()->end(); node_go++)
-	{
-		//First we load the parent and then the child
-		(*node_go)->Load(node);
-
-		if ((*node_go)->Get_Children()->size() > 0)
-			Load(node);
-	}
+	//First we load the parent and then the child
+	root_game_object->Load(node);
 	return true;
 }
 

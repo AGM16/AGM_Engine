@@ -98,7 +98,8 @@ void Component_Transformation::Set_Rotation(const math::float3 &rot_degrees)
 
 void Component_Transformation::Set_Scale(const math::float3 &scal)
 {
-	transformation_matrix = Create_New_Matrix_Transformation(position, quat_rotation, scal);
+	scale = scal;
+	transformation_matrix = Create_New_Matrix_Transformation(position, quat_rotation, scale);
 	Modify_Children();
 }
 

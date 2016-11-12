@@ -37,7 +37,7 @@ public:
 private:
 
 	Components_Type type_c;
-	bool active_component;
+	bool active_component = false;
 	GameObject* game_object = nullptr;
 	
 };

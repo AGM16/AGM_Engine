@@ -34,7 +34,7 @@ int Random::Random_int(int min_a, int max_b)
 	int rand = 0;
 	LCG random;
 
-	rand = random.Int(min_a, max_b);
+	rand = random.Float(min_a, max_b);
 	return rand;
 }
 

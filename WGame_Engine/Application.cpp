@@ -327,7 +327,7 @@ void Application::LoadGame(const char* file)
 	want_to_load = true;
 	char load[100];
 	sprintf_s(load, 100, "%s%s", filesystem->GetSaveDirectory(), file);
-	load_game.append(load);
+	load_game.assign(file);
 }
 
 // ---------------------------------------
@@ -337,7 +337,7 @@ void Application::SaveGame(const char* file) const
 	want_to_save = true;
 	char save[100];
 	sprintf_s(save, 100, "%s%s", filesystem->GetSaveDirectory(), file);
-	save_game.append(save);
+	save_game.assign(file);
 }
 
 bool Application::LoadGameNow()

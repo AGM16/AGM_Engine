@@ -16,7 +16,6 @@ Component_Mesh::Component_Mesh(Components_Type type, GameObject* game_object, Me
 		//Generate the initial AABB
 		bounding_box.SetNegativeInfinity();
 		bounding_box.Enclose((float3*)mesh->vertices, mesh->num_vertices);
-
 	}
 
 }
@@ -102,10 +101,42 @@ bool Component_Mesh::Is_Checkbox_Active()const
 	return active_checkbox;
 }
 
-bool Component_Mesh::Set_Checkbox(bool on)
+void Component_Mesh::Set_Checkbox(bool on)
 {
 	active_checkbox = on;
-	return active_checkbox;
+}
+
+//Checkbox Wireframe bool
+bool Component_Mesh::Is_Checkbox_Wireframe_Active()const
+{
+	return wireframe;
+}
+
+void Component_Mesh::Set_Checkbox_Wireframe(bool on)
+{
+	wireframe = on;
+}
+
+//Checkbox AABB bool
+bool Component_Mesh::Is_Checkbox_AABB_Active()const
+{
+	return aabb_checkbox;
+}
+
+void Component_Mesh::Set_Checkbox_AABB(bool on)
+{
+	aabb_checkbox = on;
+}
+
+//Checkbox OBB bool
+bool Component_Mesh::Is_Checkbox_OBB_Active()const
+{
+	return obb_checkbox;
+}
+
+void Component_Mesh::Set_Checkbox_OBB(bool on)
+{
+	obb_checkbox = on;
 }
 
 void Component_Mesh::Check_Parent_Checkboxes(Component_Mesh* mesh_parent, Component_Material* material_parent, Component_Material* material)
@@ -314,4 +345,9 @@ void Component_Mesh::Render_Bounding_Box_Panel()
 		}
 	}
 	
+}
+
+Mesh* Component_Mesh::Get_Mesh()const
+{
+	return mesh;
 }

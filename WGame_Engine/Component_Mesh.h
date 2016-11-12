@@ -18,15 +18,29 @@ public:
 	void Update();
 	void Clean_Up();
 
-	//Checkbox bool
+	//Checkbox Deactive bool
 	bool Is_Checkbox_Active()const;
-	bool Set_Checkbox(bool on);
+	void Set_Checkbox(bool on);
+
+	//Checkbox Wireframe bool
+	bool Is_Checkbox_Wireframe_Active()const;
+	void Set_Checkbox_Wireframe(bool on);
+
+	//Checkbox AABB bool
+	bool Is_Checkbox_AABB_Active()const;
+	void Set_Checkbox_AABB(bool on);
+
+	//Checkbox OBB bool
+	bool Is_Checkbox_OBB_Active()const;
+	void Set_Checkbox_OBB(bool on);
 
 	void Check_Parent_Checkboxes(Component_Mesh* mesh_parent, Component_Material* material_parent, Component_Material* material);
 	void Recalculate_Properties_Bounding_Box(Component_Transformation* transformation);
 
 	void Render_Mesh_Panel();
 	void Render_Bounding_Box_Panel();
+
+	Mesh* Get_Mesh()const;
 
 private:
 

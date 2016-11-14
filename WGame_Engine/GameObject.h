@@ -37,6 +37,8 @@ public:
 	bool Load(pugi::xml_node& node);
 	bool Save(pugi::xml_node& node)const;
 
+	int Is_Name_Repaeated(const char* name_rep);
+
 private:
 
 	GameObject* Parent = nullptr;
@@ -44,6 +46,7 @@ private:
     std::vector<Components*> components_list;
 	const char* name = NULL;
 	int id = 0;
+	int name_repeated = 0;
 
 };
 

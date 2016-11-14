@@ -1,5 +1,6 @@
 #include"Application.h"
 #include "ModuleGeometry.h"
+#include "GameObject.h"
 #include "Assimp\include\cimport.h"
 #include "Assimp\include\scene.h"
 #include "Assimp\include\postprocess.h"
@@ -185,12 +186,12 @@ void ModuleGeometry::Load_Nodes_For_Hierarchy(aiNode* node_child, const aiScene*
 				path_file_2 = dir_scene;
 				path_file_2.append("/Meshes/");
 				path_file_2.append(m->name_node.c_str());
-				if (i > 0)
+				/*if (i > 0)
 				{
 					char copy_name[10];
 					sprintf_s(copy_name, 10, "_m_%d", i);
 					path_file_2.append(copy_name);
-				}
+				}*/
 
 				path_file_2.append(".wge");
 			}
@@ -266,6 +267,26 @@ void ModuleGeometry::Hierarchy_And_Local_Transform(Mesh* m, aiNode* node)
 	//Delete the assimp from the strings
 	m->name_node = Delete_$Assimp$_word(m->name_node);
 	m->parent = Delete_$Assimp$_word(m->parent);
+
+	//Check if the name already exists in another GO to change it
+	bool repeated = true;
+	int copy = 0;
+	while (repeated)
+	{
+		repeated = false;
+		if (App->go_manager->Get_Root()->Is_Name_Repaeated(m->name_node.c_str()) > 0)
+		{
+			copy++;
+			char other_name[100];
+			sprintf_s(other_name, 100, "%s.%d", m->name_node.c_str(), copy);
+
+			m->name_node.clear();
+			m->name_node = other_name;
+
+			if (App->go_manager->Get_Root()->Is_Name_Repaeated(m->name_node.c_str()) > 0)
+				repeated = true;
+		}
+	}
 
 	aiVector3D translation;
 	aiVector3D scaling;

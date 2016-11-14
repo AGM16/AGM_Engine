@@ -217,19 +217,14 @@ bool GameObject::Load(pugi::xml_node& node)
 	Component_Mesh* mesh = (Component_Mesh*)Get_Component(MESH);
 	Component_Material* material = (Component_Material*)Get_Component(MATERIAL);
 	pugi::xml_node next_node;
-	string name = "Module_Go_Manager";
 
-	//Check if the node is Module_Go_Manager to obtain the fist child
-	if(name.compare(node.name()) == 0)
-	{
-		//Have access to the first child
-		next_node = node.child("GameObject");
-	}
-	else
-	{
-		//Obtain the other gameobjects nodes
-		next_node = node.next_sibling("GameObject");
-	}
+	
+	char node_go[100];
+	sprintf_s(node_go, 100, "%s_%s", "GameObject", Get_Name());
+
+	//Have access to the child
+	next_node = node.child(node_go);
+	
 
 	id = next_node.attribute("id").as_int();
 
@@ -257,7 +252,7 @@ bool GameObject::Load(pugi::xml_node& node)
 	transform->Set_Checkbox(deactivate_checkbox);
 
 	//--------------------MESH-----------------------
-	name.clear();
+	string name;
 	name = "Root_Game_Objects";
 	//Check if the node is RootNode, because his mesh is NULL
 	if (name.compare(Get_Name()) != 0)
@@ -293,7 +288,7 @@ bool GameObject::Load(pugi::xml_node& node)
 		for (vector<GameObject*>::const_iterator node_go = children.begin(); node_go != children.end(); node_go++)
 		{
 			if ((*node_go)->Exist_Component(CAMERA) == false)
-			(*node_go)->Load(next_node);
+			(*node_go)->Load(node);
 		}
 	}
 	
@@ -309,9 +304,9 @@ bool GameObject::Save(pugi::xml_node& node)const
 		Component_Material* material = (Component_Material*)Get_Component(MATERIAL);
 		
 		char node_go[100];
-		sprintf_s(node_go, 100, "%s_%d", "GameObject", id);
+		sprintf_s(node_go, 100, "%s_%s", "GameObject", Get_Name());
 		
-		pugi::xml_node node_mgo = node.append_child("GameObject");
+		pugi::xml_node node_mgo = node.append_child(node_go);
 
 		//id
 		node_mgo.append_attribute("id") = id;
@@ -360,7 +355,7 @@ bool GameObject::Save(pugi::xml_node& node)const
 		//--------------------MATERIAL-----------------------
 		if (name.compare(Get_Name()) != 0)
 		{
-			node_mgo.append_attribute("Checkbox_Deactive_Material") = material->Is_Active();
+			node_mgo.append_attribute("Checkbox_Deactive_Material") = material->Is_Checkbox_Active();
 		}
 
 
@@ -374,4 +369,25 @@ bool GameObject::Save(pugi::xml_node& node)const
 		}
 
 	return true;
+}
+
+int GameObject::Is_Name_Repaeated(const char* name_rep)
+{
+	if (children.size() > 0)
+	{
+		for (vector<GameObject*>::const_iterator node_go = children.begin(); node_go != children.end(); node_go++)
+		{
+				name_repeated = (*node_go)->Is_Name_Repaeated(name_rep);
+		}
+	}
+
+	string name_go = Get_Name();
+	if (name_go.compare(name_rep) == 0)
+	{
+		name_repeated++;
+	}
+
+	int ret = name_repeated;
+	name_repeated = 0;
+	return ret;
 }

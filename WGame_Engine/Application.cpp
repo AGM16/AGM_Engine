@@ -325,8 +325,6 @@ void Application::LoadGame(const char* file)
 {
 	// we should be checking if that file actually exist
 	want_to_load = true;
-	char load[100];
-	sprintf_s(load, 100, "%s%s", filesystem->GetSaveDirectory(), file);
 	load_game.assign(file);
 }
 
@@ -335,8 +333,6 @@ void Application::SaveGame(const char* file) const
 {
 	// we should be checking if that file actually exist
 	want_to_save = true;
-	char save[100];
-	sprintf_s(save, 100, "%s%s", filesystem->GetSaveDirectory(), file);
 	save_game.assign(file);
 }
 

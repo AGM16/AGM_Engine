@@ -575,9 +575,14 @@ bool  ModuleGeometry::Import_Material(const char* name_file, const char* path, s
 		if (ilSaveL(IL_DDS, data, size) > 0)
 		{
 			string name_f = name_file;
+			size_t size = name_f.find(".");
+			if (size != string::npos)
+			{
+				name_f = name_f.substr(0, size);
+			}
 			string scene_path = dir_scene;
 			scene_path.append("/Textures/");
-			ret = App->filesystem->Save_Unique(name_f, data, size, scene_path.c_str(), "tex", out_p);
+			ret = App->filesystem->Save_Unique(name_f, data, size, scene_path.c_str(), "tx", out_p);
 		}
 
 		delete[] data;

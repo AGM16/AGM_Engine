@@ -379,7 +379,7 @@ bool ModuleFileSystem::Save_Unique(string& name, const void* buffer, uint size, 
 	//If is it we don't have to create a new other one with different name.
 	//Several Meshes can share the same texture.
 	string extension_type = extension;
-	if (extension_type.compare("tex") != 0)
+	if (extension_type.compare("tx") != 0)
 	{
 		if (Exists(name_file))
 		{

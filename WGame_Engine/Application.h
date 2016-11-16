@@ -105,6 +105,10 @@ public:
 	bool LoadGameNow();
 	bool SavegameNow() const;
 
+	//Title and Organisation
+	const char* Get_Title()const;
+	const char* Get_Organization()const;
+
 
 private:
 	// Load config file

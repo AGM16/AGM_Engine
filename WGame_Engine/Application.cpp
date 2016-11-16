@@ -89,6 +89,7 @@ bool Application::Init()
 		title = app_node.attribute("title").as_string();
 		organization = app_node.attribute("organization").as_string();
 
+
 		//FPS Variables
 		prev_frames_per_sec = app_node.attribute("prev_frames_per_sec").as_int();
 		frames_per_sec = app_node.attribute("frames_per_sec").as_int();
@@ -97,6 +98,7 @@ bool Application::Init()
 		//Console variable
 		console_exists = app_node.attribute("console_exists ").as_bool();
 	}
+
 
 
 	// Call Init() in all modules
@@ -317,6 +319,16 @@ void Application::Windows_Resized()
 bool Application::Get_Windows_Resized()
 {
 	return window_resized;
+}
+
+const char* Application::Get_Title()const
+{
+	return title.c_str();
+}
+
+const char* Application::Get_Organization()const
+{
+	return organization.c_str();
 }
 
 

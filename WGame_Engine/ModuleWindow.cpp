@@ -70,7 +70,9 @@ bool ModuleWindow::Init()
 			flags |= SDL_WINDOW_FULLSCREEN_DESKTOP;
 		}
 
-		window = SDL_CreateWindow(TITLE, SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, width, height, flags);
+		char title_scene[100];
+		sprintf_s(title_scene, 100, "%s     Scene : %s", App->Get_Title(), App->geometry->Get_Scene());
+		window = SDL_CreateWindow(title_scene, SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, width, height, flags);
 
 		if(window == nullptr)
 		{

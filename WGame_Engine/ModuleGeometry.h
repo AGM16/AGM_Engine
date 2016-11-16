@@ -96,9 +96,12 @@ class ModuleGeometry : public Module
 	   //LOAD
 	   bool Load_Mesh(Mesh* mesh, const char* file_path);
 
+	   const char* Get_Scene()const;
+
  private:
 
 	 bool is_dir_scene_exist = false;
+	 std::string last_scene_imported;
 
 };
 

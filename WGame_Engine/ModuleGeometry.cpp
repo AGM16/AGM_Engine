@@ -53,6 +53,11 @@ bool ModuleGeometry::CleanUp()
 	return true;
 }
 
+const char* ModuleGeometry::Get_Scene()const
+{
+	return last_scene_imported.c_str();
+}
+
 bool ModuleGeometry::Load_Geometry(const char* path, bool drop)
 {
 	bool ret = false;
@@ -68,12 +73,29 @@ bool ModuleGeometry::Load_Geometry(const char* path, bool drop)
 			
 			//Create the scene folder
 			 dir_scene = "/Library/";
+
+			 //Save the last scene imported to our engine
+			 //Check and improvec this process
+			 if (last_scene_imported.length() > 0)
+				 last_scene_imported.clear();
+
+			 last_scene_imported.assign(App->filesystem->Get_FileName_From_Path(path).c_str());
+
 			 dir_scene.append(App->filesystem->Get_FileName_From_Path(path));
 			 size_t size = dir_scene.find(".fbx");
+			 size_t size2 = last_scene_imported.find(".fbx");
 			 if (size != string::npos)
 			 {
+				 if (size2 != string::npos)
+				 last_scene_imported = last_scene_imported.substr(0, size2);
+
+
 				 dir_scene = dir_scene.substr(0, size);
 			 }
+
+			 char title_scene[100];
+			 sprintf_s(title_scene, 100, "%s     Scene : %s", App->Get_Title(), last_scene_imported.c_str());
+			 App->window->SetTitle(title_scene);
 			  
 			 //Chek is the scene folder already exists
 			 if (App->filesystem->Exists(dir_scene.c_str()) == false)
@@ -186,12 +208,7 @@ void ModuleGeometry::Load_Nodes_For_Hierarchy(aiNode* node_child, const aiScene*
 				path_file_2 = dir_scene;
 				path_file_2.append("/Meshes/");
 				path_file_2.append(m->name_node.c_str());
-				/*if (i > 0)
-				{
-					char copy_name[10];
-					sprintf_s(copy_name, 10, "_m_%d", i);
-					path_file_2.append(copy_name);
-				}*/
+				
 
 				path_file_2.append(".wge");
 			}

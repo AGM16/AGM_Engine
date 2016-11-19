@@ -216,6 +216,13 @@ bool GameObject::Load(pugi::xml_node& node)
 	Component_Transformation* transform = (Component_Transformation*)Get_Component(TRANSFORMATION);
 	Component_Mesh* mesh = (Component_Mesh*)Get_Component(MESH);
 	Component_Material* material = (Component_Material*)Get_Component(MATERIAL);
+	Component_Camera* comp_camera = nullptr;
+
+	//Check if the GO is the camera
+	if (Exist_Component(CAMERA) == true)
+		comp_camera = (Component_Camera*)Get_Component(CAMERA);
+
+
 	pugi::xml_node next_node;
 
 	
@@ -235,17 +242,37 @@ bool GameObject::Load(pugi::xml_node& node)
 	float pos_z = next_node.attribute("pos_z").as_float();
 	transform->Set_Position(math::float3(pos_x, pos_y, pos_z));
 
-	//Rotation
-	float rot_x = next_node.attribute("rot_x").as_float();
-	float rot_y = next_node.attribute("rot_y").as_float();
-	float rot_z = next_node.attribute("rot_z").as_float();
-	transform->Set_Rotation(math::float3(rot_x, rot_y, rot_z));
+	if (Exist_Component(CAMERA) == false)
+	{
+		//Rotation
+		float rot_x = next_node.attribute("rot_x").as_float();
+		float rot_y = next_node.attribute("rot_y").as_float();
+		float rot_z = next_node.attribute("rot_z").as_float();
+		transform->Set_Rotation(math::float3(rot_x, rot_y, rot_z));
 
-	//Scale
-	float scale_x = next_node.attribute("scale_x").as_float();
-	float scale_y = next_node.attribute("scale_y").as_float();
-	float scale_z = next_node.attribute("scale_z").as_float();
-	transform->Set_Scale(math::float3(scale_x, scale_y, scale_z));
+		//Scale
+		float scale_x = next_node.attribute("scale_x").as_float();
+		float scale_y = next_node.attribute("scale_y").as_float();
+		float scale_z = next_node.attribute("scale_z").as_float();
+		transform->Set_Scale(math::float3(scale_x, scale_y, scale_z));
+	}
+	else
+	{
+		//Camera
+		//Up
+		vec vec_up = float3::zero;
+		vec_up.x = next_node.attribute("Up_x").as_float();
+		vec_up.y = next_node.attribute("Up_y").as_float();
+		vec_up.z = next_node.attribute("Up_z").as_float();
+		comp_camera->Set_Up(vec_up);
+
+		//Front
+		vec vec_front = float3::zero;
+		vec_front.x = next_node.attribute("Front_x").as_float();
+		vec_front.y = next_node.attribute("Front_y").as_float();
+		vec_front.z = next_node.attribute("Front_z").as_float();
+		comp_camera->Set_Front(vec_front);
+	}
 
 	//Checkbox deactive
     bool deactivate_checkbox = next_node.attribute("Checkbox_Deactive_Transform").as_bool();
@@ -255,7 +282,7 @@ bool GameObject::Load(pugi::xml_node& node)
 	string name;
 	name = "Root_Game_Objects";
 	//Check if the node is RootNode, because his mesh is NULL
-	if (name.compare(Get_Name()) != 0)
+	if (name.compare(Get_Name()) != 0 && Exist_Component(CAMERA) == false)
 	{
 		bool deactivate_checkbox = next_node.attribute("Checkbox_Deactive_Mesh").as_bool();
 		mesh->Set_Checkbox(deactivate_checkbox);
@@ -275,7 +302,7 @@ bool GameObject::Load(pugi::xml_node& node)
 	}
 
 	//--------------------MATERIAL-----------------------
-	if (name.compare(Get_Name()) != 0)
+	if (name.compare(Get_Name()) != 0 && Exist_Component(CAMERA) == false)
 	{
 		bool deactivate_checkbox_material = next_node.attribute("Checkbox_Deactive_Material").as_bool();
 		material->Set_Checkbox(deactivate_checkbox_material);
@@ -287,7 +314,7 @@ bool GameObject::Load(pugi::xml_node& node)
 	{
 		for (vector<GameObject*>::const_iterator node_go = children.begin(); node_go != children.end(); node_go++)
 		{
-			if ((*node_go)->Exist_Component(CAMERA) == false)
+			//if ((*node_go)->Exist_Component(CAMERA) == false)
 			(*node_go)->Load(node);
 		}
 	}
@@ -302,6 +329,11 @@ bool GameObject::Save(pugi::xml_node& node)const
 		Component_Transformation* transform = (Component_Transformation*)Get_Component(TRANSFORMATION);
 		Component_Mesh* mesh = (Component_Mesh*)Get_Component(MESH);
 		Component_Material* material = (Component_Material*)Get_Component(MATERIAL);
+		Component_Camera* comp_camera = nullptr;
+
+		//Check if the GO is the camera
+		if (Exist_Component(CAMERA) == true)
+			 comp_camera = (Component_Camera*)Get_Component(CAMERA);
 		
 		char node_go[100];
 		sprintf_s(node_go, 100, "%s_%s", "GameObject", Get_Name());
@@ -317,15 +349,31 @@ bool GameObject::Save(pugi::xml_node& node)const
 		node_mgo.append_attribute("pos_y") = transform->Get_Position().y;
 		node_mgo.append_attribute("pos_z") = transform->Get_Position().z;
 
-		//Save Rotation
-		node_mgo.append_attribute("rot_x") = transform->Get_Rotation().x;
-		node_mgo.append_attribute("rot_y") = transform->Get_Rotation().y;
-		node_mgo.append_attribute("rot_z") = transform->Get_Rotation().z;
+		if (Exist_Component(CAMERA) == false)
+		{
+			//Save Rotation
+			node_mgo.append_attribute("rot_x") = transform->Get_Rotation().x;
+			node_mgo.append_attribute("rot_y") = transform->Get_Rotation().y;
+			node_mgo.append_attribute("rot_z") = transform->Get_Rotation().z;
 
-		//Save Scale
-		node_mgo.append_attribute("scale_x") = transform->Get_Scale().x;
-		node_mgo.append_attribute("scale_y") = transform->Get_Scale().y;
-		node_mgo.append_attribute("scale_z") = transform->Get_Scale().z;
+			//Save Scale
+			node_mgo.append_attribute("scale_x") = transform->Get_Scale().x;
+			node_mgo.append_attribute("scale_y") = transform->Get_Scale().y;
+			node_mgo.append_attribute("scale_z") = transform->Get_Scale().z;
+		}
+		else
+		{
+			//Save Rotation
+			//Up
+			node_mgo.append_attribute("Up_x") = comp_camera->Get_Up().x;
+			node_mgo.append_attribute("Up_y") = comp_camera->Get_Up().y;
+			node_mgo.append_attribute("Up_z") = comp_camera->Get_Up().z;
+
+			//Front
+			node_mgo.append_attribute("Front_x") = comp_camera->Get_Front().x;
+			node_mgo.append_attribute("Front_y") = comp_camera->Get_Front().y;
+			node_mgo.append_attribute("Front_z") = comp_camera->Get_Front().z;
+		}
 
 		
 		//Is the Transform checkbox deactive active?
@@ -335,7 +383,7 @@ bool GameObject::Save(pugi::xml_node& node)const
 		//--------------------MESH-----------------------
 		string name = "Root_Game_Objects";
 		//Check if the node is RootNode, because his mesh is NULL
-		if (name.compare(Get_Name()) != 0)
+		if (name.compare(Get_Name()) != 0 && Exist_Component(CAMERA) == false)
 		{
 			
 			//Is the mesh checkbox deactive active?
@@ -353,7 +401,7 @@ bool GameObject::Save(pugi::xml_node& node)const
 		}
 
 		//--------------------MATERIAL-----------------------
-		if (name.compare(Get_Name()) != 0)
+		if (name.compare(Get_Name()) != 0 && Exist_Component(CAMERA) == false)
 		{
 			node_mgo.append_attribute("Checkbox_Deactive_Material") = material->Is_Checkbox_Active();
 		}
@@ -363,7 +411,7 @@ bool GameObject::Save(pugi::xml_node& node)const
 		{
 			for (vector<GameObject*>::const_iterator node_go = children.begin(); node_go != children.end(); node_go++)
 			{
-				if((*node_go)->Exist_Component(CAMERA) == false)
+				//if((*node_go)->Exist_Component(CAMERA) == false)
 				(*node_go)->Save(node);
 			}
 		}

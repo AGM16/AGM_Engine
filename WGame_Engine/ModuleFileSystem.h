@@ -46,6 +46,7 @@ public:
 	}
 
 	string Get_FileName_From_Path(const std::string strPath) const;
+	const std::vector<std::string>  Get_Documents_XML_From_Path(const char* dir) const;
 
 	// Open for Read/Write
 	unsigned int Load(const char* file, char** buffer) const;

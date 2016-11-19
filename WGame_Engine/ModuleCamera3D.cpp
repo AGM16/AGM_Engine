@@ -25,7 +25,7 @@ bool ModuleCamera3D::Init()
 	bool ret = true;
 
 	//Main Camera
-	camera_go = App->go_manager->Create_Camera_Game_Object(nullptr, "Main Camera");
+	camera_go = App->go_manager->Create_Camera_Game_Object(nullptr, "Main_Camera");
 	camera_component = (Component_Camera*)camera_go->Get_Component(Components_Type::CAMERA);
 
 	camera_component->Get_Component_Transformation_Camera()->Set_Position(float3(30.f, 40.f, -100.f));
@@ -54,7 +54,7 @@ bool ModuleCamera3D::CleanUp()
 // -----------------------------------------------------------------
 update_status ModuleCamera3D::Update(float dt)
 {
-	if (camera_component->Get_Component_Transformation_Camera()->Is_Checkbox_Active() == false)
+	if (camera_component->Get_Component_Transformation_Camera()->Is_Checkbox_Active() == false && App->editor->Is_Saving() == false && App->editor->Is_Loading() == false)
 	{
 		//Move Buttons-----------------------------------------------------------
 		float3 pos = Get_Camera_Position();

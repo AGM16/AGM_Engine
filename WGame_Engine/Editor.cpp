@@ -44,6 +44,31 @@ update_status Editor::Update(float dt)
 	{
 		if (ImGui::BeginMenu("File"))
 		{
+			if (ImGui::MenuItem("Load"))
+			{
+				load = true;
+			}
+
+			/*This item will save the information in the last xml save_file document that 
+			we have create*/
+			if (ImGui::MenuItem("Save"))
+			{
+				//Save automatically in the last xml file that we have loaded or saved
+				//Get the dir of the scene where we contain the xml files
+				string name_file = "/Library/";
+				string scene = App->geometry->Get_Scene();
+				scene.append("/");
+				name_file.append(scene.c_str());
+				name_file.append(last_name_file_saved);
+
+				App->SaveGame(name_file.c_str());
+			}
+
+			if (ImGui::MenuItem("Save As"))
+			{
+				save = true;
+			}
+
 			if (ImGui::MenuItem("Quit"))
 			{
 				return UPDATE_STOP;
@@ -128,10 +153,138 @@ update_status Editor::Update(float dt)
 		ImGui::ShowTestWindow(&show_test_window);
 
 
+	//Render Windows Save As
+	Render_Panel_Save_As();
+
+	//Render Windows Load
+	Render_Panel_Load();
+
 	//Render MathGeoLib Geometry
 	panels.mathgeolib_panel.Render();
 
 	return UPDATE_CONTINUE;
+}
+
+void Editor::Render_Panel_Save_As()
+{
+	if (save)
+	{
+		ImVec2 size_w;
+		float2 pos;
+		if (App->Get_Windows_Resized() == false)
+		{
+			size_w = ImVec2(290.f, 100.f);
+			pos = float2(550, 320);
+		}
+		else
+		{
+			size_w = ImVec2(290.f, 100.f);
+			pos = float2(1150, 320);
+		}
+
+		ImGui::SetNextWindowPos(ImVec2(App->window->Get_Screen_size().x - pos.x, pos.y));
+		ImGui::SetNextWindowSize(size_w);
+		ImGui::Begin("Save");
+
+		//Clear buffer
+		static int clear = 0;
+		if (clear == 0)
+		{
+			sprintf_s(last_name_file_saved, 100, "\0");
+			clear++;
+		}
+
+		ImGui::InputText(".xml", last_name_file_saved, sizeof(last_name_file_saved));
+
+		if (ImGui::Button("Close", ImVec2(50, 20)))
+		{
+			//Check it the name of the file is empty
+			string name = &last_name_file_saved[0];
+			if (name.compare("\0") != 0)
+			{
+				string name_file = "/Library/";
+				string scene = App->geometry->Get_Scene();
+				scene.append("/");
+				name_file.append(scene.c_str());
+				sprintf_s(last_name_file_saved, 100, "%s.%s", last_name_file_saved, "xml");
+				name_file.append(last_name_file_saved);
+
+				App->SaveGame(name_file.c_str());
+			}
+
+			clear = 0;
+			save = false;
+		}
+
+		ImGui::End();
+	}
+}
+
+void Editor::Render_Panel_Load()
+{
+	if (load)
+	{
+		ImVec2 size_w;
+		float2 pos;
+		if (App->Get_Windows_Resized() == false)
+		{
+			size_w = ImVec2(290.f, 100.f);
+			pos = float2(550, 320);
+		}
+		else
+		{
+			size_w = ImVec2(290.f, 100.f);
+			pos = float2(1150, 320);
+		}
+
+		ImGui::SetNextWindowPos(ImVec2(App->window->Get_Screen_size().x - pos.x, pos.y));
+		ImGui::SetNextWindowSize(size_w);
+		ImGui::Begin("Load");
+		ImGui::Text("Files :");
+
+		//I put the if to don't repeate every update this process		
+		if (!get_xml_Files)
+		{
+			//Obtain the save_files documents that there is in this scene
+			string dir_scene = "/Library/";
+			dir_scene.append(App->geometry->Get_Scene());
+
+			xml_files = App->filesystem->Get_Documents_XML_From_Path(dir_scene.c_str());
+			get_xml_Files = true;
+		}
+
+		for (vector<string>::const_iterator i = xml_files.begin(); i != xml_files.end(); i++)
+		{
+			ImGui::Selectable((*i).c_str());
+			if (ImGui::IsItemClicked(0))
+			{
+				//Change the last_name_file_saved to save automatically when we clic Save instead Save As
+				sprintf_s(last_name_file_saved, 100, (*i).data());
+
+				//Get the dir of the scene where we contain the cml files
+				string name_file = "/Library/";
+				string scene = App->geometry->Get_Scene();
+				scene.append("/");
+				name_file.append(scene.c_str());
+				name_file.append((*i).c_str());
+
+				App->LoadGame(name_file.c_str());
+
+				get_xml_Files = false;
+				load = false;
+
+				break;
+			}
+		}
+
+		if (ImGui::Button("Close", ImVec2(50, 20)))
+		{
+			load = false;
+			get_xml_Files = false;
+		}
+
+		ImGui::End();
+	}
 }
 
 
@@ -141,5 +294,15 @@ bool Editor::CleanUp()
 	LOG("Unloading Intro scene");
 
 	return true;
+}
+
+bool Editor::Is_Saving()const
+{
+	return save;
+}
+
+bool Editor::Is_Loading()const
+{
+	return load;
 }
 

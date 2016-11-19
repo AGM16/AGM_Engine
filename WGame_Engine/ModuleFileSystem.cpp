@@ -245,6 +245,23 @@ int ModuleFileSystem::Enumerate_files(const char* dir, std::vector<std::string>&
 	return ret;
 }
 
+const std::vector<std::string>  ModuleFileSystem::Get_Documents_XML_From_Path(const char* dir) const
+{
+	vector<std::string> files;
+	Enumerate_files(dir, files);
+
+	vector<std::string> xml_files;
+	for (int i = 0; i < files.size(); i++)
+	{
+		size_t size = files[i].find(".xml");
+		if (size != string::npos)
+			xml_files.push_back((files[i]));
+	}
+
+	return xml_files;
+
+}
+
 
 int ModuleFileSystem::Get_Last_Mod(const char* file)const
 {

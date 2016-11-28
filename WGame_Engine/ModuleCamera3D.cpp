@@ -25,8 +25,8 @@ bool ModuleCamera3D::Init()
 	bool ret = true;
 
 	//Main Camera
-	camera_go = App->go_manager->Create_Camera_Game_Object(nullptr, "Main_Camera");
-	camera_component = (Component_Camera*)camera_go->Get_Component(Components_Type::CAMERA);
+	main_camera_go = App->go_manager->Create_Camera_Game_Object(nullptr, "Main_Camera");
+	camera_component = (Component_Camera*)main_camera_go->Get_Component(Components_Type::CAMERA);
 
 	camera_component->Get_Component_Transformation_Camera()->Set_Position(float3(30.f, 40.f, -100.f));
 	camera_component->Set_Far_Plane(230.f);
@@ -149,4 +149,16 @@ float* ModuleCamera3D::Get_Projection_Matrix()const
 	matrix.Transpose();
 
 	return *matrix.v;
+}
+
+LineSegment ModuleCamera3D::Create_RayCast()
+{
+	float2 mouse_pos(App->input->GetMouseX(), App->input->GetMouseY());
+
+	//Pos x and y of the mouse normalized
+	float norm_pos_x = 2.0f * mouse_pos.x / App->window->Get_Screen_size().x - 1.0f;
+	float norm_pos_y = 1.0f - 2.0f * mouse_pos.y / App->window->Get_Screen_size().y;
+
+	return camera_component->Get_Frustum().UnProjectLineSegment(norm_pos_x, norm_pos_y);
+	
 }

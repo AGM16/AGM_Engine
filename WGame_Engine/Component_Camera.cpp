@@ -195,6 +195,11 @@ float3 Component_Camera::Get_Position()const
 	return transformation->Get_Position();
 }
 
+const Frustum Component_Camera::Get_Frustum()const
+{
+	return frustum;
+}
+
 bool Component_Camera::Intersect_Frustum_AABB(const AABB &b)
 {
 	if (active_culling == true)

@@ -31,6 +31,7 @@ public:
 	const std::vector<Components*>* Get_List_Components();
 	GameObject* Get_Parent()const;
 	const char* Get_Name()const;
+	float3 Get_Distance_To_Ray()const;
 
 
 	//Load and save
@@ -38,15 +39,20 @@ public:
 	bool Save(pugi::xml_node& node)const;
 
 	int Is_Name_Repaeated(const char* name_rep);
+	bool Check_Collision_With_RayCast(const LineSegment& ray, float& min_distance);
+	void GO_Candidates_Raycast(GameObject* go, const LineSegment& ray, std::vector<GameObject*>& list_go);
+	int distance = 0;
 
 private:
 
 	GameObject* Parent = nullptr;
 	std::vector<GameObject*> children;
     std::vector<Components*> components_list;
+	float3 distance_to_ray = float3::zero;
 	const char* name = NULL;
 	int id = 0;
 	int name_repeated = 0;
+
 
 };
 

@@ -33,6 +33,9 @@ public:
 
 	GameObject* Get_Root()const;
 
+	GameObject* Obtain_GO_By_Raycast(const LineSegment& r, vector<GameObject*> list_go)const;
+	std::vector<GameObject*> Collect_GO_Candidates(const math::LineSegment& r)const;
+
 private:
 
 	GameObject* root_game_object = nullptr;

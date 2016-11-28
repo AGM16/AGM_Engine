@@ -11,7 +11,7 @@
 Component_Mesh::Component_Mesh(Components_Type type, GameObject* game_object, Mesh* mesh_) : Components(type, game_object), mesh(mesh_)
 {
 	//To build only the bounding box to the GO that have mesh
-	if (mesh != nullptr)
+	if (mesh->num_vertices > 0)
 	{
 		//Generate the initial AABB
 		bounding_box.SetNegativeInfinity();
@@ -350,4 +350,9 @@ void Component_Mesh::Render_Bounding_Box_Panel()
 Mesh* Component_Mesh::Get_Mesh()const
 {
 	return mesh;
+}
+
+AABB  Component_Mesh::Get_AABB_Bounding_Box()const
+{
+	return new_bounding_box;
 }

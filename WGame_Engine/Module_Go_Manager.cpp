@@ -2,6 +2,8 @@
 #include "Module_Go_Manager.h"
 #include "GameObject.h"
 #include "Components.h"
+#include "Component_Mesh.h"
+#include "Component_Transformation.h"
 #include "Random.h"
 #include "p2Defs.h"
 
@@ -87,20 +89,21 @@ GameObject* Module_Go_Manager::Create_Camera_Game_Object(GameObject* Parent, con
 
 update_status Module_Go_Manager::Update(float dt)
 {
-
+	//Render and Update Components
 	if (root_game_object->Get_Children()->size() > 0)
 	{
 		vector<GameObject*>::const_iterator node_game_obj = root_game_object->Get_Children()->begin();
 
 		while (node_game_obj != root_game_object->Get_Children()->end())
 		{
-			//Render Components
+			
 			(*node_game_obj)->Update_Go_Components();
 			node_game_obj++;
 		}
 
 	}
 
+	//Render Hierarchy Panel
 	ImGui::SetNextWindowPos(ImVec2(2, 20));
 	ImVec2 size_w;
 	if (App->Get_Windows_Resized() == false)
@@ -115,19 +118,34 @@ update_status Module_Go_Manager::Update(float dt)
 	ImGui::Begin("Hierarchy");
 
 	if (root_game_object->Get_Children()->size() > 0)
-	{
-		//Render Hierarchy Panel
+	{	
 		Window_Hierarchy(root_game_object);
-
 	}
 
 	ImGui::End();
 
-	if (App->input->GetKey(SDL_SCANCODE_L) == KEY_DOWN)
-		App->LoadGame("save_game.xml");
+	//Select a GO with the mouse
+	if (App->input->GetMouseButton(SDL_BUTTON_LEFT) == KEY_UP && !ImGui::IsMouseHoveringAnyWindow())
+	{
+		//Creation Ray
+		LineSegment ray = App->camera->Create_RayCast();
+		
+		if (game_object_selected != nullptr)
+		{
+			//Deactive the components of the las gameobject selected
+			Search_GameObject_To_Deactive(game_object_selected);
+		}
 
-	if (App->input->GetKey(SDL_SCANCODE_O) == KEY_DOWN)
-		App->SaveGame("save_game.xml");
+		//Obtain the GO selected
+		game_object_selected = Obtain_GO_By_Raycast(ray, Collect_GO_Candidates(ray));
+
+		if (game_object_selected != nullptr)
+		{
+			Search_GameObject_To_Active(game_object_selected);
+		}
+
+		last_game_object_selected = game_object_selected;
+	}
 
 	return UPDATE_CONTINUE;
 }
@@ -231,4 +249,69 @@ bool  Module_Go_Manager::Save(pugi::xml_node& node)const
 	root_game_object->Save(node);
 
 	return true;
+}
+
+bool Compare_Bounding_Boxes(const GameObject* go_1, const GameObject* go_2)
+{
+	return go_1->Get_Distance_To_Ray().Length() < go_2->Get_Distance_To_Ray().Length();
+}
+
+GameObject* Module_Go_Manager::Obtain_GO_By_Raycast(const LineSegment& r, const vector<GameObject*> list_go)const
+{
+	GameObject* go_selected = nullptr;
+
+    float min_distance_to_ray = App->camera->Get_Camera_Component()->Get_Far_Plane();
+
+	for (vector<GameObject*>::const_iterator go = list_go.begin(); go != list_go.end(); go++)
+	{
+
+		if ((*go)->Exist_Component(MESH))
+		{
+			Component_Mesh* comp_mesh = (Component_Mesh*)(*go)->Get_Component(MESH);
+			Component_Transformation* transform = (Component_Transformation*)(*go)->Get_Component(TRANSFORMATION);
+			const Mesh* mesh = comp_mesh->Get_Mesh();
+
+			if (mesh->num_vertices > 0)
+			{
+				LineSegment ray_cast = r;
+				ray_cast.Transform(transform->Get_Tranformation_Matrix().Inverted());
+				
+				float intersection_distance = 0;
+				vec intersection_point = vec::zero;
+
+				for (int n = 0; n < mesh->num_indices / 3; n++)
+				{
+					int ind_1 = mesh->indices[n * 3];
+					int ind_2 = mesh->indices[n * 3 + 1];
+					int ind_3 = mesh->indices[n * 3 + 2];
+
+					//Check if intersect with the triangle
+					if (ray_cast.Intersects(Triangle(float3(&mesh->vertices[ind_1]), float3(&mesh->vertices[ind_2]), float3(&mesh->vertices[ind_3])),&intersection_distance, &intersection_point))
+					{
+						//Check if it is the nearest to the ray
+						if (intersection_distance < min_distance_to_ray)
+						{
+							min_distance_to_ray = intersection_distance;
+							go_selected = (*go);
+						}
+					}
+				}
+			}
+		}
+	}
+	
+	return go_selected;
+}
+
+std::vector<GameObject*> Module_Go_Manager::Collect_GO_Candidates(const math::LineSegment& r)const
+{
+	vector<GameObject*> list_candidates;
+
+	//Check which GO that intersects with the ray
+	root_game_object->GO_Candidates_Raycast(root_game_object, r, list_candidates);
+
+	//Now that we have the candidates, we have to sort them by distance
+	sort(list_candidates.begin(), list_candidates.end(), Compare_Bounding_Boxes);
+
+	return list_candidates;
 }

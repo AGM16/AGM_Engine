@@ -53,15 +53,24 @@ update_status Editor::Update(float dt)
 			we have create*/
 			if (ImGui::MenuItem("Save"))
 			{
-				//Save automatically in the last xml file that we have loaded or saved
-				//Get the dir of the scene where we contain the xml files
-				string name_file = "/Library/";
-				string scene = App->geometry->Get_Scene();
-				scene.append("/");
-				name_file.append(scene.c_str());
-				name_file.append(last_name_file_saved);
+				string name_last_file = last_name_file_saved;
+				if (name_last_file.size() > 0)
+				{
+					//Save automatically in the last xml file that we have loaded or saved
+					//Get the dir of the scene where we contain the xml files
+					string name_file = "/Library/";
+					string scene = App->geometry->Get_Scene();
+					scene.append("/");
+					name_file.append(scene.c_str());
+					name_file.append(last_name_file_saved);
+					App->SaveGame(name_file.c_str());
+				}
+				else
+				{
+					LOG("There is no xml document to save the information");
+				}
 
-				App->SaveGame(name_file.c_str());
+				
 			}
 
 			if (ImGui::MenuItem("Save As"))
@@ -199,8 +208,8 @@ void Editor::Render_Panel_Save_As()
 		if (ImGui::Button("Close", ImVec2(50, 20)))
 		{
 			//Check it the name of the file is empty
-			string name = &last_name_file_saved[0];
-			if (name.compare("\0") != 0)
+			string name = last_name_file_saved;
+			if (name.size() > 0)
 			{
 				string name_file = "/Library/";
 				string scene = App->geometry->Get_Scene();
@@ -209,7 +218,10 @@ void Editor::Render_Panel_Save_As()
 				sprintf_s(last_name_file_saved, 100, "%s.%s", last_name_file_saved, "xml");
 				name_file.append(last_name_file_saved);
 
-				App->SaveGame(name_file.c_str());
+				if (App->filesystem->Exists(name_file.c_str()) == false)
+					App->SaveGame(name_file.c_str());
+				else
+					LOG("The information have not been saved. The xml file %s already exists", last_name_file_saved);
 			}
 
 			clear = 0;

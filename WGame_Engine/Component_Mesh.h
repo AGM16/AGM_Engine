@@ -41,6 +41,7 @@ public:
 	void Render_Bounding_Box_Panel();
 
 	Mesh* Get_Mesh()const;
+	AABB Get_AABB_Bounding_Box()const;
 
 private:
 
@@ -61,7 +62,6 @@ private:
 	bool wireframe = false;
 	bool aabb_checkbox = false;
 	bool obb_checkbox = false;
-
 };
 
 #endif // !_COMPONENT_MESH_H_

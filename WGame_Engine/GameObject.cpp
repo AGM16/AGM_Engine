@@ -210,6 +210,11 @@ const char* GameObject::Get_Name()const
 	return name;
 }
 
+float3 GameObject::Get_Distance_To_Ray()const
+{
+	return distance_to_ray;
+}
+
 
 bool GameObject::Load(pugi::xml_node& node)
 {
@@ -438,4 +443,76 @@ int GameObject::Is_Name_Repaeated(const char* name_rep)
 	int ret = name_repeated;
 	name_repeated = 0;
 	return ret;
+}
+
+
+bool GameObject::Check_Collision_With_RayCast(const LineSegment& ray, float& min_distance)
+{
+	if (Exist_Component(MESH))
+	{
+		Component_Mesh* comp_mesh = (Component_Mesh*)Get_Component(MESH);
+		Component_Transformation* transform = (Component_Transformation*)Get_Component(TRANSFORMATION);
+		const Mesh* mesh = comp_mesh->Get_Mesh();
+
+		if (mesh->num_vertices > 0)
+		{
+			//Transform the ray to the local transform
+			LineSegment ray_cast = ray;
+			ray_cast.Transform(transform->Get_Tranformation_Matrix().Inverted());
+
+			float intersection_distance = 0;
+			vec intersection_point = vec::zero;
+
+			for (int n = 0; n < mesh->num_indices / 3; n++)
+			{
+				int ind_1 = mesh->indices[n * 3];
+				int ind_2 = mesh->indices[n * 3 + 1];
+				int ind_3 = mesh->indices[n * 3 + 2];
+
+				//Check if intersect with the triangle
+				if (ray_cast.Intersects(Triangle(float3(&mesh->vertices[ind_1]), float3(&mesh->vertices[ind_2]), float3(&mesh->vertices[ind_3])), &intersection_distance, &intersection_point))
+				{
+					//return true;
+					if (intersection_distance < min_distance)
+					{
+						min_distance = intersection_distance;
+						return true;
+						
+					}
+				}
+			}
+		}
+	}
+	
+		return false;	
+}
+
+void GameObject::GO_Candidates_Raycast(GameObject* go, const LineSegment& ray, vector<GameObject*>& list_go)
+{
+	if (go->Get_Children()->size() > 0)
+	{
+		for (vector<GameObject*>::const_iterator node_go = go->Get_Children()->begin(); node_go != go->Get_Children()->end(); node_go++)
+		{
+			GO_Candidates_Raycast((*node_go), ray, list_go);
+		}
+	}
+
+	//Check if the GameObject have mesh
+	if (go->Exist_Component(MESH))
+	{
+		Component_Mesh* comp_mesh = (Component_Mesh*)go->Get_Component(MESH);
+
+		//If the mesh of the GO have vertices it means thta have a bounding box
+		if (comp_mesh->Get_Mesh()->num_vertices > 0)
+		{
+			if (ray.Intersects(comp_mesh->Get_AABB_Bounding_Box()))
+			{
+				list_go.push_back(go);
+
+				//Calculate the distance to the ray
+				distance_to_ray = (App->camera->Get_Camera_Position() - comp_mesh->Get_AABB_Bounding_Box().CenterPoint());
+			}
+		}
+	}
+
 }

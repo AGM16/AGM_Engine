@@ -50,9 +50,13 @@ public:
 	GameObject* camera_go_camera_test = nullptr;
 	Component_Camera* camera_component_test = nullptr;
 
+
+	//Ray
+	math::LineSegment Create_RayCast();
+
 private:
 
-	GameObject* camera_go = nullptr;
+	GameObject* main_camera_go = nullptr;
 	Component_Camera* camera_component = nullptr;
 	
 };

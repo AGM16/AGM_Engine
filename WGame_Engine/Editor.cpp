@@ -225,6 +225,15 @@ void Editor::Render_Panel_Save_As()
 					App->SaveGame(name_file.c_str());
 				else
 					LOG("The information have not been saved. The xml file %s already exists", last_name_file_saved);
+
+				if (name_last_file_saved.size() > 0)
+				{
+					if (name_last_file_saved.compare(name_file) != 0)
+						name_last_file_saved.clear();
+				}
+				
+				name_last_file_saved.assign(name_file);
+
 			}
 
 			clear = 0;
@@ -284,6 +293,14 @@ void Editor::Render_Panel_Load()
 				name_file.append((*i).c_str());
 
 				App->LoadGame(name_file.c_str());
+				
+				if (name_last_file_saved.size() > 0)
+				{
+					if (name_last_file_saved.compare(name_file) != 0)
+						name_last_file_saved.clear();
+				}
+
+				name_last_file_saved.assign(name_file);
 
 				get_xml_Files = false;
 				load = false;
@@ -327,13 +344,13 @@ void Editor::Render_Panel_Time_Manager()
 	float2 pos;
 	if (App->Get_Windows_Resized() == false)
 	{
-		size_w = ImVec2(290.f, 100.f);
-		pos = float2(550, 320);
+		size_w = ImVec2(320.f, 60.f);
+		pos = float2(500, 20);
 	}
 	else
 	{
-		size_w = ImVec2(290.f, 100.f);
-		pos = float2(1150, 320);
+		size_w = ImVec2(320.f, 60.f);
+		pos = float2(1150, 20);
 	}
 
 	ImGui::SetNextWindowPos(ImVec2(App->window->Get_Screen_size().x - pos.x, pos.y));
@@ -345,7 +362,11 @@ void Editor::Render_Panel_Time_Manager()
 	if (ImGui::Button("Play", ImVec2(50, 20)))
 	{
 	   //Save information
-
+		if (name_last_file_saved.size() == 0)
+		{
+			name_last_file_saved.assign("tmp_file");
+		}
+		App->SaveGame(name_last_file_saved.c_str());
        //Call to the Play function
 		App->Get_Time_Manager()->Play();
 	}
@@ -354,7 +375,7 @@ void Editor::Render_Panel_Time_Manager()
 	if (ImGui::Button("Stop", ImVec2(50, 20)))
 	{
 		//Load Information
-
+		App->LoadGame(name_last_file_saved.c_str());
 		//Call to the Stop function
 		App->Get_Time_Manager()->Stop();
 	}

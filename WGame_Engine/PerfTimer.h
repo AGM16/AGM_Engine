@@ -36,6 +36,7 @@ private:
 	uint64	game_clock_started_at = 0;
 	uint64	game_clock_paused = 0;
 	bool running = false;
+	bool game_paused = false;
 
 	
 };

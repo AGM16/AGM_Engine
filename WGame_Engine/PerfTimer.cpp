@@ -45,7 +45,6 @@ uint64 PerfTimer::ReadTicks_RealTime() const
 {
 	return SDL_GetPerformanceCounter() - application_started_at;
 }
-
 // ------------------------------------------------------
 
 // ------------------REAL TIME---------------------------
@@ -65,24 +64,34 @@ uint64 PerfTimer::ReadTicks_GameClock() const
 
 double PerfTimer::ReadMs_GameClock() const
 {
-	return ((double)ReadTicks_GameClock() / (double)frequency) * 1000.0f;
+	double time_game_clock = 0;
+	if (game_clock_started_at > 0)
+	{
+		time_game_clock = (double(SDL_GetPerformanceCounter() - game_clock_started_at) / (double)frequency)* 1000.0f;
+
+		if (running == false)
+		{
+			time_game_clock -= ((double)ReadTicks_GameClock() / (double)frequency) * 1000.0f;
+		}
+	}
+
+	return time_game_clock;
 }
 
 double PerfTimer::ReadSeconds_GameClock() const
 {
-	double time = 0;
+	double time_game_clock = 0;
 	if (game_clock_started_at > 0)
 	{
-		time = (double(SDL_GetPerformanceCounter() - game_clock_started_at) / (double)frequency);
+		time_game_clock = (double(SDL_GetPerformanceCounter() - game_clock_started_at) / (double)frequency);
 		
 		if(running == false)
 		{
-			time -= (double(ReadTicks_GameClock()) / double(frequency));
+			time_game_clock -= (double(ReadTicks_GameClock()) / double(frequency));
 		}
 	}
 
-	return time;
-	
+	return time_game_clock;	
 }
 
 
@@ -90,19 +99,32 @@ double PerfTimer::ReadSeconds_GameClock() const
 
 void PerfTimer::Play()
 {
-	running = true;
-	Start_Game_Clock();
+	//It means that we had paused the game
+	if (running == false && game_paused == true)
+	{
+        running = true;
+		game_paused == false;
+	}
+	else
+	{	
+		//When we press play at the beging
+		Start_Game_Clock();
+		if(!running)
+			running = true;
+	}
 }
 
 void PerfTimer::Stop()
 {
 	running = false;
+	game_paused = false;
 	game_clock_started_at = 0;
 }
 
 void PerfTimer::Pause()
 {
 	running = false;
+	game_paused = true;
 	game_clock_paused = SDL_GetPerformanceCounter();
 }
 

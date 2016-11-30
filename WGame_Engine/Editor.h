@@ -40,6 +40,9 @@ private:
 	vector<string> xml_files;
 
 
+	string name_last_file_saved;
+
+
 	
 
 };

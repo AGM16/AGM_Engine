@@ -22,6 +22,7 @@ public:
 
 	void Render_Panel_Save_As();
 	void Render_Panel_Load();
+	void Render_Panel_Time_Manager();
 
 private:
 

@@ -19,6 +19,7 @@
 #include "Hardware_Info.h"
 #include "Module_Go_Manager.h"
 #include "PugiXml\src\pugixml.hpp"
+#include "PerfTimer.h"
 
 
 
@@ -54,6 +55,9 @@ private:
 	double     time_last_frame;
 	bool       console_exists;
 	int     max_frames;
+
+	//Time Manager
+	PerfTimer* time_manager;
 
 	std::string		title;
 	std::string		organization;
@@ -108,6 +112,10 @@ public:
 	//Title and Organisation
 	const char* Get_Title()const;
 	const char* Get_Organization()const;
+
+	//Time Manager
+	PerfTimer* Get_Time_Manager()const;
+
 
 
 private:

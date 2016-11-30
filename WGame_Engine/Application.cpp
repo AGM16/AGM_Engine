@@ -47,6 +47,7 @@ Application::Application()
 
 	// Renderer last!
 	AddModule(renderer3D);
+	time_manager = new PerfTimer;
 
 }
 
@@ -59,6 +60,8 @@ Application::~Application()
 		delete (*i);
 		++i;
 	}
+
+	delete time_manager;
 }
 
 bool Application::Init()
@@ -126,8 +129,8 @@ bool Application::Init()
 		++i;
 	}
 	
-	last_sec_frame.Start();
-	ms_timer.Start();
+	/*last_sec_frame.Start();
+	ms_timer.Start();*/
 	return ret;
 }
 
@@ -435,4 +438,9 @@ bool Application::SavegameNow() const
 	data.reset();
 	want_to_save = false;
 	return ret;
+}
+
+PerfTimer* Application::Get_Time_Manager()const
+{
+	return time_manager;
 }

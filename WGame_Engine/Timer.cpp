@@ -42,3 +42,8 @@ float Timer::ReadSec() const
 	return float(SDL_GetTicks() - started_at) / 1000.0f;
 }
 
+float Timer::ReadSecGetPerformCount() const
+{
+	return float(SDL_GetPerformanceCounter() - started_at);
+}
+

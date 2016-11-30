@@ -199,6 +199,7 @@
     <ClInclude Include="MathGeoLib\include\Math\TransformOps.h" />
     <ClInclude Include="MathGeoLib\include\Time\Clock.h" />
     <ClInclude Include="Module_Go_Manager.h" />
+    <ClInclude Include="p2QuadTree.h" />
     <ClInclude Include="Panel_MathGeolib_Tools.h" />
     <ClInclude Include="ModuleCamera3D.h" />
     <ClInclude Include="ModuleFileSystem.h" />
@@ -214,6 +215,7 @@
     <ClInclude Include="p2Point.h" />
     <ClInclude Include="Panel_Application.h" />
     <ClInclude Include="Panel_Windows.h" />
+    <ClInclude Include="PerfTimer.h" />
     <ClInclude Include="PhysBody3D.h" />
     <ClInclude Include="PhysFS\include\physfs.h" />
     <ClInclude Include="PhysVehicle3D.h" />
@@ -280,6 +282,7 @@
     <ClCompile Include="MathGeoLib\include\Math\TransformOps.cpp" />
     <ClCompile Include="MathGeoLib\include\Time\Clock.cpp" />
     <ClCompile Include="Module_Go_Manager.cpp" />
+    <ClCompile Include="p2QuadTree.cpp" />
     <ClCompile Include="Panel_MathGeolib_Tools.cpp" />
     <ClCompile Include="ModuleAudio.cpp" />
     <ClCompile Include="ModuleCamera3D.cpp" />
@@ -291,6 +294,7 @@
     <ClCompile Include="ModuleSceneIntro.cpp" />
     <ClCompile Include="ModuleWindow.cpp" />
     <ClCompile Include="Panel_Application.cpp" />
+    <ClCompile Include="PerfTimer.cpp" />
     <ClCompile Include="PhysBody3D.cpp" />
     <ClCompile Include="PhysVehicle3D.cpp" />
     <ClCompile Include="Primitive.cpp" />

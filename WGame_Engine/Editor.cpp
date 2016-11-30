@@ -171,6 +171,9 @@ update_status Editor::Update(float dt)
 	//Render MathGeoLib Geometry
 	panels.mathgeolib_panel.Render();
 
+	//Render panel Time manager
+	Render_Panel_Time_Manager();
+
 	return UPDATE_CONTINUE;
 }
 
@@ -317,4 +320,57 @@ bool Editor::Is_Loading()const
 {
 	return load;
 }
+
+void Editor::Render_Panel_Time_Manager()
+{
+	ImVec2 size_w;
+	float2 pos;
+	if (App->Get_Windows_Resized() == false)
+	{
+		size_w = ImVec2(290.f, 100.f);
+		pos = float2(550, 320);
+	}
+	else
+	{
+		size_w = ImVec2(290.f, 100.f);
+		pos = float2(1150, 320);
+	}
+
+	ImGui::SetNextWindowPos(ImVec2(App->window->Get_Screen_size().x - pos.x, pos.y));
+	ImGui::SetNextWindowSize(size_w);
+	bool open_window = true;
+	ImGui::Begin("Time_Manager",&open_window);
+
+
+	if (ImGui::Button("Play", ImVec2(50, 20)))
+	{
+	   //Save information
+
+       //Call to the Play function
+		App->Get_Time_Manager()->Play();
+	}
+
+	ImGui::SameLine();
+	if (ImGui::Button("Stop", ImVec2(50, 20)))
+	{
+		//Load Information
+
+		//Call to the Stop function
+		App->Get_Time_Manager()->Stop();
+	}
+
+	ImGui::SameLine();
+	if (ImGui::Button("Pause", ImVec2(50, 20)))
+	{
+		//Call to the Pause function
+		App->Get_Time_Manager()->Pause();
+	}
+
+	ImGui::SameLine();
+	ImGui::Text("Gameclock: %f", (float)App->Get_Time_Manager()->ReadSeconds_GameClock());
+
+
+	ImGui::End();
+}
+
 

@@ -39,8 +39,9 @@ private:
 	char last_name_file_saved[100] = "";
 	vector<string> xml_files;
 
-
-	string name_last_file_saved;
+	/*Path which we will saved the tmp_file that
+	we create when we press the botton play of the Time Manager Panel*/
+	string name_tmp_file_saved;
 
 
 	

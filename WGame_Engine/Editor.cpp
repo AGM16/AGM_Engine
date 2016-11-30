@@ -226,14 +226,6 @@ void Editor::Render_Panel_Save_As()
 				else
 					LOG("The information have not been saved. The xml file %s already exists", last_name_file_saved);
 
-				if (name_last_file_saved.size() > 0)
-				{
-					if (name_last_file_saved.compare(name_file) != 0)
-						name_last_file_saved.clear();
-				}
-				
-				name_last_file_saved.assign(name_file);
-
 			}
 
 			clear = 0;
@@ -293,14 +285,6 @@ void Editor::Render_Panel_Load()
 				name_file.append((*i).c_str());
 
 				App->LoadGame(name_file.c_str());
-				
-				if (name_last_file_saved.size() > 0)
-				{
-					if (name_last_file_saved.compare(name_file) != 0)
-						name_last_file_saved.clear();
-				}
-
-				name_last_file_saved.assign(name_file);
 
 				get_xml_Files = false;
 				load = false;
@@ -325,6 +309,9 @@ bool Editor::CleanUp()
 {
 	LOG("Unloading Intro scene");
 
+	//Delete the tmp_file that we create before start the GameClock
+	App->filesystem->Delete(name_tmp_file_saved.c_str());
+
 	return true;
 }
 
@@ -344,12 +331,12 @@ void Editor::Render_Panel_Time_Manager()
 	float2 pos;
 	if (App->Get_Windows_Resized() == false)
 	{
-		size_w = ImVec2(320.f, 60.f);
+		size_w = ImVec2(325.f, 80.f);
 		pos = float2(500, 20);
 	}
 	else
 	{
-		size_w = ImVec2(320.f, 60.f);
+		size_w = ImVec2(325.f, 80.f);
 		pos = float2(1150, 20);
 	}
 
@@ -361,12 +348,14 @@ void Editor::Render_Panel_Time_Manager()
 
 	if (ImGui::Button("Play", ImVec2(50, 20)))
 	{
-	   //Save information
-		if (name_last_file_saved.size() == 0)
-		{
-			name_last_file_saved.assign("tmp_file");
-		}
-		App->SaveGame(name_last_file_saved.c_str());
+
+	   
+	   //Integrate the path of the secene to the tmp_file to save them in the scene that we are using
+		name_tmp_file_saved.assign("/Library/");
+		name_tmp_file_saved.append(App->geometry->Get_Scene());
+		name_tmp_file_saved.append("/tmp_file_gameclock");
+
+		App->SaveGame(name_tmp_file_saved.c_str());
        //Call to the Play function
 		App->Get_Time_Manager()->Play();
 	}
@@ -374,22 +363,42 @@ void Editor::Render_Panel_Time_Manager()
 	ImGui::SameLine();
 	if (ImGui::Button("Stop", ImVec2(50, 20)))
 	{
-		//Load Information
-		App->LoadGame(name_last_file_saved.c_str());
-		//Call to the Stop function
-		App->Get_Time_Manager()->Stop();
+		if (App->Get_Time_Manager()->Is_Game_Clock_Paused() || App->Get_Time_Manager()->Is_Game_Clock_Running())
+		{
+			//Load Information
+			App->LoadGame(name_tmp_file_saved.c_str());
+			//Call to the Stop function
+			App->Get_Time_Manager()->Stop();
+		}
+		else
+		{
+			LOG("You didn't press the Play button from Time Manager Panel to start the GameClock");
+		}
 	}
 
 	ImGui::SameLine();
 	if (ImGui::Button("Pause", ImVec2(50, 20)))
 	{
-		//Call to the Pause function
-		App->Get_Time_Manager()->Pause();
+		if (App->Get_Time_Manager()->Is_Game_Clock_Running())
+		{
+			//Call to the Pause function
+			App->Get_Time_Manager()->Pause();
+		}
+		else
+		{
+			LOG("You didn't press the Play button from Time Manager Panel to start the GameClock");
+		}
 	}
 
 	ImGui::SameLine();
 	ImGui::Text("Gameclock: %f", (float)App->Get_Time_Manager()->ReadSeconds_GameClock());
 
+	float time_scale = App->Get_Time_Manager()->Get_Time_Scale();
+	if (ImGui::SliderFloat("Time Scale:", &time_scale, 0.1f, 5.0f))
+	{
+		//Set the time_scale
+		App->Get_Time_Manager()->Set_Time_Scale(time_scale);
+	}
 
 	ImGui::End();
 }

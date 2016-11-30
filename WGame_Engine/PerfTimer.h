@@ -18,13 +18,24 @@ public:
 	uint64 ReadTicks_RealTime() const;
 	
 	void Start_Game_Clock();
-	double ReadMs_GameClock() const;
-	double ReadSeconds_GameClock() const;
+	double ReadMs_GameClock();
+	double ReadSeconds_GameClock();
 	uint64 ReadTicks_GameClock() const;
+
+	void Update_GameClock_dt();
 
 	void Play();
 	void Stop();
 	void Pause();
+
+	bool Is_Game_Clock_Running()const;
+	bool Is_Game_Clock_Paused()const;
+
+	float Get_Game_Clock_Delta_Time()const;
+	float Get_Frame_Count()const;
+	float Get_Time_Scale()const;
+
+	void Set_Time_Scale(const float& new_time_scale);
 
 private:
 
@@ -35,9 +46,14 @@ private:
 	//Game Clock
 	uint64	game_clock_started_at = 0;
 	uint64	game_clock_paused = 0;
+	float game_clock_dt = 0;
 	bool running = false;
 	bool game_paused = false;
+	float time_game_clock = 0;
 
+	float time_scale = 1.f;
+	uint frame_count = 0;
+	uint64	frame_started = 0;
 	
 };
 

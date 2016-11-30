@@ -129,8 +129,8 @@ bool Application::Init()
 		++i;
 	}
 	
-	/*last_sec_frame.Start();
-	ms_timer.Start();*/
+	last_sec_frame.Start();
+	ms_timer.Start();
 	return ret;
 }
 
@@ -157,6 +157,8 @@ pugi::xml_node Application::LoadConfig(pugi::xml_document& config_file) const
 // ---------------------------------------------
 void Application::PrepareUpdate()
 {
+	time_manager->Update_GameClock_dt();
+
 	frames_per_sec++;
 	dt = (float)ms_timer.Read() / 1000.0f;
 	ms_timer.Start();

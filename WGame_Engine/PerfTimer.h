@@ -53,7 +53,7 @@ private:
 
 	float time_scale = 1.f;
 	uint frame_count = 0;
-	uint64	frame_started = 0;
+	uint64	new_frame_started = 0;
 	
 };
 

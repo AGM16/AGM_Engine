@@ -15,7 +15,7 @@ PerfTimer::PerfTimer()
 		frequency = SDL_GetPerformanceFrequency();
 	//Starts the application realtime clock
 	Start_Real_Time();
-	frame_started = application_started_at;
+	new_frame_started = application_started_at;
 }
 
 PerfTimer::~PerfTimer()
@@ -116,8 +116,8 @@ double PerfTimer::ReadSeconds_GameClock()
 
 void PerfTimer::Update_GameClock_dt()
 {
-	game_clock_dt = (double(SDL_GetPerformanceCounter() - frame_started) / (double)frequency);
-	frame_started = SDL_GetPerformanceCounter();
+	game_clock_dt = (double(SDL_GetPerformanceCounter() - new_frame_started) / (double)frequency);
+	new_frame_started = SDL_GetPerformanceCounter();
 }
 
 

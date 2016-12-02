@@ -6,6 +6,8 @@
 #include "Globals.h"
 #include "Primitive.h"
 #include "ModuleGeometry.h"
+#include "MathGeoLib\include\MathGeoLib.h"
+#include "p2QuadTree.h"
 #include <list>
 #include <vector>
 
@@ -26,6 +28,7 @@ public:
 
 public:
 	
+	p2QuadTree scene;
 
 };
 

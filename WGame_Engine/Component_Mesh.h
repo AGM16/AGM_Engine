@@ -42,6 +42,7 @@ public:
 
 	Mesh* Get_Mesh()const;
 	AABB Get_AABB_Bounding_Box()const;
+	OBB Get_OBB_Bounding_Box()const;
 
 private:
 

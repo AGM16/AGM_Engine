@@ -2,55 +2,116 @@
 // Quadtree implementation --
 // ----------------------------------------------------
 
-/*#ifndef __P2QUADTREE_H__
+#ifndef __P2QUADTREE_H__
 #define __P2QUADTREE_H__
 
-#include "Collider.h"
-#include "p2DynArray.h"
+#include "GameObject.h"
+#include "Components.h"
+#include "Component_Transformation.h"
+#include "Component_Mesh.h"
+#include "Module_Go_Manager.h"
+#include "SDL\include\SDL.h"
+#include "MathGeoLib\include\MathGeoLib.h"
+#include  <vector>
+
+struct Mesh;
 
 #define QUADTREE_MAX_ITEMS 2
 
-// Helper function to check if one rectangle complately contains another
-bool Contains(const SDL_Rect& a, const SDL_Rect& b);
-bool Intersects(const SDL_Rect& a, const SDL_Rect& b);
+struct AABB_Box
+{
+	SDL_Rect rect;
+	math::float2 centre;
+	math::float2 size;
+
+	AABB_Box(math::float2 centre_value, math::float2 Size_value ) : centre(centre_value), size(Size_value)
+	{
+		rect.x = centre_value.x - (size.x / 2);
+		rect.y = centre_value.y - (size.y / 2);
+	};
+
+	bool contains(const math::float2 pos_go) const
+	{
+		if (pos_go.x < centre.x + size.x && pos_go.x > centre.x - size.x)
+		{
+			if (pos_go.y < centre.y + size.y && pos_go.y > centre.y - size.y)
+			{
+				return true;
+			}
+		}
+		return false;
+	}
+
+	math::float2 Get_Center()const
+	{
+		return centre;
+	}
+
+	math::float2 Get_Size()const
+	{
+		return size;
+	}
+
+	void Clear()
+	{
+		centre = float2::zero;
+		size = float2::zero;
+		rect.h = 0;
+		rect.w = 0;
+		rect.x = 0;
+		rect.y = 0;
+	}
+};
+
 
 // Tree node -------------------------------------------------------
-class p2QuadTreeNode
+class QuadTreeNode
 {
 
 public:
 
-	SDL_Rect				rect;
-	p2DynArray<Collider*>	objects;
-	p2QuadTreeNode*			parent;
-	p2QuadTreeNode*			childs[4];
+	AABB_Box				     rect;
+	GameObject*             	 objects;
+	QuadTreeNode*			     parent;
+	std::vector<QuadTreeNode*>   children;
 
 public:
 
-	p2QuadTreeNode(SDL_Rect r) : 
-		rect(r),
-		objects(QUADTREE_MAX_ITEMS)
+	QuadTreeNode(float2 center_rect, float2 size, QuadTreeNode* parent_n) : rect(center_rect, size), parent(parent_n), objects(nullptr)
 	{
-		parent = childs[0] = childs[1] = childs[2] = childs[3] = NULL;
+
 	}
 
-	~p2QuadTreeNode()
+	~QuadTreeNode()
 	{
-		for(int i = 0; i < 4; ++i)
-			if(childs[i] != NULL) delete childs[i];
+		for (vector<QuadTreeNode*>::iterator i = children.begin(); i < children.end(); ++i)
+		{
+			if ((*i) != nullptr)
+			{
+				delete (*i);
+				(*i) = nullptr;
+			}
+		}
+
+		children.clear();
+
+		parent = nullptr;
+		objects = nullptr;
+	}
+
+	void Subdivide();
+
+	bool Contains(const float2 position) const
+	{
+		return rect.contains(position);
 	}
 	 
-	void Insert(Collider* col)
-	{
-		// TODO: Insertar un nou Collider al quadtree
-		// En principi cada node por enmagatzemar QUADTREE_MAX_ITEMS nodes (encara que podrien ser més)
-		// Si es detecten més, el node s'ha de tallar en quatre
-		// Si es talla, a de redistribuir tots els seus colliders pels nous nodes (childs) sempre que pugui
-		// Nota: un Collider pot estar a més de un node del quadtree
-		// Nota: si un Collider intersecciona als quatre childs, deixar-lo al pare
-	}
+	bool Insert(GameObject* GO, float2 center_position);
+	bool Remove(GameObject* GO, float2 center_position);
+	bool Clear_Nodes();
+	
 
-	int CollectCandidates(p2DynArray<Collider*>& nodes, const SDL_Rect& r) const
+	/*int CollectCandidates(p2DynArray<Collider*>& nodes, const SDL_Rect& r) const
 	{
 		// TODO: Omplir el array "nodes" amb tots els colliders candidats
 		// de fer intersecció amb el rectangle r
@@ -65,7 +126,7 @@ public:
 
 		for(int i = 0; i < 4; ++i)
 			if(childs[i] != NULL) childs[i]->CollectRects(nodes);
-	}
+	}*/
 
 };
 
@@ -84,33 +145,16 @@ public:
 		Clear();
 	}
 
-	void SetBoundaries(const SDL_Rect& r)
-	{
-		if(root != NULL)
-			delete root;
+	void Create(float2 size_rect, float2 center);
 
-		root = new p2QuadTreeNode(r);
-	}
+	bool Insert(GameObject* GO);
 
-	void Insert(Collider* col)
-	{
-		if(root != NULL)
-		{
-			if(Intersects(root->rect, col->rect))
-				root->Insert(col);
-		}
-	}
+	bool Remove(GameObject* GO);
+	
+	bool Clear();
 
-	void Clear()
-	{
-		if(root != NULL)
-		{
-			delete root;
-			root = NULL;
-		}
-	}
 
-	int CollectCandidates(p2DynArray<Collider*>& nodes, const SDL_Rect& r) const
+	/*int CollectCandidates(p2DynArray<GameObject*>& nodes, const SDL_Rect& r) const
 	{
 		int tests = 1;
 		if(root != NULL && Intersects(root->rect, r))
@@ -118,15 +162,15 @@ public:
 		return tests;
 	}
 
-	void CollectRects(p2DynArray<p2QuadTreeNode*>& nodes) const
+	void CollectRects(p2DynArray<QuadTreeNode*>& nodes) const
 	{
 		if(root != NULL)
 			root->CollectRects(nodes);
-	}
+	}*/
 
 public:
 
-	p2QuadTreeNode*	root;
+	QuadTreeNode*	root;
 
 };
 

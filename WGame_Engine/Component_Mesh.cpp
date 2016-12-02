@@ -356,3 +356,8 @@ AABB  Component_Mesh::Get_AABB_Bounding_Box()const
 {
 	return new_bounding_box;
 }
+
+OBB Component_Mesh::Get_OBB_Bounding_Box()const
+{
+	return obb_box;
+}

@@ -349,7 +349,6 @@ void Editor::Render_Panel_Time_Manager()
 	if (ImGui::Button("Play", ImVec2(50, 20)))
 	{
 
-	   
 	   //Integrate the path of the secene to the tmp_file to save them in the scene that we are using
 		name_tmp_file_saved.assign("/Library/");
 		name_tmp_file_saved.append(App->geometry->Get_Scene());

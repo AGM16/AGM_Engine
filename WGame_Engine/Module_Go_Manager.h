@@ -2,6 +2,7 @@
 #define _MODULE_GO_MANAGER_H_
 
 #include "Module.h"
+#include "p2QuadTree.h"
 #include "Globals.h"
 #include "PugiXml\src\pugixml.hpp"
 
@@ -36,12 +37,17 @@ public:
 	GameObject* Obtain_GO_By_Raycast(const LineSegment& r, vector<GameObject*> list_go)const;
 	std::vector<GameObject*> Collect_GO_Candidates(const math::LineSegment& r)const;
 
+	void Insert_GO_To_Quadtree();
+
+    p2QuadTree quadtree_go;
 private:
 
 	GameObject* root_game_object = nullptr;
 	GameObject* game_object_selected = nullptr;
 	GameObject* last_game_object_selected = nullptr;
 
+
+	
 	
 	
 };

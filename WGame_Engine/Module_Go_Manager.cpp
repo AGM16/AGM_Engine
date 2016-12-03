@@ -6,6 +6,7 @@
 #include "Component_Transformation.h"
 #include "Random.h"
 #include "p2Defs.h"
+#include "p2QuadTree.h"
 
 using namespace std;
 
@@ -16,6 +17,8 @@ Module_Go_Manager::Module_Go_Manager( bool start_enabled) : Module(start_enabled
 	root_game_object = new GameObject(nullptr, "Root_Game_Objects", rand.Random_int(0, 2147483647));
 	root_game_object->Add_Component_Transformation(float3::zero, float3::one, Quat::identity, float3::zero);
 	root_game_object->Add_Component_Material("", "", 0, 0);
+	
+	quadtree_go.Create(float2(100.f, 100.f), float2(0.f, 0.f));
 }
 
 Module_Go_Manager::~Module_Go_Manager()
@@ -53,7 +56,7 @@ GameObject* Module_Go_Manager::Create_Game_Object( Mesh* m, GameObject* Parent)
 			//Add Component Material
 			new_game_object->Add_Component_Material(m->name_texture.c_str(), m->dir_texture.c_str(), m->num_image_textures, m->id_image_texture);
 			LOG("The GameObject %s has a new component : %s ", new_game_object->Get_Name(), "MaATERIAL");
-	
+
 
 	return new_game_object;
 
@@ -81,7 +84,6 @@ GameObject* Module_Go_Manager::Create_Camera_Game_Object(GameObject* Parent, con
 	//Add Component Camera
 	new_game_object->Add_Component_Camera(name_camera);
 	LOG("The GameObject %s has a new component : %s ", new_game_object->Get_Name(), "TRANSFORMATION");
-
 
 
 	return new_game_object;
@@ -146,6 +148,9 @@ update_status Module_Go_Manager::Update(float dt)
 
 		last_game_object_selected = game_object_selected;
 	}
+
+	//Draw Quadtree
+	quadtree_go.Draw();
 
 	return UPDATE_CONTINUE;
 }
@@ -314,4 +319,12 @@ std::vector<GameObject*> Module_Go_Manager::Collect_GO_Candidates(const math::Li
 	sort(list_candidates.begin(), list_candidates.end(), Compare_Bounding_Boxes);
 
 	return list_candidates;
+}
+
+void Module_Go_Manager::Insert_GO_To_Quadtree()
+{
+	if (root_game_object->Get_Children()->size() > 0)
+	{
+		root_game_object->Insert_To_Quadtree();
+	}
 }

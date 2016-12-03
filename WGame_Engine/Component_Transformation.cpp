@@ -5,8 +5,10 @@
 #include "Imgui\imgui.h"
 
 
-Component_Transformation::Component_Transformation(Components_Type type, GameObject* game_object, float3 pos, float3 scale_, Quat rot_quat, float3 angles) : Components(type, game_object), position(pos), scale(scale_), quat_rotation(rot_quat), rotation_degrees(angles)
+Component_Transformation::Component_Transformation(Components_Type type, GameObject* game_object, float3 pos, float3 scale_, Quat rot_quat, float3 angles) : Components(type, game_object), scale(scale_), quat_rotation(rot_quat), rotation_degrees(angles)
 {
+
+	position = pos;
 	transformation_matrix = Create_New_Matrix_Transformation(position, quat_rotation, scale);
 	Modify_Children();
 }

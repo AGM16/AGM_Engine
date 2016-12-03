@@ -28,7 +28,6 @@ public:
 
 public:
 	
-	p2QuadTree scene;
 
 };
 

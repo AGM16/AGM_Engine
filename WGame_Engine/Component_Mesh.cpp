@@ -16,6 +16,9 @@ Component_Mesh::Component_Mesh(Components_Type type, GameObject* game_object, Me
 		//Generate the initial AABB
 		bounding_box.SetNegativeInfinity();
 		bounding_box.Enclose((float3*)mesh->vertices, mesh->num_vertices);
+
+		Component_Transformation* transformation = (Component_Transformation*)Get_Game_Object()->Get_Component(TRANSFORMATION);
+		Recalculate_Properties_Bounding_Box(transformation);
 	}
 
 }
@@ -47,6 +50,7 @@ void Component_Mesh::Update()
 		id_image = 0;
 	}
 
+	
 	//Check if the global matrix has changed to recalculate the bounding box
 	Recalculate_Properties_Bounding_Box(transformation);
 	
@@ -54,7 +58,7 @@ void Component_Mesh::Update()
 	Component_Mesh* mesh_parent = nullptr;
 	Component_Material* material_parent = nullptr;
 	Check_Parent_Checkboxes(mesh_parent, material_parent, material);
-
+	
 	//Render Info Mesh
 	Render_Mesh_Panel();
 
@@ -283,6 +287,7 @@ void Component_Mesh::Render_Mesh_Panel()
 
 void Component_Mesh::Render_Bounding_Box_Panel()
 {
+	
 	//Check if the GO have a mesh
 	if (mesh->num_vertices != 0)
 	{
@@ -357,7 +362,7 @@ AABB  Component_Mesh::Get_AABB_Bounding_Box()const
 	return new_bounding_box;
 }
 
-OBB Component_Mesh::Get_OBB_Bounding_Box()const
+float3 Component_Mesh::Get_OBB_Bounding_Box()const
 {
-	return obb_box;
+	return obb_box.pos;
 }

@@ -7,6 +7,7 @@
 #include "Component_Camera.h"
 #include "p2Defs.h"
 #include "Imgui\imgui.h"
+#include "Module_Go_Manager.h"
 
 using namespace std;
 
@@ -515,4 +516,28 @@ void GameObject::GO_Candidates_Raycast(GameObject* go, const LineSegment& ray, v
 		}
 	}
 
+}
+
+void GameObject::Insert_To_Quadtree()
+{
+	Component_Transformation* transform = (Component_Transformation*)Get_Component(TRANSFORMATION);
+	Component_Mesh* comp_mesh = (Component_Mesh*)Get_Component(MESH);
+	if (comp_mesh != nullptr)
+	{
+		if (comp_mesh->Get_Mesh() != nullptr)
+		{
+			if (comp_mesh->Get_Mesh()->num_vertices > 0)
+			{
+				App->go_manager->quadtree_go.Insert(this);
+			}
+		}
+	}
+
+	if (children.size() > 0)
+	{
+		for (vector<GameObject*>::const_iterator child = children.begin(); child != children.end(); child++)
+		{
+			(*child)->Insert_To_Quadtree();
+		}
+	}
 }

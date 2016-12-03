@@ -107,6 +107,7 @@
     <ClInclude Include="Assimp\include\vector2.h" />
     <ClInclude Include="Assimp\include\vector3.h" />
     <ClInclude Include="Assimp\include\version.h" />
+    <ClInclude Include="Box.h" />
     <ClInclude Include="Color.h" />
     <ClInclude Include="Components.h" />
     <ClInclude Include="Component_Camera.h" />

@@ -23,7 +23,7 @@ The button active of the editor panel is to deactivate the components.For instan
 ###Quadtree Instructions:
 The Quadtree panel is in the game object camera_test as a component.In this panel you can create the root of the quadtree, insert game objects to the quadtree, clear the entire quadtree and modify the size of the root.You only can modify the size of the root before insert the gameobjects.
 
-If you don't have created a quadtree and click to the "Insert Game Objects" button, you have to press the "Clear" button and create the root. Then you will be able to insert game objects in a normal way.
+If you don't have created a quadtree and click to the "Insert Game Objects" button, you have to press Create the root, then press the "Clear" button and create the root again. Then you will be able to insert game objects in a normal way.
 
 When you insert the games objects to the quadtree, these are drawable because of the optimization to the camera culling with the quadtree.
 The game object Camera_test is who makes the camera culling with the Quadtree.

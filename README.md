@@ -33,14 +33,20 @@ To use it you have to click wit the left button of the mouse to the GO.
 
 ###Time Manager Instructions:
 There is three buttons Play, Stop and Pause.
+
 If you press play you will create a xml file that you will save in library and loaded when you press stop.
+
 If you press Pause the time will stop. To initialize again you have to press Play.
+
 If you press Play twice you will restart the gameclock time.
 
 ###Save and Load Instructions:
 In file there is three options: Load, Save and Save as.
+
 Load: will appear a panel with the xml files that you have saved. You can choose which one you want to load.
+
 Save: You will save all the information into the last xml file saved or loaded.
+
 Save as: to save new xml files.
 
 

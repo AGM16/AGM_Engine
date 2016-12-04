@@ -62,7 +62,7 @@ struct Mesh
 	string name_texture = "";
 	string dir_texture = "";
 
-
+	bool trash_mesh = false;
 
 };
 

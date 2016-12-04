@@ -33,7 +33,7 @@ public:
 	const char* Get_Name()const;
 	float3 Get_Distance_To_Ray()const;
 
-
+	void Set_Distance_To_Ray(float3 new_distance);
 	//Load and save
 	bool Load(pugi::xml_node& node);
 	bool Save(pugi::xml_node& node)const;

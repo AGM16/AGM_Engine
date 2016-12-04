@@ -216,6 +216,11 @@ float3 GameObject::Get_Distance_To_Ray()const
 	return distance_to_ray;
 }
 
+void GameObject::Set_Distance_To_Ray(float3 new_distance)
+{
+	distance_to_ray = new_distance;
+}
+
 
 bool GameObject::Load(pugi::xml_node& node)
 {
@@ -506,13 +511,15 @@ void GameObject::GO_Candidates_Raycast(GameObject* go, const LineSegment& ray, v
 		//If the mesh of the GO have vertices it means thta have a bounding box
 		if (comp_mesh->Get_Mesh()->num_vertices > 0)
 		{
-			if (ray.Intersects(comp_mesh->Get_AABB_Bounding_Box()))
+			/*if (ray.Intersects(comp_mesh->Get_AABB_Bounding_Box()))
 			{
 				list_go.push_back(go);
 
 				//Calculate the distance to the ray
 				distance_to_ray = (App->camera->Get_Camera_Position() - comp_mesh->Get_AABB_Bounding_Box().CenterPoint());
-			}
+			}*/
+
+			list_go = App->go_manager->quadtree_go.Ray_Intersects_Quadtree_Nodes(ray);
 		}
 	}
 

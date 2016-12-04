@@ -45,6 +45,7 @@ public:
 	OBB Get_OBB_Bounding_Box()const;
 	
 	bool draw = false;
+	bool trash = false;
 
 private:
 
@@ -65,7 +66,6 @@ private:
 	bool wireframe = false;
 	bool aabb_checkbox = false;
 	bool obb_checkbox = false;
-
 	
 };
 

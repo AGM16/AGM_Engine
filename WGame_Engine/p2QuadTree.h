@@ -80,6 +80,10 @@ public:
 	//Camera Culling
 	void Intersect_Node(Component_Camera& geo);
 
+	//Optimize mouse picking
+	vector<GameObject*> QuadTreeNode::Ray_Intersects_Node(const LineSegment& ray);
+
+
 };
 
 // Tree class -------------------------------------------------------
@@ -109,6 +113,10 @@ public:
 
 	//Camera Culling
 	void Intersects_Quadtree_Nodes(Component_Camera& geo)const;
+
+	//Optimize mouse picking
+	vector<GameObject*> Ray_Intersects_Quadtree_Nodes(const LineSegment& ray)const;
+
 
 public:
 

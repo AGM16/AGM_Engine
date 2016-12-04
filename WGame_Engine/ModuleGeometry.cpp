@@ -183,7 +183,25 @@ void ModuleGeometry::Load_Nodes_For_Hierarchy(aiNode* node_child, const aiScene*
 	{
 		for (int i = 0; i < node_child->mNumMeshes; i++)
 		{
-			aiMesh* new_mesh = scene->mMeshes[node_child->mMeshes[i]];
+			aiMesh* new_mesh;
+			if (node_child->mNumMeshes > 1)
+			{
+				aiMesh* first_mesh = scene->mMeshes[node_child->mMeshes[i]];
+				aiMesh* second_mesh = scene->mMeshes[node_child->mMeshes[1]];
+				
+				if (first_mesh->mNumVertices > second_mesh->mNumVertices)
+					new_mesh = first_mesh;
+				else
+					new_mesh = second_mesh;
+				//We pass i to the next mesh to not create the GO with trash mesh
+				++i;
+			}
+			else
+			{
+				new_mesh = scene->mMeshes[node_child->mMeshes[i]];
+			}
+
+
 			Mesh* m = new Mesh();
 
 			

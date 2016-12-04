@@ -10,7 +10,7 @@ public:
 public:
 	Box(math::float2 centre_value, math::float2 Size_value) : centre(centre_value), size(Size_value)
 	{
-		rect.SetFromCenterAndSize(math::vec(centre_value.x, 15.f, centre_value.y), vec(size.x, 30.f, size.y));
+		rect.SetFromCenterAndSize(math::vec(centre_value.x, 10.f, centre_value.y), vec(size.x, 20.f, size.y));
 	};
 
 	bool contains(const math::float2 pos_go) const

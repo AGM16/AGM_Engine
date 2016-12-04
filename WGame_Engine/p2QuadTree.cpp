@@ -257,6 +257,51 @@ void QuadTreeNode::Intersect_Node(Component_Camera& geo)
 		}
 }
 
+//Optimize mouse picking
+vector<GameObject*> QuadTreeNode::Ray_Intersects_Node(const LineSegment& ray)
+{
+	vector<GameObject*> ret;
+
+	queue<QuadTreeNode*> queue_qnode;
+	queue_qnode.push(this);
+
+	QuadTreeNode* current_node = nullptr;
+
+	while (!queue_qnode.empty())
+	{
+		current_node = queue_qnode.front();
+		queue_qnode.pop();
+		if (current_node->objects.empty() == false)
+		{
+			//Check each GO of the objects vector
+			for (vector<GameObject*>::iterator i = current_node->objects.begin(); i < current_node->objects.end(); ++i)
+			{
+				Component_Mesh* comp_mesh = (Component_Mesh*)(*i)->Get_Component(MESH);
+
+				if (ray.Intersects(current_node->rect.rect))
+				{
+					if (current_node->children.size() == 0)
+					{
+						ret.push_back((*i));
+						//Calculate the distance to the ray
+						(*i)->Set_Distance_To_Ray((App->camera->Get_Camera_Position() - comp_mesh->Get_AABB_Bounding_Box().CenterPoint()));
+					}
+				}
+			}
+		}
+
+		vector<QuadTreeNode*>::const_iterator children_current_node = current_node->children.begin();
+		while (children_current_node != current_node->children.end())
+		{
+			queue_qnode.push(*children_current_node);
+			children_current_node++;
+		}
+	}
+
+	return ret;
+}
+
+
 
 //-------------------------------QUADTREE FUNCTIONS--------------------------------------
 void p2QuadTree::Create(float2 size_rect, float2 center)
@@ -322,4 +367,17 @@ void p2QuadTree::Intersects_Quadtree_Nodes(Component_Camera& geo)const
 	{
 		root->Intersect_Node(geo);	
 	}
+}
+
+//Optimize mouse picking
+vector<GameObject*>  p2QuadTree::Ray_Intersects_Quadtree_Nodes(const LineSegment& ray)const
+{
+	vector<GameObject*> ret;
+
+	if (root != nullptr && root->children.size() > 0)
+	{
+		ret = root->Ray_Intersects_Node(ray);
+	}
+
+	return ret;
 }

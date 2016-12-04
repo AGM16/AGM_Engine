@@ -10,6 +10,7 @@
 
 Component_Mesh::Component_Mesh(Components_Type type, GameObject* game_object, Mesh* mesh_) : Components(type, game_object), mesh(mesh_)
 {
+	trash = mesh->trash_mesh;
 	//To build only the bounding box to the GO that have mesh
 	if (mesh->num_vertices > 0)
 	{

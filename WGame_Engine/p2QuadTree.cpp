@@ -185,9 +185,7 @@ bool QuadTreeNode::Clear_Nodes()
 	{
 		for (vector<GameObject*>::iterator i = objects.begin(); i < objects.end(); ++i)
 		{
-			
-			(*i) = nullptr;
-			
+			(*i) = nullptr;	
 		}
 
 		this->objects.clear();
@@ -304,6 +302,31 @@ vector<GameObject*> QuadTreeNode::Ray_Intersects_Node(const LineSegment& ray)
 	return ret;
 }
 
+void  QuadTreeNode::Deactivate_All_GO_Renders()
+{
+	if (this->children.size() > 0)
+	{
+		for (vector<QuadTreeNode*>::const_iterator children_node = this->children.begin(); children_node != this->children.end(); children_node++)
+		{
+			(*children_node)->Deactivate_All_GO_Renders();
+		}
+	}
+
+	if (this->objects.size() > 0)
+	{
+		for (vector<GameObject*>::iterator i = objects.begin(); i < objects.end(); ++i)
+		{
+			if ((*i)->Exist_Component(MESH))
+			{
+				Component_Mesh* comp_mesh = (Component_Mesh*)(*i)->Get_Component(MESH);
+				comp_mesh->Set_Rendered(false);
+			}
+		}
+	}
+
+	
+}
+
 
 
 //-------------------------------QUADTREE FUNCTIONS--------------------------------------
@@ -402,4 +425,9 @@ vector<GameObject*>  p2QuadTree::Ray_Intersects_Quadtree_Nodes(const LineSegment
 	}
 
 	return ret;
+}
+
+void p2QuadTree::Deactivate_All_GO_Renders()
+{
+		root->Deactivate_All_GO_Renders();
 }

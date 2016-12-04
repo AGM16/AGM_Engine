@@ -319,6 +319,21 @@ bool GameObject::Load(pugi::xml_node& node)
 		material->Set_Checkbox(deactivate_checkbox_material);
 	}
 
+	//--------------------CAMERA--------------------------
+	if (Exist_Component(CAMERA) == true)
+	{
+		//Load Check Box
+		bool aabb_box = next_node.attribute("AABB_Cekcbox").as_bool();
+		comp_camera->Set_Checkbox_AABB_Bounding_Boxes(aabb_box);
+
+		bool obb_box = next_node.attribute("OBB_Cekcbox").as_bool();
+		comp_camera->Set_Checkbox_OBB_Bounding_Boxes(obb_box);
+
+		bool draw_frustum = next_node.attribute("Draw_Frustum").as_bool();
+		comp_camera->Set_Draw_Frustum(draw_frustum);
+	
+	}
+
 
 
 	if (children.size() > 0)
@@ -384,6 +399,7 @@ bool GameObject::Save(pugi::xml_node& node)const
 			node_mgo.append_attribute("Front_x") = comp_camera->Get_Front().x;
 			node_mgo.append_attribute("Front_y") = comp_camera->Get_Front().y;
 			node_mgo.append_attribute("Front_z") = comp_camera->Get_Front().z;
+
 		}
 
 		
@@ -417,12 +433,19 @@ bool GameObject::Save(pugi::xml_node& node)const
 			node_mgo.append_attribute("Checkbox_Deactive_Material") = material->Is_Checkbox_Active();
 		}
 
+		//--------------------CAMERA--------------------------
+		if (Exist_Component(CAMERA) == true)
+		{
+			//Save Check Box
+			node_mgo.append_attribute("AABB_Cekcbox") = comp_camera->Get_Checkbox_AABB_Bounding_Boxes();
+			node_mgo.append_attribute("OBB_Cekcbox") = comp_camera->Get_Checkbox_OBB_Bounding_Boxes();
+			node_mgo.append_attribute("Draw_Frustum") = comp_camera->Get_Draw_Frustum();
+		}
 
 		if (children.size() > 0)
 		{
 			for (vector<GameObject*>::const_iterator node_go = children.begin(); node_go != children.end(); node_go++)
 			{
-				//if((*node_go)->Exist_Component(CAMERA) == false)
 				(*node_go)->Save(node);
 			}
 		}

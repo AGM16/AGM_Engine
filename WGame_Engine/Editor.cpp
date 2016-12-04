@@ -208,6 +208,7 @@ void Editor::Render_Panel_Save_As()
 			string name = last_name_file_saved;
 			if (name.size() > 0)
 			{
+				//Get the dir to save the xml
 				string name_file = "/Library/";
 				string scene = App->geometry->Get_Scene();
 				scene.append("/");

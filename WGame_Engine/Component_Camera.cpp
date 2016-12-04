@@ -70,7 +70,9 @@ void Component_Camera::Update()
 					App->go_manager->Create_Quadtree_Root_Function(float2(100.f, 100.f), float2(0.f, 0.f));
 				}
 
-				ImGui::Text("To insert again GO you must clear the quadtree");
+				ImGui::Spacing();
+				ImGui::Text("To insert again GO you must 'CLEAR' the quadtree");
+				ImGui::Text("To draw GO you must insert Game Objects");
 				if (ImGui::Button("Insert Game Objects"))
 				{
 					App->go_manager->Insert_GO_To_Quadtree();
@@ -80,6 +82,7 @@ void Component_Camera::Update()
 				ImGui::Text("Erase Quadtree:");
 				if (ImGui::Button("Clear Quadtree"))
 				{
+					App->go_manager->Deactivate_GO_Render();
 					App->go_manager->Clear_Quadtree_Function();
 				}
 
@@ -290,6 +293,11 @@ bool Component_Camera::Intersect_Frustum_AABB(const AABB &b)
 void Component_Camera::Set_Draw_Frustum(bool on)
 {
 	draw_frustum = on;
+}
+
+bool Component_Camera::Get_Draw_Frustum()const
+{
+	return draw_frustum;
 }
 
 //Check Box that active all the bounding boxes

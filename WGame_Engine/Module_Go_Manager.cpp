@@ -126,6 +126,7 @@ update_status Module_Go_Manager::Update(float dt)
 
 	ImGui::End();
 
+	//----------------------------------MOUSE PICKING-------------------------------------
 	//Select a GO with the mouse
 	if (App->input->GetMouseButton(SDL_BUTTON_LEFT) == KEY_UP && !ImGui::IsMouseHoveringAnyWindow())
 	{
@@ -152,6 +153,9 @@ update_status Module_Go_Manager::Update(float dt)
 	//Draw Quadtree
 	quadtree_go.Draw();
 
+	//Update Camera Culling optimizated
+	App->go_manager->Intersect_Camera_Culling_Quadtree_Function(*App->camera->camera_component_test);
+
 	return UPDATE_CONTINUE;
 }
 
@@ -166,7 +170,7 @@ void Module_Go_Manager::Window_Hierarchy(GameObject* Root_node)
 
 		if ((*node_go)->Get_Children()->size() > 0)
 		{
-			if (ImGui::TreeNodeEx((*node_go)->Get_Name(), flags))
+			if (ImGui::TreeNodeEx((*node_go)->Get_Name(), flags | ImGuiTreeNodeFlags_DefaultOpen))
 			{
 				if (ImGui::IsItemClicked(0))
 				{   
@@ -278,6 +282,7 @@ GameObject* Module_Go_Manager::Obtain_GO_By_Raycast(const LineSegment& r, const 
 
 			if (mesh->num_vertices > 0)
 			{
+				//Transform raycast to Local Transformation
 				LineSegment ray_cast = r;
 				ray_cast.Transform(transform->Get_Tranformation_Matrix().Inverted());
 				
@@ -322,6 +327,9 @@ std::vector<GameObject*> Module_Go_Manager::Collect_GO_Candidates(const math::Li
 }
 
 
+
+//----------------------------------------QUADTREE FUNCTIONS ---------------------------------------------
+
 void Module_Go_Manager::Create_Quadtree_Root_Function(const float2 size_rect, const float2 center)
 {	
 	quadtree_go.Create(size_rect, center);
@@ -351,7 +359,7 @@ bool Module_Go_Manager::Insert_Quadtree_Function(GameObject& go)
 
 bool Module_Go_Manager::Clear_Quadtree_Function()
 {
-	if (game_obj_Inserted || quadtree_go.root != nullptr)
+	if (quadtree_go.root != nullptr)
 	{
 		game_obj_Inserted = false;
 		return quadtree_go.Clear();
@@ -385,7 +393,15 @@ float2 Module_Go_Manager::Get_Boundaries_Quadtree_Root_Function()const
 		return float2::zero;
 }
 
+
+void  Module_Go_Manager::Module_Go_Manager::Deactivate_GO_Render()
+{
+	if (quadtree_go.root != nullptr)
+		quadtree_go.Deactivate_All_GO_Renders();
+}
+
 void  Module_Go_Manager::Set_Game_Obj_Inserted(bool on)
 {
 	game_obj_Inserted = on;
 }
+

@@ -39,11 +39,13 @@ public:
 	bool Save(pugi::xml_node& node)const;
 
 	int Is_Name_Repaeated(const char* name_rep);
+
+	//------------------------Mouse Picking-----------------------------
 	bool Check_Collision_With_RayCast(const LineSegment& ray, float& min_distance);
 	void GO_Candidates_Raycast(GameObject* go, const LineSegment& ray, std::vector<GameObject*>& list_go);
 
+	//------------------------Quadtree-----------------------------
 	void Insert_To_Quadtree();
-	int distance = 0;
 
 private:
 

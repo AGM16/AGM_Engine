@@ -40,6 +40,7 @@ public:
 	float3 Get_World_Right()const;
 	float3 Get_Position()const;
 	const math::Frustum Get_Frustum()const;
+	bool Get_Draw_Frustum()const;
 
 	Component_Transformation* Get_Component_Transformation_Camera()const;
 	void Look_At(const math::float3 &position);

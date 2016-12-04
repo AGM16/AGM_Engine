@@ -72,7 +72,7 @@ void Component_Transformation::Update()
 				}
 			}
 
-			ImGui::Checkbox("Deactivate##foo2", &active_checkbox);
+			ImGui::Checkbox("Static##foo2", &active_checkbox);
 		}
 	}
 }

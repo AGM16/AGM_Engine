@@ -1,5 +1,8 @@
 #include "MathGeoLib\include\MathGeoLib.h"
 
+#define SIZE_Y_BOX 20.f
+#define CENTRE_POS_Y_BOX 10.f
+
 class Box
 {
 public:
@@ -10,7 +13,7 @@ public:
 public:
 	Box(math::float2 centre_value, math::float2 Size_value) : centre(centre_value), size(Size_value)
 	{
-		rect.SetFromCenterAndSize(math::vec(centre_value.x, 10.f, centre_value.y), vec(size.x, 20.f, size.y));
+		rect.SetFromCenterAndSize(math::vec(centre_value.x, CENTRE_POS_Y_BOX, centre_value.y), vec(size.x, SIZE_Y_BOX, size.y));
 	};
 
 	bool contains(const math::float2 pos_go) const
@@ -35,7 +38,7 @@ public:
 		return size;
 	}
 
-	void Set_Boundaries_rect(const float2 size_rect)
+	void Set_Boundaries_rect(const math::float2 size_rect)
 	{
 		rect.SetFromCenterAndSize(math::vec(centre.x, 10.f, centre.y), vec(size_rect.x, 20.f, size_rect.y));
 		size = size_rect;

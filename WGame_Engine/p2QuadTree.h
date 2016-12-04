@@ -16,6 +16,7 @@
 #include "Box.h"
 
 
+
 // Tree node -------------------------------------------------------
 class QuadTreeNode
 {
@@ -82,6 +83,8 @@ public:
 
 	void Draw_Node();
 
+	void Deactivate_All_GO_Renders();
+
 	//Optimize Camera Culling
 	void Intersect_Node(Component_Camera& geo);
 
@@ -104,6 +107,7 @@ public:
 	virtual ~p2QuadTree()
 	{
 		Clear();
+		delete root;
 	}
 
 	void Create(const float2 size_rect, const float2 center);
@@ -119,6 +123,8 @@ public:
 	void Set_Boundaries_Root(const float2 size_rect);
 
 	math::float2 Get_Boundaries()const;
+
+	void Deactivate_All_GO_Renders();
 
 	//Optimize Camera Culling
 	void Intersects_Quadtree_Nodes(Component_Camera& geo)const;

@@ -45,6 +45,7 @@ public:
 	vector<GameObject*> Ray_Intersects_Quadtree_Function(const LineSegment& ray);
 	void Set_Boundaries_Quadtree_Root_Function(const float2 size_rect);
 	float2 Get_Boundaries_Quadtree_Root_Function()const;
+	void Deactivate_GO_Render();
 
 	void Set_Game_Obj_Inserted(bool on);
   

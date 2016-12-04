@@ -75,10 +75,10 @@ bool ModuleGeometry::Load_Geometry(const char* path, bool drop)
 			 dir_scene = "/Library/";
 
 			 //Save the last scene imported to our engine
-			 //Check and improvec this process
 			 if (last_scene_imported.length() > 0)
 				 last_scene_imported.clear();
 
+			 //Get the name of the FBX that we want to load
 			 last_scene_imported.assign(App->filesystem->Get_FileName_From_Path(path).c_str());
 
 			 dir_scene.append(App->filesystem->Get_FileName_From_Path(path));
@@ -93,6 +93,7 @@ bool ModuleGeometry::Load_Geometry(const char* path, bool drop)
 				 dir_scene = dir_scene.substr(0, size);
 			 }
 
+			 //Show the scene that we are using in the game window
 			 char title_scene[100];
 			 sprintf_s(title_scene, 100, "%s     Scene : %s", App->Get_Title(), last_scene_imported.c_str());
 			 App->window->SetTitle(title_scene);
@@ -184,6 +185,7 @@ void ModuleGeometry::Load_Nodes_For_Hierarchy(aiNode* node_child, const aiScene*
 		for (int i = 0; i < node_child->mNumMeshes; i++)
 		{
 			aiMesh* new_mesh;
+			//Discard the mesh with trash
 			if (node_child->mNumMeshes > 1)
 			{
 				aiMesh* first_mesh = scene->mMeshes[node_child->mMeshes[i]];
@@ -193,6 +195,7 @@ void ModuleGeometry::Load_Nodes_For_Hierarchy(aiNode* node_child, const aiScene*
 					new_mesh = first_mesh;
 				else
 					new_mesh = second_mesh;
+
 				//We pass i to the next mesh to not create the GO with trash mesh
 				++i;
 			}
@@ -213,26 +216,25 @@ void ModuleGeometry::Load_Nodes_For_Hierarchy(aiNode* node_child, const aiScene*
 
 			//Import Mesh
 			string path_file;
-			string path_file_2;
-
+			
 			if (is_dir_scene_exist == false)
 			{
 				Import_Mesh(new_mesh, path_file, m->name_node.c_str(), dir_scene);
-				path_file_2 = path_file;
+				path_file;
 			}
 			else
 			{
 				//if there is more than one mesh it means that there is a copy of this name with "_m_%d"
-				path_file_2 = dir_scene;
-				path_file_2.append("/Meshes/");
-				path_file_2.append(m->name_node.c_str());
+				path_file = dir_scene;
+				path_file.append("/Meshes/");
+				path_file.append(m->name_node.c_str());
 				
 
-				path_file_2.append(".wge");
+				path_file.append(".wge");
 			}
 
 			//Load Mesh
-			Load_Mesh(m, path_file_2.c_str());
+			Load_Mesh(m, path_file.c_str());
 			
 
 			//Texture

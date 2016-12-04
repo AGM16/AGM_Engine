@@ -42,7 +42,9 @@ public:
 
 	Mesh* Get_Mesh()const;
 	AABB Get_AABB_Bounding_Box()const;
-	float3 Get_OBB_Bounding_Box()const;
+	OBB Get_OBB_Bounding_Box()const;
+	
+	bool draw = false;
 
 private:
 
@@ -63,6 +65,8 @@ private:
 	bool wireframe = false;
 	bool aabb_checkbox = false;
 	bool obb_checkbox = false;
+
+	
 };
 
 #endif // !_COMPONENT_MESH_H_

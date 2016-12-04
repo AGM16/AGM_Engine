@@ -29,7 +29,7 @@ bool ModuleCamera3D::Init()
 	camera_component = (Component_Camera*)main_camera_go->Get_Component(Components_Type::CAMERA);
 
 	camera_component->Get_Component_Transformation_Camera()->Set_Position(float3(30.f, 40.f, -100.f));
-	camera_component->Set_Far_Plane(230.f);
+	camera_component->Set_Far_Plane(400.f);
 	camera_component->Look_At(float3::zero);
 	
 	//Camera Test

@@ -63,7 +63,7 @@ void Component_Mesh::Update()
 	Render_Mesh_Panel();
 
 	//Render Mesh and bounding boxes
-	if (App->camera->camera_component_test->Intersect_Frustum_AABB(new_bounding_box) == true)
+	if (draw != false)
 	{
 		if (mesh_parent != nullptr)
 		{
@@ -362,7 +362,7 @@ AABB  Component_Mesh::Get_AABB_Bounding_Box()const
 	return new_bounding_box;
 }
 
-float3 Component_Mesh::Get_OBB_Bounding_Box()const
+OBB Component_Mesh::Get_OBB_Bounding_Box()const
 {
-	return obb_box.pos;
+	return obb_box;
 }

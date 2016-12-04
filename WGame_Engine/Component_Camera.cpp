@@ -112,11 +112,17 @@ void Component_Camera::Set_Near_Plane(const float &new_near_plane)
 
 void Component_Camera::Set_Far_Plane(const float &new_far_plane)
 {
+	float f_plane = 0;
+	if (new_far_plane > 400.f)
+		f_plane = 400.f;
+	else
+		f_plane = new_far_plane;
+
 	if (new_far_plane > frustum.NearPlaneDistance())
-		frustum.SetViewPlaneDistances(frustum.NearPlaneDistance(), new_far_plane);
+		frustum.SetViewPlaneDistances(frustum.NearPlaneDistance(), f_plane);
 
 	//To update the information panel of the editor
-	far_plane = new_far_plane;
+	far_plane = f_plane;
 	
 }
 

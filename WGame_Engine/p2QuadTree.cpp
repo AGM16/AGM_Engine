@@ -75,9 +75,9 @@ bool QuadTreeNode::Insert(GameObject* GO, float2 center_position)
 			{
 				if (current_node->children.empty())
 				{
-					if (current_node->objects == nullptr)//The node is available to catch this GO
+					if (current_node->objects.size() < 2)//The node is available to catch this GO
 					{
-						current_node->objects = GO;
+						current_node->objects.push_back(GO);
 						return true;
 					}
 					else
@@ -87,21 +87,27 @@ bool QuadTreeNode::Insert(GameObject* GO, float2 center_position)
 						current_node->Subdivide();
 
 						//Insert again the old objects
-						Component_Mesh* mesh = (Component_Mesh*)current_node->objects->Get_Component(MESH);
-						vec center = mesh->Get_AABB_Bounding_Box().CenterPoint();
-						
-						if (current_node->Insert(current_node->objects, float2(center.x, center.y)) != false)
+						for (vector<GameObject*>::iterator i = current_node->objects.begin(); i < current_node->objects.end(); ++i)
 						{
-							current_node->objects = nullptr;
-							//Insert new object
-							ret = current_node->Insert(GO, center_position);
-							break;
+							Component_Mesh* mesh = (Component_Mesh*)(*i)->Get_Component(MESH);
+							vec center = mesh->Get_AABB_Bounding_Box().CenterPoint();
+							if (current_node->Insert((*i), float2(center.x, center.z)) != false)
+							{
+								(*i) = nullptr;
+							}
+							else
+							{
+								ret = false;
+								break;
+							}
 						}
-						else
-						{
-							ret = false;
-							break;
-						}
+
+						current_node->objects.clear();
+
+						//Insert new object
+						ret = current_node->Insert(GO, center_position);
+						break;
+	
 					}
 				}
 			}
@@ -134,11 +140,15 @@ bool QuadTreeNode::Remove(GameObject* GO, float2 center_position)
 		if (current_node->Contains(center_position))
 		{
 			//Check if this one is the QuadtreeNode that have this GO
-			if (current_node->objects == GO && current_node->rect.centre.Equals(center_position))
+			//Insert again the old objects
+			for (vector<GameObject*>::iterator i = current_node->objects.begin(); i < current_node->objects.end(); ++i)
 			{
-				current_node->objects = nullptr;
-				ret = true;
-				break;
+				if ((*i) == GO && current_node->rect.centre.Equals(center_position))
+				{
+					(*i) = nullptr;
+					ret = true;
+					break;
+				}
 			}
 		}
 
@@ -170,7 +180,18 @@ bool QuadTreeNode::Clear_Nodes()
 
 	rect.Clear();
 	parent = nullptr;
-	objects = nullptr;
+
+	if (this->objects.size() > 0)
+	{
+		for (vector<GameObject*>::iterator i = objects.begin(); i < objects.end(); ++i)
+		{
+			
+			(*i) = nullptr;
+			
+		}
+
+		this->objects.clear();
+	}
 
 	return true;
 }
@@ -188,6 +209,54 @@ void QuadTreeNode::Draw_Node()
 	App->renderer3D->Render_AABB_Cube(this->rect.rect);
 }
 
+//For Camera Culling
+void QuadTreeNode::Intersect_Node(Component_Camera& geo)
+{
+
+		queue<QuadTreeNode*> queue_qnode;
+		queue_qnode.push(this);
+
+		QuadTreeNode* current_node = nullptr;
+
+		while (!queue_qnode.empty())
+		{
+			current_node = queue_qnode.front();
+			queue_qnode.pop();
+			if (current_node->objects.empty() == false)
+			{
+				//Check each GO of the objects vector
+				for (vector<GameObject*>::iterator i = current_node->objects.begin(); i < current_node->objects.end(); ++i)
+				{
+					Component_Mesh* comp_mesh = (Component_Mesh*)(*i)->Get_Component(MESH);
+
+					if (geo.Intersect_Frustum_AABB(current_node->rect.rect))
+					{
+
+						if (current_node->children.size() == 0)
+						{		
+							    //Activate varibale to draw the GO
+								comp_mesh->draw = true;
+						}
+					}
+					else
+					{
+						//Deactivate the variable to not draw the GO
+						if (comp_mesh->draw)
+							comp_mesh->draw = false;
+					}
+				}
+			}
+
+
+			vector<QuadTreeNode*>::const_iterator children_current_node = current_node->children.begin();
+			while (children_current_node != current_node->children.end())
+			{
+				queue_qnode.push(*children_current_node);
+				children_current_node++;
+			}
+		}
+}
+
 
 //-------------------------------QUADTREE FUNCTIONS--------------------------------------
 void p2QuadTree::Create(float2 size_rect, float2 center)
@@ -202,18 +271,15 @@ void p2QuadTree::Create(float2 size_rect, float2 center)
 bool p2QuadTree::Insert(GameObject* GO)
 {
 	bool ret = false;
-	Component_Transformation* transform = (Component_Transformation*)GO->Get_Component(TRANSFORMATION);
 	Component_Mesh* mesh = (Component_Mesh*)GO->Get_Component(MESH);
 	if (mesh != nullptr && mesh->Get_Mesh()->num_vertices > 0)
 	{
-		float2 center_point_go = float2(transform->Get_Position().x, transform->Get_Position().y);
 		vec center = mesh->Get_AABB_Bounding_Box().CenterPoint();
 		if (root != nullptr && root->Contains(float2(center.x, center.z)))
 		{
 			ret = root->Insert(GO, float2(center.x, center.z));
 		}
 	}
-
 	return ret;
 }
 
@@ -247,4 +313,13 @@ void p2QuadTree::Draw()
 {
 	if (root != nullptr && root->children.size() > 0)
 		root->Draw_Node();
+}
+
+//For Camera Culling
+void p2QuadTree::Intersects_Quadtree_Nodes(Component_Camera& geo)const
+{
+	if (root->children.size() > 0 )
+	{
+		root->Intersect_Node(geo);	
+	}
 }

@@ -27,7 +27,8 @@ public:
 
 
 public:
-	
+
+	vector<GameObject*> candidates_go;
 
 };
 

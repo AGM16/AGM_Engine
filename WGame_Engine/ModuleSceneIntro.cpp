@@ -47,7 +47,7 @@ bool ModuleSceneIntro::Start()
 	//Load 3D model
 	App->geometry->Load_Geometry("Assets/3D_Models/Street environment_V01.fbx",false);
 
-	
+
 
 	return ret;
 }
@@ -67,7 +67,7 @@ update_status ModuleSceneIntro::Update(float dt)
 	if (App->input->GetKey(SDL_SCANCODE_B) == KEY_UP)
 	{
 		App->go_manager->Insert_GO_To_Quadtree();
-	}
+	}	
 
 	if (App->input->GetKey(SDL_SCANCODE_N) == KEY_UP)
 	{
@@ -78,6 +78,8 @@ update_status ModuleSceneIntro::Update(float dt)
 	{
 		App->go_manager->quadtree_go.Create(float2(100.f, 100.f), float2(0.f, 0.f));
 	}
+
+	App->go_manager->quadtree_go.Intersects_Quadtree_Nodes(*App->camera->camera_component_test);
 	    
 	return UPDATE_CONTINUE;
 }

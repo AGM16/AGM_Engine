@@ -10,7 +10,6 @@
 
 Component_Mesh::Component_Mesh(Components_Type type, GameObject* game_object, Mesh* mesh_) : Components(type, game_object), mesh(mesh_)
 {
-	trash = mesh->trash_mesh;
 	//To build only the bounding box to the GO that have mesh
 	if (mesh->num_vertices > 0)
 	{
@@ -142,6 +141,17 @@ bool Component_Mesh::Is_Checkbox_OBB_Active()const
 void Component_Mesh::Set_Checkbox_OBB(bool on)
 {
 	obb_checkbox = on;
+}
+
+//Check Render bool
+bool Component_Mesh::Is_Rendered()const
+{
+	return draw;
+}
+
+void Component_Mesh::Set_Rendered(bool new_render)
+{
+	draw = new_render;
 }
 
 void Component_Mesh::Check_Parent_Checkboxes(Component_Mesh* mesh_parent, Component_Material* material_parent, Component_Material* material)

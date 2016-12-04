@@ -35,10 +35,17 @@ public:
 		return size;
 	}
 
+	void Set_Boundaries_rect(const float2 size_rect)
+	{
+		rect.SetFromCenterAndSize(math::vec(centre.x, 10.f, centre.y), vec(size_rect.x, 20.f, size_rect.y));
+		size = size_rect;
+	}
+
 	void Clear()
 	{
 		centre = float2::zero;
 		size = float2::zero;
+		rect.SetNegativeInfinity();
 	}
 };
 

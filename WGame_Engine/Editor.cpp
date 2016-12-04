@@ -19,11 +19,8 @@ bool Editor::Start()
 {
 	LOG("Loading Intro assets");
 
-
-
 	show_test_window = false;
 	
-
 	plane.axis = true;
 	return true;
 }
@@ -34,9 +31,6 @@ update_status Editor::Update(float dt)
 {
 	
 	plane.Render();
-
-	
-	//ImGui::ShowStyleEditor();
 
 
 	//Menu Bar ---------------------------
@@ -210,7 +204,7 @@ void Editor::Render_Panel_Save_As()
 
 		if (ImGui::Button("Close", ImVec2(50, 20)))
 		{
-			//Check it the name of the file is empty
+			//Check if the name of the file is empty
 			string name = last_name_file_saved;
 			if (name.size() > 0)
 			{
@@ -309,7 +303,7 @@ bool Editor::CleanUp()
 {
 	LOG("Unloading Intro scene");
 
-	//Delete the tmp_file that we create before start the GameClock
+	//Delete the tmp_file that we create before start ("PLAY") the GameClock
 	App->filesystem->Delete(name_tmp_file_saved.c_str());
 
 	return true;
@@ -332,7 +326,7 @@ void Editor::Render_Panel_Time_Manager()
 	if (App->Get_Windows_Resized() == false)
 	{
 		size_w = ImVec2(325.f, 80.f);
-		pos = float2(500, 20);
+		pos = float2(625, 20);
 	}
 	else
 	{
@@ -348,13 +342,16 @@ void Editor::Render_Panel_Time_Manager()
 
 	if (ImGui::Button("Play", ImVec2(50, 20)))
 	{
+		if (App->Get_Time_Manager()->Is_Game_Clock_Paused() == false && App->Get_Time_Manager()->Is_Game_Clock_Running() == false)
+		{
+			//Integrate the path of the secene to the tmp_file to save them in the scene that we are using
+			name_tmp_file_saved.assign("/Library/");
+			name_tmp_file_saved.append(App->geometry->Get_Scene());
+			name_tmp_file_saved.append("/tmp_file_gameclock");
 
-	   //Integrate the path of the secene to the tmp_file to save them in the scene that we are using
-		name_tmp_file_saved.assign("/Library/");
-		name_tmp_file_saved.append(App->geometry->Get_Scene());
-		name_tmp_file_saved.append("/tmp_file_gameclock");
+			App->SaveGame(name_tmp_file_saved.c_str());
+		}
 
-		App->SaveGame(name_tmp_file_saved.c_str());
        //Call to the Play function
 		App->Get_Time_Manager()->Play();
 	}

@@ -321,10 +321,71 @@ std::vector<GameObject*> Module_Go_Manager::Collect_GO_Candidates(const math::Li
 	return list_candidates;
 }
 
+
+void Module_Go_Manager::Create_Quadtree_Root_Function(const float2 size_rect, const float2 center)
+{	
+	quadtree_go.Create(size_rect, center);
+}
+
 void Module_Go_Manager::Insert_GO_To_Quadtree()
 {
 	if (root_game_object->Get_Children()->size() > 0)
 	{
 		root_game_object->Insert_To_Quadtree();
 	}
+}
+
+bool Module_Go_Manager::Insert_Quadtree_Function(GameObject& go)
+{
+	bool ret = false;
+
+	/*To insert go only once. If we want to insert again we have
+	to clean the gameobject and create another quadtreenode root*/
+	if (game_obj_Inserted == false)
+	{
+		ret = quadtree_go.Insert(go);
+	}
+
+	return ret;
+}
+
+bool Module_Go_Manager::Clear_Quadtree_Function()
+{
+	if (game_obj_Inserted || quadtree_go.root != nullptr)
+	{
+		game_obj_Inserted = false;
+		return quadtree_go.Clear();
+	}
+}
+
+void Module_Go_Manager::Intersect_Camera_Culling_Quadtree_Function(Component_Camera& camera)
+{
+	if(quadtree_go.root != nullptr)
+		quadtree_go.Intersects_Quadtree_Nodes(camera);
+}
+
+vector<GameObject*> Module_Go_Manager::Ray_Intersects_Quadtree_Function(const LineSegment& ray)
+{
+	if (quadtree_go.root != nullptr)
+		return quadtree_go.Ray_Intersects_Quadtree_Nodes(ray);
+}
+
+void Module_Go_Manager::Set_Boundaries_Quadtree_Root_Function(const float2 size_rect)
+{
+	//Only modify the boundaries if there is no insertion yet
+	if (quadtree_go.root != nullptr && game_obj_Inserted == false)
+		quadtree_go.Set_Boundaries_Root(size_rect);
+}
+
+float2 Module_Go_Manager::Get_Boundaries_Quadtree_Root_Function()const
+{
+	if (quadtree_go.root != nullptr)
+		return quadtree_go.Get_Boundaries();
+	else
+		return float2::zero;
+}
+
+void  Module_Go_Manager::Set_Game_Obj_Inserted(bool on)
+{
+	game_obj_Inserted = on;
 }

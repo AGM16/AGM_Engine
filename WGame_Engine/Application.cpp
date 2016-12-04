@@ -47,6 +47,8 @@ Application::Application()
 
 	// Renderer last!
 	AddModule(renderer3D);
+
+
 	time_manager = new PerfTimer;
 
 }

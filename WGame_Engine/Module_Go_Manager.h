@@ -25,8 +25,6 @@ public:
 	void Search_GameObject_To_Deactive(GameObject* root_go)const;
 
 	bool Load(pugi::xml_node& node);
-
-
 	bool Save(pugi::xml_node& node)const;
 	
 
@@ -37,17 +35,29 @@ public:
 	GameObject* Obtain_GO_By_Raycast(const LineSegment& r, vector<GameObject*> list_go)const;
 	std::vector<GameObject*> Collect_GO_Candidates(const math::LineSegment& r)const;
 
-	void Insert_GO_To_Quadtree();
+    void Insert_GO_To_Quadtree();
 
-    p2QuadTree quadtree_go;
+	//--------------Quadtree functions----------------
+	void Create_Quadtree_Root_Function(const float2 size_rect, const float2 center);
+	bool Insert_Quadtree_Function(GameObject& go);
+	bool Clear_Quadtree_Function();
+	void Intersect_Camera_Culling_Quadtree_Function(Component_Camera& camera);
+	vector<GameObject*> Ray_Intersects_Quadtree_Function(const LineSegment& ray);
+	void Set_Boundaries_Quadtree_Root_Function(const float2 size_rect);
+	float2 Get_Boundaries_Quadtree_Root_Function()const;
+
+	void Set_Game_Obj_Inserted(bool on);
+  
 private:
 
 	GameObject* root_game_object = nullptr;
 	GameObject* game_object_selected = nullptr;
 	GameObject* last_game_object_selected = nullptr;
+	p2QuadTree quadtree_go;
 
-
-	
+	/*To be sure that we only can insert the Go once. If we clear the Quadtree 
+	we can creater another Quadtree and insert new go*/
+	bool game_obj_Inserted = false;
 	
 	
 };

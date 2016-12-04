@@ -59,6 +59,41 @@ void Component_Camera::Update()
 			ImGui::Checkbox("Active OBB Bounding Boxes##fee3", &active_all_obb_bounding_boxes);
 			ImGui::Checkbox("Active Draw Frustum##fee4", &draw_frustum);
 		}
+
+		if (App->camera->camera_go_camera_test == Get_Game_Object())
+		{
+			if (ImGui::CollapsingHeader("Quadtree", ImGuiTreeNodeFlags_DefaultOpen))
+			{
+				ImGui::Text("Root:");
+				if (ImGui::Button("Create QuadtreeNode Root"))
+				{
+					App->go_manager->Create_Quadtree_Root_Function(float2(100.f, 100.f), float2(0.f, 0.f));
+				}
+
+				ImGui::Text("To insert again GO you must clear the quadtree");
+				if (ImGui::Button("Insert Game Objects"))
+				{
+					App->go_manager->Insert_GO_To_Quadtree();
+					App->go_manager->Set_Game_Obj_Inserted(true);
+				}
+
+				ImGui::Text("Erase Quadtree:");
+				if (ImGui::Button("Clear Quadtree"))
+				{
+					App->go_manager->Clear_Quadtree_Function();
+				}
+
+				float size[2];
+				size[0] = App->go_manager->Get_Boundaries_Quadtree_Root_Function().x;
+				size[1] = App->go_manager->Get_Boundaries_Quadtree_Root_Function().y;
+				if (ImGui::InputFloat2("Root Size:", size))
+				{
+					App->go_manager->Set_Boundaries_Quadtree_Root_Function(float2(size[0], size[1]));
+				}
+
+
+			}
+		}
 	}
 		
 	//Render Camera

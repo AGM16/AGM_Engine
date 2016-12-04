@@ -68,16 +68,21 @@ public:
 	{
 		return rect.contains(position);
 	}
-	 
-	bool Insert(GameObject* GO, float2 center_position);
 
-	bool Remove(GameObject* GO, float2 center_position);
+	void Set_Boundaries_Root(const float2 size_rect)
+	{
+		rect.Set_Boundaries_rect(size_rect);
+	}
+	 
+	bool Insert(GameObject& GO, const float2 center_position);
+
+	bool Remove(GameObject& GO, const float2 center_position);
 
 	bool Clear_Nodes();
 
 	void Draw_Node();
 
-	//Camera Culling
+	//Optimize Camera Culling
 	void Intersect_Node(Component_Camera& geo);
 
 	//Optimize mouse picking
@@ -101,17 +106,21 @@ public:
 		Clear();
 	}
 
-	void Create(float2 size_rect, float2 center);
+	void Create(const float2 size_rect, const float2 center);
 
-	bool Insert(GameObject* GO);
+	bool Insert(GameObject& GO);
 
-	bool Remove(GameObject* GO);
+	bool Remove(GameObject& GO);
 	
 	bool Clear();
 
 	void Draw();
 
-	//Camera Culling
+	void Set_Boundaries_Root(const float2 size_rect);
+
+	math::float2 Get_Boundaries()const;
+
+	//Optimize Camera Culling
 	void Intersects_Quadtree_Nodes(Component_Camera& geo)const;
 
 	//Optimize mouse picking
@@ -124,4 +133,4 @@ public:
 
 };
 
-#endif // __p2QuadTree_H__*/
+#endif 

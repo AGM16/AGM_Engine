@@ -44,13 +44,14 @@ public:
 	AABB Get_AABB_Bounding_Box()const;
 	OBB Get_OBB_Bounding_Box()const;
 	
-	bool draw = false;
-	bool trash = false;
+	bool Is_Rendered()const;
+	void Set_Rendered(bool new_render);
 
 private:
 
 	Mesh* mesh;
 	unsigned int id_image = 0;
+	bool draw = false;
 
 	//Bounding Box
 	AABB bounding_box;

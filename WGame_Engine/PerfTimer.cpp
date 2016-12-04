@@ -13,6 +13,7 @@ PerfTimer::PerfTimer()
 {
 	if (frequency == 0)
 		frequency = SDL_GetPerformanceFrequency();
+
 	//Starts the application realtime clock
 	Start_Real_Time();
 	new_frame_started = application_started_at;

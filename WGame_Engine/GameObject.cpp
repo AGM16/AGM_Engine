@@ -508,18 +508,10 @@ void GameObject::GO_Candidates_Raycast(GameObject* go, const LineSegment& ray, v
 	{
 		Component_Mesh* comp_mesh = (Component_Mesh*)go->Get_Component(MESH);
 
-		//If the mesh of the GO have vertices it means thta have a bounding box
+		//If the mesh of the GO have vertices it means that has a bounding box
 		if (comp_mesh->Get_Mesh()->num_vertices > 0)
 		{
-			/*if (ray.Intersects(comp_mesh->Get_AABB_Bounding_Box()))
-			{
-				list_go.push_back(go);
-
-				//Calculate the distance to the ray
-				distance_to_ray = (App->camera->Get_Camera_Position() - comp_mesh->Get_AABB_Bounding_Box().CenterPoint());
-			}*/
-
-			list_go = App->go_manager->quadtree_go.Ray_Intersects_Quadtree_Nodes(ray);
+			list_go = App->go_manager->Ray_Intersects_Quadtree_Function(ray);
 		}
 	}
 
@@ -529,7 +521,7 @@ void GameObject::Insert_To_Quadtree()
 {
 	Component_Transformation* transform = (Component_Transformation*)Get_Component(TRANSFORMATION);
 		
-	App->go_manager->quadtree_go.Insert(this);
+	App->go_manager->Insert_Quadtree_Function(*this);
 	
 	if (children.size() > 0)
 	{

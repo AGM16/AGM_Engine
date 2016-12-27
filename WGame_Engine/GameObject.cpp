@@ -37,7 +37,7 @@ GameObject::~GameObject()
 	Parent = nullptr;
 }
 
-bool GameObject::Add_Component_Mesh(Mesh* m)
+bool GameObject::Add_Component_Mesh(Mesh* m, bool active)
 {
 
 	if (Exist_Component(MESH) == false)
@@ -45,6 +45,9 @@ bool GameObject::Add_Component_Mesh(Mesh* m)
 		Components* new_component = new Component_Mesh(MESH, this , m);
 		LOG("The GameObject %s component %s has been created", name, "MESH");
 
+		if (active)
+			new_component->Enable();
+
 		components_list.push_back(new_component);
 		return true;
 	}
@@ -52,13 +55,16 @@ bool GameObject::Add_Component_Mesh(Mesh* m)
 	return false;
 }
 
-bool GameObject::Add_Component_Transformation(const math::float3 &pos, const math::float3 &scale_, const math::Quat &rot_quat, const math::float3 &angles)
+bool GameObject::Add_Component_Transformation(const math::float3 &pos, const math::float3 &scale_, const math::Quat &rot_quat, const math::float3 &angles, bool active)
 {
 	if (Exist_Component(TRANSFORMATION) == false)
 	{
 		Components* new_component = new Component_Transformation(TRANSFORMATION, this, pos, scale_, rot_quat, angles);
 		LOG("The GameObject %s component %s has been created", this->name, "TRANSFORMATION");
 
+		if (active)
+			new_component->Enable();
+
 		components_list.push_back(new_component);
 		return true;
 	}
@@ -67,12 +73,15 @@ bool GameObject::Add_Component_Transformation(const math::float3 &pos, const mat
 }
 
 
-bool GameObject::Add_Component_Material(const char* name_textu, const char* path_texture, const unsigned int &num_textu, const unsigned int &id_textu)
+bool GameObject::Add_Component_Material(const char* name_textu, const char* path_texture, const unsigned int &num_textu, const unsigned int &id_textu, bool active)
 {
 	if (Exist_Component(MATERIAL) == false)
 	{
 		Components* new_component = new Component_Material(MATERIAL, this, name_textu, path_texture, num_textu, id_textu);
 		LOG("The GameObject %s component %s has been created", this->name, "MATERIAL");
+
+		if (active)
+			new_component->Enable();
 
 		components_list.push_back(new_component);
 		return true;

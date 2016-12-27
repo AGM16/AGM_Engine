@@ -9,7 +9,6 @@
 
 Component_Material::Component_Material(Components_Type type, GameObject* game_object, const char* name_textu, const char* path_texture, unsigned int num_textu, unsigned int id_textu) : Components(type, game_object), name_texture(name_textu), dir_path_texture(path_texture), num_textures(num_textu), id_texture(id_textu)
 {
-	
 
 }
 

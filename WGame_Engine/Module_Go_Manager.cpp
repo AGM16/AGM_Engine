@@ -15,8 +15,8 @@ Module_Go_Manager::Module_Go_Manager( bool start_enabled) : Module(start_enabled
 	Set_Name_Module("Module_Go_Manager");
 	Random rand;
 	root_game_object = new GameObject(nullptr, "Root_Game_Objects", rand.Random_int(0, 2147483647));
-	root_game_object->Add_Component_Transformation(float3::zero, float3::one, Quat::identity, float3::zero);
-	root_game_object->Add_Component_Material("", "", 0, 0);
+	root_game_object->Add_Component_Transformation(float3::zero, float3::one, Quat::identity, float3::zero, false);
+	root_game_object->Add_Component_Material("", "", 0, 0, false);
 	
 	quadtree_go.Create(float2(100.f, 100.f), float2(0.f, 0.f));
 }
@@ -46,15 +46,15 @@ GameObject* Module_Go_Manager::Create_Game_Object( Mesh* m, GameObject* Parent)
 
 
 			//Add Components Transformation
-			new_game_object->Add_Component_Transformation(m->translation,m->scaling,m->rotation, RadToDeg(m->rotation.ToEulerXYZ()));
+			new_game_object->Add_Component_Transformation(m->translation,m->scaling,m->rotation, RadToDeg(m->rotation.ToEulerXYZ()), false);
 			LOG("The GameObject %s has a new component : %s ", new_game_object->Get_Name(), "TRANSFORMATION");
 			
 			//Add Components Mesh
-			new_game_object->Add_Component_Mesh(m);
+			new_game_object->Add_Component_Mesh(m, false);
 			LOG("The GameObject %s has a new component : %s ", new_game_object->Get_Name(), "MESH");
 
 			//Add Component Material
-			new_game_object->Add_Component_Material(m->name_texture.c_str(), m->dir_texture.c_str(), m->num_image_textures, m->id_image_texture);
+			new_game_object->Add_Component_Material(m->name_texture.c_str(), m->dir_texture.c_str(), m->num_image_textures, m->id_image_texture, false);
 			LOG("The GameObject %s has a new component : %s ", new_game_object->Get_Name(), "MaATERIAL");
 
 
@@ -78,13 +78,34 @@ GameObject* Module_Go_Manager::Create_Camera_Game_Object(GameObject* Parent, con
 
 
 	//Add Component Transformation
-	new_game_object->Add_Component_Transformation(float3::zero, float3::one, Quat::identity, float3::zero);
+	new_game_object->Add_Component_Transformation(float3::zero, float3::one, Quat::identity, float3::zero, false);
 	LOG("The GameObject %s has a new component : %s ", new_game_object->Get_Name(), "TRANSFORMATION");
 
 	//Add Component Camera
 	new_game_object->Add_Component_Camera(name_camera);
 	LOG("The GameObject %s has a new component : %s ", new_game_object->Get_Name(), "TRANSFORMATION");
 
+
+	return new_game_object;
+}
+
+
+GameObject* Module_Go_Manager::Create_Empty_Game_Object(const char* name_go, GameObject* Parent)
+{
+	if (Parent == nullptr)
+	{
+		Parent = root_game_object;
+	}
+	Random rand;
+	GameObject* new_game_object = new GameObject(Parent, name_go, rand.Random_int(0, 2147483647));
+
+	//Add Child to the parent
+	Parent->Add_Child(new_game_object);
+	LOG("The GameObject %s has a new child : %s ", new_game_object->Get_Parent()->Get_Name(), new_game_object->Get_Name());
+
+	//Add Component Transformation
+	new_game_object->Add_Component_Transformation(float3::zero, float3::one, Quat::identity, float3::zero, false);
+	LOG("The GameObject %s has a new component : %s ", new_game_object->Get_Name(), "TRANSFORMATION");
 
 	return new_game_object;
 }
@@ -403,5 +424,10 @@ void  Module_Go_Manager::Module_Go_Manager::Deactivate_GO_Render()
 void  Module_Go_Manager::Set_Game_Obj_Inserted(bool on)
 {
 	game_obj_Inserted = on;
+}
+
+GameObject*  Module_Go_Manager::Get_Selected_GO()const
+{
+	return game_object_selected;
 }
 

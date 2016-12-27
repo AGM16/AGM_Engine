@@ -18,6 +18,7 @@ public:
 
 	GameObject* Create_Game_Object(Mesh* m, GameObject* Parent);
 	GameObject* Create_Camera_Game_Object(GameObject* Parent, const char* name_camera);
+	GameObject* Create_Empty_Game_Object(const char* name_go, GameObject* Parent);
 	update_status Update(float dt);
 
 	//Functions used to active and deactive components
@@ -31,6 +32,7 @@ public:
 	void Window_Hierarchy(GameObject* Root_node);
 
 	GameObject* Get_Root()const;
+	GameObject* Get_Selected_GO()const;
 
 	GameObject* Obtain_GO_By_Raycast(const LineSegment& r, vector<GameObject*> list_go)const;
 	std::vector<GameObject*> Collect_GO_Candidates(const math::LineSegment& r)const;

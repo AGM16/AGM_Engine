@@ -79,6 +79,56 @@ update_status Editor::Update(float dt)
 
 			ImGui::EndMenu();
 		}
+        
+
+		if (ImGui::BeginMenu("Create"))
+		{
+			if (ImGui::MenuItem("Empty Game Object"))
+			{
+				create_go = true;
+			}
+
+			ImGui::EndMenu();
+		}
+
+
+		if (ImGui::BeginMenu("Components"))
+		{
+			if (ImGui::MenuItem("Add Transformation Component"))
+			{
+				if (App->go_manager->Get_Selected_GO()->Exist_Component(TRANSFORMATION) == false)
+					App->go_manager->Get_Selected_GO()->Add_Component_Transformation(float3::zero, float3::one, Quat::identity, float3::zero, true);
+				else
+					LOG("Thereis already a Transformation Component in this GO");
+			}
+
+			if (ImGui::MenuItem("Add Mesh Component"))
+			{
+				if (App->go_manager->Get_Selected_GO()->Exist_Component(MESH) == false)
+					App->go_manager->Get_Selected_GO()->Add_Component_Mesh(nullptr, true);
+				else
+					LOG("Thereis already a Mesh Component in this GO");
+
+			}
+
+			if (ImGui::MenuItem("Add Billboard Component"))
+			{
+				/*if (App->go_manager->Get_Selected_GO()->Exist_Component(BILLBOARD) == false)
+					App->go_manager->Get_Selected_GO()->Add_Component_Billboard(true);*/
+			}
+
+			if (ImGui::MenuItem("Add Material Component"))
+			{
+				if (App->go_manager->Get_Selected_GO()->Exist_Component(MATERIAL) == false)
+					App->go_manager->Get_Selected_GO()->Add_Component_Material(nullptr, nullptr, 0, 0, true);
+				else
+					LOG("Thereis already a Material Component in this GO");
+			}
+
+			ImGui::EndMenu();
+		}
+
+
 
 		if (ImGui::BeginMenu("Help"))
 		{
@@ -101,6 +151,7 @@ update_status Editor::Update(float dt)
 
 			ImGui::EndMenu();
 		}
+
 
 
 		if (ImGui::BeginMenu(" MathGeoLib Tools"))
@@ -167,6 +218,9 @@ update_status Editor::Update(float dt)
 
 	//Render panel Time manager
 	Render_Panel_Time_Manager();
+
+	//Render creation Panel
+	Render_Panel_Create_GO();
 
 	return UPDATE_CONTINUE;
 }
@@ -400,4 +454,52 @@ void Editor::Render_Panel_Time_Manager()
 	ImGui::End();
 }
 
+
+void Editor::Render_Panel_Create_GO()
+{
+	if (create_go)
+	{
+		ImVec2 size_w;
+		float2 pos;
+		if (App->Get_Windows_Resized() == false)
+		{
+			size_w = ImVec2(290.f, 100.f);
+			pos = float2(550, 320);
+		}
+		else
+		{
+			size_w = ImVec2(290.f, 100.f);
+			pos = float2(1150, 320);
+		}
+
+		ImGui::SetNextWindowPos(ImVec2(App->window->Get_Screen_size().x - pos.x, pos.y));
+		ImGui::SetNextWindowSize(size_w);
+		bool open = true;
+		ImGui::Begin("Creation Empty GO", &open);
+
+		//Clear buffer
+		static int clear = 0;
+		if (clear == 0)
+		{
+			sprintf_s(name_go_created, 100, "\0");
+			clear++;
+		}
+
+		ImGui::InputText("Name", name_go_created, sizeof(last_name_file_saved));
+
+		if (ImGui::Button("Create", ImVec2(50, 20)))
+		{
+			App->go_manager->Create_Empty_Game_Object(name_go_created, nullptr);
+			clear = 0;
+			create_go = false;
+		}
+
+		ImGui::End();
+	}
+}
+
+bool Editor::Is_Creating_GO()const
+{
+	return create_go;
+}
 

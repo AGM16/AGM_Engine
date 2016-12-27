@@ -23,6 +23,9 @@ public:
 	void Render_Panel_Save_As();
 	void Render_Panel_Load();
 	void Render_Panel_Time_Manager();
+	void Render_Panel_Create_GO();
+
+	bool Is_Creating_GO()const;
 
 private:
 
@@ -44,7 +47,8 @@ private:
 	string name_tmp_file_saved;
 
 
-	
+	bool create_go = false;
+	char name_go_created[100] = "";
 
 };
 

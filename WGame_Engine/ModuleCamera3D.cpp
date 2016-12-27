@@ -54,7 +54,7 @@ bool ModuleCamera3D::CleanUp()
 // -----------------------------------------------------------------
 update_status ModuleCamera3D::Update(float dt)
 {
-	if (camera_component->Get_Component_Transformation_Camera()->Is_Checkbox_Active() == false && App->editor->Is_Saving() == false && App->editor->Is_Loading() == false)
+	if (camera_component->Get_Component_Transformation_Camera()->Is_Checkbox_Active() == false && App->editor->Is_Saving() == false && App->editor->Is_Loading() == false && App->editor->Is_Creating_GO() == false)
 	{
 		//Move Buttons-----------------------------------------------------------
 		float3 pos = Get_Camera_Position();

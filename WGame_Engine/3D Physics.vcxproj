@@ -217,6 +217,7 @@
     <ClInclude Include="p2Point.h" />
     <ClInclude Include="Panel_Application.h" />
     <ClInclude Include="Panel_Windows.h" />
+    <ClInclude Include="Particle.h" />
     <ClInclude Include="PerfTimer.h" />
     <ClInclude Include="PhysBody3D.h" />
     <ClInclude Include="PhysFS\include\physfs.h" />
@@ -297,6 +298,7 @@
     <ClCompile Include="ModuleSceneIntro.cpp" />
     <ClCompile Include="ModuleWindow.cpp" />
     <ClCompile Include="Panel_Application.cpp" />
+    <ClCompile Include="Particle.cpp" />
     <ClCompile Include="PerfTimer.cpp" />
     <ClCompile Include="PhysBody3D.cpp" />
     <ClCompile Include="PhysVehicle3D.cpp" />

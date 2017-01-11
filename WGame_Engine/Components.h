@@ -11,6 +11,7 @@ enum Components_Type
 	MATERIAL,
 	CAMERA,
 	BILLBOARD,
+	EMITTER,
 	UNKOWN
 };
 

@@ -448,3 +448,8 @@ PerfTimer* Application::Get_Time_Manager()const
 {
 	return time_manager;
 }
+
+float Application::Get_Delta_Time()const
+{
+	return dt;
+}

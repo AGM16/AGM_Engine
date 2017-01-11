@@ -90,3 +90,50 @@ void Particle::Set_Scale(const math::float3 &scal)
 	transformation_matrix = transformation_matrix.FromTRS(position, quat_rotation, scale);
 }
 
+void Particle::Set_Velocity(const math::float3 &vel)
+{
+	velocity = vel;
+}
+
+void Particle::Set_Camera_Distance(const math::float3 &camera_pos)
+{
+	float3 distance = camera_pos - position;
+	camera_distance = distance.Length();
+}
+
+void Particle::Set_Age(const float &new_age)
+{
+	age = new_age;
+}
+
+void Particle::Set_Lifetime(const float &life)
+{
+	lifetime = life;
+}
+
+bool Particle::Is_Alive()const
+{
+	return alive;
+}
+
+
+math::float3 Particle::Get_Velocity()const
+{
+	return velocity;
+}
+
+float Particle::Get_Distance()const
+{
+	return camera_distance;
+}
+
+float Particle::Get_Age()const
+{
+	return age;
+}
+
+float Particle::Get_Lifetime()const
+{
+	return lifetime;
+}
+

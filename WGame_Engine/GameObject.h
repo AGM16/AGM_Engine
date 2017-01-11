@@ -21,6 +21,7 @@ public:
 	bool Add_Component_Material(const char* name_textu, const char* path_texture, const unsigned int &num_textu,const unsigned int &id_textu, bool active);
 	bool Add_Component_Camera(const char* name_camera);
 	bool Add_Component_Billboard(bool active);
+	bool Add_Component_Emitter(bool active);
 	bool Add_Child(GameObject* child);
 
 	void Update_Go_Components();

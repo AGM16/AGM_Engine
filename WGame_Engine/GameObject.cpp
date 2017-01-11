@@ -5,6 +5,7 @@
 #include "Component_Transformation.h"
 #include "Component_Material.h"
 #include "Component_Billboard.h"
+#include "Component_Emitter.h"
 #include "Component_Camera.h"
 #include "p2Defs.h"
 #include "Imgui\imgui.h"
@@ -109,6 +110,23 @@ bool GameObject::Add_Component_Billboard(bool active)
 	{
 		Components* new_component = new Component_Billboard(BILLBOARD, this);
 		LOG("The GameObject %s component %s has been created", this->name, "BillBoard");
+
+		if (active)
+			new_component->Enable();
+
+		components_list.push_back(new_component);
+		return true;
+	}
+
+	return false;
+}
+
+bool GameObject::Add_Component_Emitter(bool active)
+{
+	if (Exist_Component(EMITTER) == false)
+	{
+		Components* new_component = new Component_Emitter(EMITTER, this, 100);
+		LOG("The GameObject %s component %s has been created", this->name, "MATERIAL");
 
 		if (active)
 			new_component->Enable();

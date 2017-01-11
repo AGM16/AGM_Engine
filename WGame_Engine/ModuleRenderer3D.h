@@ -30,6 +30,11 @@ public:
 	void Render_OBB_Cube(math::OBB obb_box);
 	void Render_Frustum_Cube(math::Frustum fst);
 
+	//Emitter and Particles 
+	void Debug_Emitter(float4x4 transformation_matrix, float max_widht);
+	void Render_Particles(math::float4x4 vertex_buffer, float3 size, uint id_texture);
+
+
 public:
 
 	Light lights[MAX_LIGHTS];

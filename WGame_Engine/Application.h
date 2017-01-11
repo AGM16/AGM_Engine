@@ -91,6 +91,7 @@ public:
 	double Get_Last_Frame_Time()const;
 	int Get_Limit_Frames()const;
 	void Set_Limit_Frames(int max_fps);
+	float Get_Delta_Time()const;
 
 	//Window
 	void Windows_Resized();

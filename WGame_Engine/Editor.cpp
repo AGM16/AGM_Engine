@@ -110,12 +110,7 @@ update_status Editor::Update(float dt)
 					LOG("Thereis already a Mesh Component in this GO");
 
 			}
-
-			if (ImGui::MenuItem("Add Billboard Component"))
-			{
-				if (App->go_manager->Get_Selected_GO()->Exist_Component(BILLBOARD) == false)
-					App->go_manager->Get_Selected_GO()->Add_Component_Billboard(true);
-			}
+			
 
 			if (ImGui::MenuItem("Add Material Component"))
 			{
@@ -124,6 +119,20 @@ update_status Editor::Update(float dt)
 				else
 					LOG("Thereis already a Material Component in this GO");
 			}
+
+			if (ImGui::MenuItem("Add Billboard Component"))
+			{
+				if (App->go_manager->Get_Selected_GO()->Exist_Component(BILLBOARD) == false)
+					App->go_manager->Get_Selected_GO()->Add_Component_Billboard(true);
+			}
+
+			if (ImGui::MenuItem("Add Emitter Component"))
+			{
+				if (App->go_manager->Get_Selected_GO()->Exist_Component(EMITTER) == false)
+					App->go_manager->Get_Selected_GO()->Add_Component_Emitter(true);
+			}
+
+			
 
 			ImGui::EndMenu();
 		}

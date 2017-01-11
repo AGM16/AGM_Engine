@@ -5,7 +5,7 @@
 #include "Glew\include\glew.h"
 #include "SDL\include\SDL_opengl.h"
 #include <gl/GL.h>
-
+#include "glut\glut.h"
 
 #pragma comment (lib, "glu32.lib")    /* link OpenGL Utility lib     */
 #pragma comment (lib, "opengl32.lib") /* link Microsoft OpenGL lib   */
@@ -414,4 +414,68 @@ void ModuleRenderer3D::Render_Frustum_Cube(math::Frustum fst)
 	}
 
 	glEnable(GL_LIGHTING);
+}
+
+
+void ModuleRenderer3D::Debug_Emitter(float4x4 transformation_matrix, float max_widht)
+{
+	glPushMatrix();
+	glMultMatrixf(*transformation_matrix.v);
+
+	glColor4f(1.0f, 0.0f, 1.0f, 1.0f);
+
+	glutWireCube(max_widht * 2);
+
+	glPopMatrix();
+
+}
+
+
+void ModuleRenderer3D::Render_Particles(math::float4x4 vertex_buffer, float3 size, uint id_texture)
+{
+	glDisable(GL_LIGHTING);
+	glPushMatrix();
+	glMultMatrixf(*vertex_buffer.v);
+	glColor4f(1.0f, 1.0f, 1.0f, 1.0f);
+	glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
+
+	glEnable(GL_ALPHA_TEST);
+	glEnable(GL_BLEND);
+
+	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+	glAlphaFunc(GL_GREATER, 0.2f);
+
+
+	//Put Texture in buffer
+	glBindTexture(GL_TEXTURE_2D, id_texture);
+	float sx = size.x * 0.5f;
+	float sy = size.y * 0.5f;
+	float sz = size.z * 0.5f;
+
+	glBegin(GL_TRIANGLES);
+
+	glNormal3f(0.0f, 0.0f, 1.0f);
+	glTexCoord2f(1, 1);
+	glVertex3f(-sx, -sy, sz);
+	glTexCoord2f(0, 1);
+	glVertex3f(sx, -sy, sz);
+	glTexCoord2f(0, 0);
+	glVertex3f(sx, sy, sz);
+
+	glTexCoord2f(0, 0);
+	glVertex3f(sx, sy, sz);
+	glTexCoord2f(1, 0);
+	glVertex3f(-sx, sy, sz);
+	glTexCoord2f(1, 1);
+	glVertex3f(-sx, -sy, sz);
+
+	glEnd();
+
+
+	glBindTexture(GL_TEXTURE_2D, 0);
+	glDisable(GL_ALPHA_TEST);
+	glDisable(GL_BLEND);
+	glEnable(GL_LIGHTING);
+	glPopMatrix();
+
 }

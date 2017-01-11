@@ -112,6 +112,7 @@
     <ClInclude Include="Components.h" />
     <ClInclude Include="Component_Billboard.h" />
     <ClInclude Include="Component_Camera.h" />
+    <ClInclude Include="Component_Emitter.h" />
     <ClInclude Include="Component_Material.h" />
     <ClInclude Include="Component_Mesh.h" />
     <ClInclude Include="Component_Transformation.h" />
@@ -234,6 +235,7 @@
     <ClCompile Include="Components.cpp" />
     <ClCompile Include="Component_Billboard.cpp" />
     <ClCompile Include="Component_Camera.cpp" />
+    <ClCompile Include="Component_Emitter.cpp" />
     <ClCompile Include="Component_Material.cpp" />
     <ClCompile Include="Component_Mesh.cpp" />
     <ClCompile Include="Component_Transformation.cpp" />

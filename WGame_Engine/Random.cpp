@@ -51,3 +51,19 @@ float3 Random::Random_Float_Vector(float min_a, float max_b)
 	return vector;
 
 }
+
+ float Random::RandRange(float fMin, float fMax)
+{
+	if (fMin > fMax) std::swap(fMin, fMax);
+	return ((rand() / (float)RAND_MAX) * (fMax - fMin)) + fMin;
+}
+
+ math::float3 Random::RandUnitVec()
+{
+	float x = ((rand() / (float)RAND_MAX) * 2.0f) - 1.0f;
+	float y = ((rand() / (float)RAND_MAX) * 2.0f) - 1.0f;
+	float z = ((rand() / (float)RAND_MAX) * 2.0f) - 1.0f;
+
+	math::float3 vec = math::float3(x, y, z);
+	return vec.Normalized();
+}

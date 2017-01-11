@@ -28,7 +28,7 @@ bool ModuleCamera3D::Init()
 	main_camera_go = App->go_manager->Create_Camera_Game_Object(nullptr, "Main_Camera");
 	camera_component = (Component_Camera*)main_camera_go->Get_Component(Components_Type::CAMERA);
 
-	camera_component->Get_Component_Transformation_Camera()->Set_Position(float3(30.f, 40.f, -100.f));
+	camera_component->Get_Component_Transformation_Camera()->Set_Position(float3(0.f, 30.f, -100.f));
 	camera_component->Set_Far_Plane(400.f);
 	
 	
@@ -56,9 +56,29 @@ bool ModuleCamera3D::CleanUp()
 // -----------------------------------------------------------------
 update_status ModuleCamera3D::Update(float dt)
 {
-	if (App->input->GetKey(SDL_SCANCODE_M) == KEY_REPEAT)
+	//Camera Controls
+	if (App->input->GetKey(SDL_SCANCODE_UP) == KEY_REPEAT)
 	{
-		camera_component->Get_Component_Transformation_Camera()->Set_Rotation(float3::zero);
+		camera_component->Get_Component_Transformation_Camera()->Set_Position(float3(0.f, 30.f, 100.f));
+		camera_component->Get_Component_Transformation_Camera()->Set_Rotation(float3(-20.f, 180.f, 0.f));
+	}
+
+	if (App->input->GetKey(SDL_SCANCODE_DOWN) == KEY_REPEAT)
+	{
+		camera_component->Get_Component_Transformation_Camera()->Set_Position(float3(0.f, 30.f, -100.f));
+		camera_component->Get_Component_Transformation_Camera()->Set_Rotation(float3(20.f, 0.f, 0.f));
+	}
+
+	if (App->input->GetKey(SDL_SCANCODE_LEFT) == KEY_REPEAT)
+	{
+		camera_component->Get_Component_Transformation_Camera()->Set_Position(float3(100.f, 20.f, 0.f));
+		camera_component->Get_Component_Transformation_Camera()->Set_Rotation(float3(0.f, -90.f, 0.f));
+	}
+
+	if (App->input->GetKey(SDL_SCANCODE_RIGHT) == KEY_REPEAT)
+	{
+		camera_component->Get_Component_Transformation_Camera()->Set_Position(float3(-100.f, 20.f, 0.f));
+		camera_component->Get_Component_Transformation_Camera()->Set_Rotation(float3(0.f, 90.f, 0.f));
 	}
 
 	if (camera_component->Get_Component_Transformation_Camera()->Is_Checkbox_Active() == false && App->editor->Is_Saving() == false && App->editor->Is_Loading() == false && App->editor->Is_Creating_GO() == false)
@@ -76,9 +96,6 @@ update_status ModuleCamera3D::Update(float dt)
 
 		if (App->input->GetKey(SDL_SCANCODE_LSHIFT) == KEY_REPEAT)
 			speed = 30.0f * dt;
-
-		/*if (App->input->GetKey(SDL_SCANCODE_R) == KEY_REPEAT) pos.y += speed;
-		if (App->input->GetKey(SDL_SCANCODE_F) == KEY_REPEAT) pos.y -= speed;*/
 
 		if (App->input->GetKey(SDL_SCANCODE_W) == KEY_REPEAT) new_pos += z * speed;
 		if (App->input->GetKey(SDL_SCANCODE_S) == KEY_REPEAT) new_pos -= z * speed;
@@ -116,23 +133,6 @@ update_status ModuleCamera3D::Update(float dt)
 
 			float delta_x = (float)dx * sensivity;
 			float delta_y = (float)dy * sensivity;
-
-			/*if (dx != 0)
-			{
-			Quat  quat_rotation;
-			quat_rotation = quat_rotation.RotateAxisAngle(float3::unitY, (float)dx * sensitivity);
-			camera_component->Set_Front(quat_rotation.Mul(camera_component->Get_Front()).Normalized());
-			camera_component->Set_Up(quat_rotation.Mul(camera_component->Get_Up()).Normalized());
-			}
-
-			if (dy != 0)
-			{
-			Quat quat_rotation2;
-			quat_rotation2 = quat_rotation2.RotateAxisAngle(camera_component->Get_World_Right(), (float)dy * sensitivity);
-			camera_component->Set_Up(quat_rotation2.Mul(camera_component->Get_Up()).Normalized());
-			camera_component->Set_Front(quat_rotation2.Mul(camera_component->Get_Front()).Normalized());
-
-			}*/
 
 			Quat quaternion, quaternion2;
 			quaternion = quaternion.FromEulerXYZ(0.0f, delta_x, 0.0f);

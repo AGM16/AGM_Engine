@@ -25,10 +25,22 @@ public:
 
 	void Update_Billboarding();
 
+	void Set_Velocity(const math::float3 &vel);
+	void Set_Camera_Distance(const math::float3 &camera_pos);
+	void Set_Age(const float &new_age);
+	void Set_Lifetime(const float &life);
+
+	bool Is_Alive()const;
+	math::float3 Get_Velocity()const;
+	float Get_Distance()const;
+	float Get_Age()const;
+	float Get_Lifetime()const;
+
+
 private:
 
-	float camera_distance;
 	math::float3 velocity;
+	float camera_distance;
 	unsigned int texture_id;
 	float age;
 	float lifetime;

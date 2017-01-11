@@ -20,6 +20,7 @@ public:
 	bool Add_Component_Transformation(const math::float3 &pos, const math::float3 &scale_, const math::Quat &rot_quat, const math::float3 &angles, bool active);
 	bool Add_Component_Material(const char* name_textu, const char* path_texture, const unsigned int &num_textu,const unsigned int &id_textu, bool active);
 	bool Add_Component_Camera(const char* name_camera);
+	bool Add_Component_Billboard(bool active);
 	bool Add_Child(GameObject* child);
 
 	void Update_Go_Components();

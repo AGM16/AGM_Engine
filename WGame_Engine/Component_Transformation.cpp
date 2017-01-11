@@ -27,9 +27,7 @@ void Component_Transformation::Update()
 		{
 			if (active_checkbox == false)
 			{
-				if (Get_Game_Object()->Exist_Component(CAMERA) == false)
-				{
-
+			
 					if (ImGui::DragFloat3("Postion", position.ptr()))
 					{
 						Set_Position(position);
@@ -44,20 +42,10 @@ void Component_Transformation::Update()
 					{
 						Set_Scale(scale);
 					}
-				}
-				else
-				{
-					if (ImGui::DragFloat3("Postion", position.ptr()))
-					{
-						Set_Position(position);
-					}
-
-				}
+				
 			}
 			else
 			{
-				if (Get_Game_Object()->Exist_Component(CAMERA) == false)
-				{
 					ImGui::DragFloat3("Postion", float3(0.f, 0.f, 0.f).ptr());
 
 
@@ -65,11 +53,7 @@ void Component_Transformation::Update()
 
 
 					ImGui::DragFloat3("Scale", float3(0.f, 0.f, 0.f).ptr());
-				}
-				else
-				{
-					ImGui::DragFloat3("Postion", float3(0.f, 0.f, 0.f).ptr());
-				}
+			
 			}
 
 			ImGui::Checkbox("Static##foo2", &active_checkbox);
@@ -136,6 +120,7 @@ void Component_Transformation::Modify_Children()
 			transformation_matrix_to_draw = transformation_matrix;
 		}
 	}
+
 }
 
 math::float4x4 Component_Transformation::Create_New_Matrix_Transformation(const math::float3 &pos, const math::Quat &q_rotation, const math::float3 &scal)
@@ -172,4 +157,9 @@ bool Component_Transformation::Set_Checkbox(bool on)
 {
 	active_checkbox = on;
 	return active_checkbox;
+}
+
+math::Quat Component_Transformation::Get_Quaternion_Rotation()const
+{
+	return quat_rotation;
 }

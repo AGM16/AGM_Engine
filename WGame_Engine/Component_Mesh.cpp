@@ -4,6 +4,7 @@
 #include "Components.h"
 #include "Component_Transformation.h"
 #include "Component_Material.h"
+#include "Component_Billboard.h"
 #include "GameObject.h"
 #include "p2Defs.h"
 
@@ -70,6 +71,14 @@ void Component_Mesh::Update()
 
 	//Render Info Mesh
 	Render_Mesh_Panel();
+
+	//Billboarding Updates
+	if (Get_Game_Object()->Exist_Component(BILLBOARD))
+	{
+		Component_Billboard* billboard = (Component_Billboard*)Get_Game_Object()->Get_Component(BILLBOARD);
+
+		billboard->Update_BillBoard(App->camera->Get_Camera_Component()->Get_Position(), App->camera->Get_Camera_Component()->Get_Up());
+	}
 
 	//Render Mesh and bounding boxes
 	if (draw != false)

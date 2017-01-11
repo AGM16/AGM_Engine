@@ -10,6 +10,7 @@ enum Components_Type
 	MESH,
 	MATERIAL,
 	CAMERA,
+	BILLBOARD,
 	UNKOWN
 };
 

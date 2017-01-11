@@ -21,6 +21,7 @@ public:
 	math::float3 Get_Rotation()const;
 	math::float3 Get_Scale()const;
 	math::float4x4 Get_Tranformation_Matrix()const;
+	math::Quat Get_Quaternion_Rotation()const;
 
 
 	math::float4x4 Create_New_Matrix_Transformation(const math::float3 &pos, const math::Quat &q_rotation, const math::float3 &scal);

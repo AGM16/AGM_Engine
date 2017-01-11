@@ -30,7 +30,7 @@ bool ModuleCamera3D::Init()
 
 	camera_component->Get_Component_Transformation_Camera()->Set_Position(float3(30.f, 40.f, -100.f));
 	camera_component->Set_Far_Plane(400.f);
-	camera_component->Look_At(float3::zero);
+	
 	
 	//Camera Test
 	camera_go_camera_test = App->go_manager->Create_Camera_Game_Object(nullptr, "Camera_Test");
@@ -39,6 +39,8 @@ bool ModuleCamera3D::Init()
 
 	//Draw frustum camera test
 	camera_component_test->Set_Draw_Frustum(true);
+
+	
 
 	return ret;
 }
@@ -54,32 +56,54 @@ bool ModuleCamera3D::CleanUp()
 // -----------------------------------------------------------------
 update_status ModuleCamera3D::Update(float dt)
 {
+	if (App->input->GetKey(SDL_SCANCODE_M) == KEY_REPEAT)
+	{
+		camera_component->Get_Component_Transformation_Camera()->Set_Rotation(float3::zero);
+	}
+
 	if (camera_component->Get_Component_Transformation_Camera()->Is_Checkbox_Active() == false && App->editor->Is_Saving() == false && App->editor->Is_Loading() == false && App->editor->Is_Creating_GO() == false)
 	{
 		//Move Buttons-----------------------------------------------------------
 		float3 pos = Get_Camera_Position();
+		math::float4x4 matrix = camera_component->Get_Component_Transformation_Camera()->Get_Tranformation_Matrix();
 
-		float3 x = camera_component->Get_World_Right();
-		float3 y = camera_component->Get_Up();
-		float3 z = camera_component->Get_Front();
+		float3 x = matrix.WorldX();
+		float3 y = matrix.WorldY();
+		float3 z = matrix.WorldZ();
 
+		math::float3 new_pos = math::float3::zero;
 		float speed = 15.0f * dt;
 
 		if (App->input->GetKey(SDL_SCANCODE_LSHIFT) == KEY_REPEAT)
 			speed = 30.0f * dt;
 
-		if (App->input->GetKey(SDL_SCANCODE_R) == KEY_REPEAT) pos.y += speed;
-		if (App->input->GetKey(SDL_SCANCODE_F) == KEY_REPEAT) pos.y -= speed;
+		/*if (App->input->GetKey(SDL_SCANCODE_R) == KEY_REPEAT) pos.y += speed;
+		if (App->input->GetKey(SDL_SCANCODE_F) == KEY_REPEAT) pos.y -= speed;*/
 
-		if (App->input->GetKey(SDL_SCANCODE_W) == KEY_REPEAT) pos += z * speed;
-		if (App->input->GetKey(SDL_SCANCODE_S) == KEY_REPEAT) pos -= z * speed;
-
-
-		if (App->input->GetKey(SDL_SCANCODE_A) == KEY_REPEAT) pos -= x * speed;
-		if (App->input->GetKey(SDL_SCANCODE_D) == KEY_REPEAT) pos += x * speed;
+		if (App->input->GetKey(SDL_SCANCODE_W) == KEY_REPEAT) new_pos += z * speed;
+		if (App->input->GetKey(SDL_SCANCODE_S) == KEY_REPEAT) new_pos -= z * speed;
 
 
-		Set_Position(pos);
+		if (App->input->GetKey(SDL_SCANCODE_A) == KEY_REPEAT) new_pos += x * speed;
+		if (App->input->GetKey(SDL_SCANCODE_D) == KEY_REPEAT) new_pos -= x * speed;
+
+
+
+		//Middle mouse button movement
+		if (App->input->GetMouseButton(SDL_BUTTON_MIDDLE) == KEY_REPEAT)
+		{
+			int dx = App->input->GetMouseXMotion();
+			int dy = App->input->GetMouseYMotion();
+
+			new_pos += x * speed * dx;
+			new_pos += z * speed * dy;
+		}
+
+		if (new_pos.x != 0 || new_pos.y != 0 || new_pos.z != 0)
+		{
+			pos += new_pos;
+			Set_Position(pos);
+		}
 
 		// Mouse motion ------------------------------------------------------
 
@@ -88,24 +112,36 @@ update_status ModuleCamera3D::Update(float dt)
 
 		if (App->input->GetMouseButton(SDL_BUTTON_RIGHT) == KEY_REPEAT)
 		{
-			float sensitivity = 0.025f;
+			float sensivity = 0.025f;
 
-			if (dx != 0)
+			float delta_x = (float)dx * sensivity;
+			float delta_y = (float)dy * sensivity;
+
+			/*if (dx != 0)
 			{
-				Quat  quat_rotation;
-				quat_rotation = quat_rotation.RotateAxisAngle(float3::unitY, (float)dx * sensitivity);
-				camera_component->Set_Front(quat_rotation.Mul(camera_component->Get_Front()).Normalized());
-				camera_component->Set_Up(quat_rotation.Mul(camera_component->Get_Up()).Normalized());
+			Quat  quat_rotation;
+			quat_rotation = quat_rotation.RotateAxisAngle(float3::unitY, (float)dx * sensitivity);
+			camera_component->Set_Front(quat_rotation.Mul(camera_component->Get_Front()).Normalized());
+			camera_component->Set_Up(quat_rotation.Mul(camera_component->Get_Up()).Normalized());
 			}
 
 			if (dy != 0)
 			{
-				Quat quat_rotation2;
-				quat_rotation2 = quat_rotation2.RotateAxisAngle(camera_component->Get_World_Right(), (float)dy * sensitivity);
-				camera_component->Set_Up(quat_rotation2.Mul(camera_component->Get_Up()).Normalized());
-				camera_component->Set_Front(quat_rotation2.Mul(camera_component->Get_Front()).Normalized());
+			Quat quat_rotation2;
+			quat_rotation2 = quat_rotation2.RotateAxisAngle(camera_component->Get_World_Right(), (float)dy * sensitivity);
+			camera_component->Set_Up(quat_rotation2.Mul(camera_component->Get_Up()).Normalized());
+			camera_component->Set_Front(quat_rotation2.Mul(camera_component->Get_Front()).Normalized());
 
-			}
+			}*/
+
+			Quat quaternion, quaternion2;
+			quaternion = quaternion.FromEulerXYZ(0.0f, delta_x, 0.0f);
+			quaternion2 = quaternion2.FromEulerXYZ(-delta_y, 0.0f, 0.0f);
+
+			Quat result = camera_component->Get_Component_Transformation_Camera()->Get_Quaternion_Rotation();
+			result = result.Mul(quaternion);
+			result = result.Mul(quaternion2);
+			camera_component->Get_Component_Transformation_Camera()->Set_Rotation(RadToDeg(result.ToEulerXYZ()));
 		}
 	}
 

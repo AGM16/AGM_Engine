@@ -113,8 +113,8 @@ update_status Editor::Update(float dt)
 
 			if (ImGui::MenuItem("Add Billboard Component"))
 			{
-				/*if (App->go_manager->Get_Selected_GO()->Exist_Component(BILLBOARD) == false)
-					App->go_manager->Get_Selected_GO()->Add_Component_Billboard(true);*/
+				if (App->go_manager->Get_Selected_GO()->Exist_Component(BILLBOARD) == false)
+					App->go_manager->Get_Selected_GO()->Add_Component_Billboard(true);
 			}
 
 			if (ImGui::MenuItem("Add Material Component"))

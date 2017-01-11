@@ -27,8 +27,10 @@ void Component_Camera::Update()
 		float4x4 matrix = transformation->Get_Tranformation_Matrix();
 
 		frustum.SetPos(matrix.TranslatePart());
+		frustum.SetFront(matrix.WorldZ());
+		frustum.SetUp(matrix.WorldY());
 
-		last_fst_transformation = transformation->Get_Tranformation_Matrix();		
+		last_fst_transformation = transformation->Get_Tranformation_Matrix();
 	}
  
 	if (Is_Active())
@@ -129,13 +131,11 @@ void Component_Camera::Initialize_Frustum_Components()
 
 void Component_Camera::Look_At(const float3 &position)
 {
-	reference = position;
-	float3 look_at_dir = reference - transformation->Get_Position();
-	float3x3 look_at_matrix = float3x3::LookAt(frustum.Front(), look_at_dir, frustum.Up(), float3::unitY);
+	math::float3 look_direction = frustum.Pos() - position;
+	math::float3x3 matrix = math::float3x3::LookAt(frustum.Front(), look_direction, frustum.Up(), math::float3::unitY);
 
-	//Frustum Modifications: Front and Up
-	frustum.SetFront(look_at_matrix.MulDir(frustum.Front()).Normalized());
-	frustum.SetUp(look_at_matrix.MulDir(frustum.Up()).Normalized());
+	frustum.SetFront(matrix.MulDir(frustum.Front()).Normalized());
+	frustum.SetFront(matrix.MulDir(frustum.Up()).Normalized());
 }
 
 //Set Functions

@@ -125,7 +125,7 @@ bool GameObject::Add_Component_Emitter(bool active)
 {
 	if (Exist_Component(EMITTER) == false)
 	{
-		Components* new_component = new Component_Emitter(EMITTER, this, 100);
+		Components* new_component = new Component_Emitter(EMITTER, this, 1);
 		LOG("The GameObject %s component %s has been created", this->name, "MATERIAL");
 
 		if (active)

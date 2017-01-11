@@ -25,13 +25,13 @@ Component_Emitter::Component_Emitter(Components_Type type, GameObject* game_obje
 	max_depth = 2;
 
 	//Particle Variables
-	max_initial_velocity_y = 20.f;
-	max_initial_velocity_x = 2.f;
-	max_initial_velocity_z = 2.f;
+	max_initial_velocity.y = 20.f;
+	max_initial_velocity.x = 2.f;
+	max_initial_velocity.z = 2.f;
 
-	min_initial_velocity_x = -2.f;
-	min_initial_velocity_y =  0.f;
-	min_initial_velocity_z = -2.f;
+	min_initial_velocity.x = -2.f;
+	min_initial_velocity.y =  0.f;
+	min_initial_velocity.z = -2.f;
 
 	lifetime = 15;
 	force = float3(0.f, 10.f, 0.f);
@@ -49,6 +49,14 @@ Component_Emitter::~Component_Emitter()
 
 void Component_Emitter::Update()
 {
+	if (particles_container.size() > number_particles)
+	{
+		while (particles_container.size() > number_particles)
+		{
+			particles_container.pop_back();
+		}
+	}
+
 	vector<Particle*>::iterator tmp3 = particles_container.begin();
 	while (tmp3 != particles_container.end())
 	{
@@ -78,30 +86,7 @@ void Component_Emitter::Update()
 	//Still creating Particles
 	if (particles_container.size() < number_particles)
 	{
-		/*Particle* p = new Particle(position_emitter, float3::one, Quat::identity, float3::zero);
-
-		Random rand;
-		float X = rand.RandRange(min_width, max_width);
-		float Y = rand.RandRange(min_height, max_height);
-		float Z = rand.RandRange(min_depth, max_depth);
-
-
-		float new_lifetime = rand.Min_Max_Random(1.f, lifetime);
-		float speed_y = rand.Min_Max_Random(0.f, initial_velocity_y);
-		float speed_x = rand.Min_Max_Random(-initial_velocity_x, initial_velocity_x);
-		float speed_z = rand.Min_Max_Random(-initial_velocity_z, initial_velocity_z);
-
-		math::float3 random_vector(X, Y, Z);
-
-		float3 pos = position_emitter + random_vector;
-		p->Set_Position(pos);
-		p->Set_Velocity(float3(random_vector.Normalized().x * speed_x, random_vector.Normalized().y * speed_y, random_vector.Normalized().z * speed_z));
-		p->Set_Lifetime(new_lifetime);
-		p->Set_Age(0);
-		p->Set_Scale(float3(size_particles, size_particles, 0));
-		particles_container.push_back(p);*/
 		Create_Particle();
-
 	}
 
 	vector<Particle*>::iterator tmp = particles_container.begin();
@@ -127,6 +112,7 @@ void Component_Emitter::Update()
 		}
 		else
 		{
+			
 			//Generate the particle from the origin of the emitter
 			Random rand;
 			float X = rand.RandRange(min_width, max_width);
@@ -134,15 +120,15 @@ void Component_Emitter::Update()
 			float Z = rand.RandRange(min_depth, max_depth);
 
 			float new_lifetime = rand.RandRange(1.f, lifetime);
-			float speed_y = rand.Min_Max_Random(min_initial_velocity_y, max_initial_velocity_y);
-			float speed_x = rand.Min_Max_Random(min_initial_velocity_x, max_initial_velocity_x);
-			float speed_z = rand.Min_Max_Random(min_initial_velocity_z, max_initial_velocity_z);
+			float speed_y = rand.Min_Max_Random(min_initial_velocity.y, max_initial_velocity.y);
+			float speed_x = rand.Min_Max_Random(min_initial_velocity.x, max_initial_velocity.x);
+			float speed_z = rand.Min_Max_Random(min_initial_velocity.z, max_initial_velocity.z);
 
 			math::float3 random_vector(X, Y, Z);
 
 			float3 pos = position_emitter + random_vector;
 			(*tmp)->Set_Position(pos);
-			(*tmp)->Set_Velocity(float3(random_vector.Normalized().x * speed_x , random_vector.Normalized().Abs().y * speed_y , random_vector.Normalized().z * speed_z));
+			(*tmp)->Set_Velocity(float3(random_vector.Normalized().x * speed_x, random_vector.Normalized().Abs().y * speed_y, random_vector.Normalized().z * speed_z));
 			(*tmp)->Set_Lifetime(new_lifetime);
 			(*tmp)->Set_Age(0);
 			(*tmp)->Set_Scale(float3(size_particles, size_particles, 0));
@@ -151,6 +137,9 @@ void Component_Emitter::Update()
 
 		tmp++;
 	}
+
+	//Render panel with information
+	Render_Panel();
 
 }
 
@@ -165,9 +154,9 @@ void Component_Emitter::Create_Particle()
 	float Z = rand.RandRange(min_depth, max_depth);
 
 	float new_lifetime = rand.RandRange(1.f, lifetime);
-	float speed_y = rand.Min_Max_Random(min_initial_velocity_y, max_initial_velocity_y);
-	float speed_x = rand.Min_Max_Random(min_initial_velocity_x, max_initial_velocity_x);
-	float speed_z = rand.Min_Max_Random(min_initial_velocity_z, max_initial_velocity_z);
+	float speed_y = rand.Min_Max_Random(min_initial_velocity.y, max_initial_velocity.y);
+	float speed_x = rand.Min_Max_Random(min_initial_velocity.x, max_initial_velocity.x);
+	float speed_z = rand.Min_Max_Random(min_initial_velocity.z, max_initial_velocity.z);
 
 	math::float3 random_vector(X, Y, Z);
 
@@ -194,6 +183,79 @@ void Component_Emitter::Clean_Up()
 		}
 
 		particles_container.clear();
+	}
+}
+
+void Component_Emitter::Render_Panel()
+{
+	if (Is_Active())
+	{
+		if (ImGui::CollapsingHeader("Emitter", ImGuiTreeNodeFlags_DefaultOpen))
+		{
+			if (active_checkbox == false)
+			{
+				//--------------------------------------------------------------------
+				ImGui::Text("                Initial Particle Velocity                  ");
+				ImGui::Text("                             Max Initial Velocity ");
+				ImGui::Text("Max Initial Velocity X : ");
+				ImGui::SameLine();
+				ImGui::DragFloat("##Drag_max1", &max_initial_velocity.x, 1.0f, min_initial_velocity.x, 200.f);
+
+				ImGui::Text("Max Initial Velocity Y : ");
+				ImGui::SameLine();
+				ImGui::DragFloat("##Drag_max2", &max_initial_velocity.y, 1.0f, min_initial_velocity.y, 200.f);
+
+				ImGui::Text("Max Initial Velocity Z : ");
+				ImGui::SameLine();
+				ImGui::DragFloat("##Drag_max3", &max_initial_velocity.z, 1.0f, min_initial_velocity.z, 200.f);
+
+
+				ImGui::Text("                             Min Initial Velocity ");
+				ImGui::Text("Min Initial Velocity X : ");
+				ImGui::SameLine();
+				ImGui::DragFloat("##Drag_min1", &min_initial_velocity.x, 1.0f, -200.f, max_initial_velocity.x);
+
+				ImGui::Text("Min Initial Velocity Y : ");
+				ImGui::SameLine();
+				ImGui::DragFloat("##Drag_min2", &min_initial_velocity.y, 1.0f, -200.f, max_initial_velocity.y);
+
+				ImGui::Text("Min Initial Velocity Z : ");
+				ImGui::SameLine();
+				ImGui::DragFloat("##Drag_min3", &min_initial_velocity.z, 1.0f, -200.f, max_initial_velocity.z);
+				
+
+				ImGui::Text("Lifetime Particle : ");
+				ImGui::DragFloat("##Drag_life", &lifetime, 1.0f, 00.f, 50.f);
+
+				ImGui::Text("Size Particle : ");
+				ImGui::DragFloat("##Drag_size", &size_particles, 1.0f, 1.f, 10.f);
+
+				ImGui::Text("Force Particle : ");
+				ImGui::DragFloat3("##Drag_force", force.ptr());
+
+				ImGui::Text("Number Particle : ");
+				ImGui::DragInt("##Drag_num_p", &number_particles, 1.0f, 1.0f, 400.f);
+
+			}
+			else
+			{
+				//--------------------------------------------------------------------
+				ImGui::Text("Name : ");
+				//--------------------------------------------------------------------
+				ImGui::Text("NumChildren : ");
+				//--------------------------------------------------------------------
+				ImGui::Text("Parent : ");
+				//--------------------------------------------------------------------
+				ImGui::Text("NumIndices : ");
+				//--------------------------------------------------------------------
+				ImGui::Text("NumVertices : ");
+				//--------------------------------------------------------------------
+				ImGui::Text("NumNormals : ");
+				//--------------------------------------------------------------------
+				ImGui::Text("NumUvs : ");
+
+			}
+		}
 	}
 }
 

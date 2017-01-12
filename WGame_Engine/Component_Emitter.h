@@ -21,7 +21,9 @@ public:
 
 	//Checkbox bool
 	bool Is_Checkbox_Active()const;
-	bool Set_Checkbox(bool on);
+	void Set_Checkbox(bool on);
+
+	void Particle_Smoke_Behavior(Particle &p);
 
 
 private:
@@ -54,6 +56,7 @@ private:
 	float3 localUp = float3(0, 1, 0);
 
 	bool active_checkbox = false;
+	bool smoke_behavior = false;
 };
 
 #endif

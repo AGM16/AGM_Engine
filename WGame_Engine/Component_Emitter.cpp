@@ -112,27 +112,32 @@ void Component_Emitter::Update()
 		}
 		else
 		{
-			
-			//Generate the particle from the origin of the emitter
-			Random rand;
-			float X = rand.RandRange(min_width, max_width);
-			float Y = rand.RandRange(min_height, max_height);
-			float Z = rand.RandRange(min_depth, max_depth);
+			if (smoke_behavior)
+			{
+				Particle_Smoke_Behavior(*(*tmp));
+			}
+			else
+			{
+				//Generate the particle from the origin of the emitter
+				Random rand;
+				float X = rand.RandRange(min_width, max_width);
+				float Y = rand.RandRange(min_height, max_height);
+				float Z = rand.RandRange(min_depth, max_depth);
 
-			float new_lifetime = rand.RandRange(1.f, lifetime);
-			float speed_y = rand.Min_Max_Random(min_initial_velocity.y, max_initial_velocity.y);
-			float speed_x = rand.Min_Max_Random(min_initial_velocity.x, max_initial_velocity.x);
-			float speed_z = rand.Min_Max_Random(min_initial_velocity.z, max_initial_velocity.z);
+				float new_lifetime = rand.RandRange(1.f, lifetime);
+				float speed_y = rand.Min_Max_Random(min_initial_velocity.y, max_initial_velocity.y);
+				float speed_x = rand.Min_Max_Random(min_initial_velocity.x, max_initial_velocity.x);
+				float speed_z = rand.Min_Max_Random(min_initial_velocity.z, max_initial_velocity.z);
 
-			math::float3 random_vector(X, Y, Z);
+				math::float3 random_vector(X, Y, Z);
 
-			float3 pos = position_emitter + random_vector;
-			(*tmp)->Set_Position(pos);
-			(*tmp)->Set_Velocity(float3(random_vector.Normalized().x * speed_x, random_vector.Normalized().Abs().y * speed_y, random_vector.Normalized().z * speed_z));
-			(*tmp)->Set_Lifetime(new_lifetime);
-			(*tmp)->Set_Age(0);
-			(*tmp)->Set_Scale(float3(size_particles, size_particles, 0));
-
+				float3 pos = position_emitter + random_vector;
+				(*tmp)->Set_Position(pos);
+				(*tmp)->Set_Velocity(float3(random_vector.Normalized().x * speed_x, random_vector.Normalized().y * speed_y, random_vector.Normalized().z * speed_z));
+				(*tmp)->Set_Lifetime(new_lifetime);
+				(*tmp)->Set_Age(0);
+				(*tmp)->Set_Scale(float3(size_particles, size_particles, 0));
+			}
 		}
 
 		tmp++;
@@ -140,6 +145,10 @@ void Component_Emitter::Update()
 
 	//Render panel with information
 	Render_Panel();
+
+	//Emulate smoke
+	//if (App->input->GetKey(SDL_SCANCODE_P) == KEY_UP)
+	
 
 }
 
@@ -225,10 +234,10 @@ void Component_Emitter::Render_Panel()
 				
 
 				ImGui::Text("Lifetime Particle : ");
-				ImGui::DragFloat("##Drag_life", &lifetime, 1.0f, 00.f, 50.f);
+				ImGui::DragFloat("##Drag_life", &lifetime, 1.0f, 1.0f, 50.f);
 
 				ImGui::Text("Size Particle : ");
-				ImGui::DragFloat("##Drag_size", &size_particles, 1.0f, 1.f, 10.f);
+				ImGui::DragFloat("##Drag_size", &size_particles, 1.0f, 1.0f, 10.f);
 
 				ImGui::Text("Force Particle : ");
 				ImGui::DragFloat3("##Drag_force", force.ptr());
@@ -239,36 +248,106 @@ void Component_Emitter::Render_Panel()
 			}
 			else
 			{
-				//--------------------------------------------------------------------
-				ImGui::Text("Name : ");
-				//--------------------------------------------------------------------
-				ImGui::Text("NumChildren : ");
-				//--------------------------------------------------------------------
-				ImGui::Text("Parent : ");
-				//--------------------------------------------------------------------
-				ImGui::Text("NumIndices : ");
-				//--------------------------------------------------------------------
-				ImGui::Text("NumVertices : ");
-				//--------------------------------------------------------------------
-				ImGui::Text("NumNormals : ");
-				//--------------------------------------------------------------------
-				ImGui::Text("NumUvs : ");
+				ImGui::Text("                Initial Particle Velocity                  ");
+				ImGui::Text("                             Max Initial Velocity ");
+				ImGui::Text("Max Initial Velocity X : ");
+
+				ImGui::Text("Max Initial Velocity Y : ");
+			
+
+				ImGui::Text("Max Initial Velocity Z : ");
+
+
+				ImGui::Text("                             Min Initial Velocity ");
+				ImGui::Text("Min Initial Velocity X : ");
+	
+
+				ImGui::Text("Min Initial Velocity Y : ");
+		
+
+				ImGui::Text("Min Initial Velocity Z : ");
+
+
+				ImGui::Text("Lifetime Particle : ");
+
+				ImGui::Text("Size Particle : ");
+
+				ImGui::Text("Force Particle : ");
+
+				ImGui::Text("Number Particle : ");				
 
 			}
+
+			ImGui::Checkbox("Deactivate##fccemiter", &active_checkbox);
+			if (ImGui::Button("Smoke"))
+			{
+				
+				smoke_behavior = !smoke_behavior;
+
+				if (smoke_behavior)
+				{
+					//New values in the initial velocity to emulate smoke
+					min_initial_velocity = float3(-1.f, 0.f, -1.f);
+					max_initial_velocity = float3(1.f, 10.f, 1.f);
+					force = float3(0.f, 20.f, 0.f);
+				}
+				else
+				{
+					//Random Values
+					Random rand;
+					min_initial_velocity = rand.Random_Float_Vector(-20.f, 0.f);
+					max_initial_velocity = rand.Random_Float_Vector(1.f, 20.f);
+					force = rand.Random_Float_Vector(-20.f, 20.f);
+				}
+			}
+
+			if (smoke_behavior)
+			{
+				ImGui::TextColored(ImVec4(1.f, 1.f, 0.f, 1.f), "Smoke Activated");
+			}
+
+		
 		}
 	}
+}
+
+void Component_Emitter::Particle_Smoke_Behavior( Particle &p)
+{
+	Random rand;
+	float X = rand.RandRange(min_width, max_width);
+	float Y = rand.RandRange(min_height, max_height);
+	float Z = rand.RandRange(min_depth, max_depth);
+
+	float new_lifetime = rand.RandRange(1.f, lifetime);
+	float speed_y = rand.Min_Max_Random(min_initial_velocity.y, max_initial_velocity.y);
+	float speed_x = rand.Min_Max_Random(min_initial_velocity.x, max_initial_velocity.x);
+	float speed_z = rand.Min_Max_Random(min_initial_velocity.z, max_initial_velocity.z);
+
+	math::float3 random_vector(X, Y, Z);
+
+	//Add values
+	float3 pos = position_emitter + random_vector;
+	p.Set_Position(pos);
+
+	// If we want that the smoke goes to the top the velocity in the axis "y" have to be alguais positive
+	p.Set_Velocity(float3(random_vector.Normalized().x * speed_x, random_vector.Normalized().Abs().y * speed_y, random_vector.Normalized().z * speed_z));
+
+	p.Set_Lifetime(new_lifetime);
+	p.Set_Age(0);
+	p.Set_Scale(float3(size_particles, size_particles, 0));
+
 }
 
 
 //Checkbox bool
 bool Component_Emitter::Is_Checkbox_Active()const
 {
-	return true;
+	return active_checkbox;
 }
 
-bool Component_Emitter::Set_Checkbox(bool on)
+void Component_Emitter::Set_Checkbox(bool on)
 {
-	return true;
+	active_checkbox = on;
 }
 
 

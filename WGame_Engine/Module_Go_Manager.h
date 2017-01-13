@@ -19,6 +19,7 @@ public:
 	GameObject* Create_Game_Object(Mesh* m, GameObject* Parent);
 	GameObject* Create_Camera_Game_Object(GameObject* Parent, const char* name_camera);
 	GameObject* Create_Empty_Game_Object(const char* name_go, GameObject* Parent);
+	GameObject* Create_Particle_Game_Object(const char* name_go, GameObject* Parent);
 	update_status Update(float dt);
 
 	//Functions used to active and deactive components

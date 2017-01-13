@@ -49,6 +49,7 @@ private:
 
 	bool create_go = false;
 	char name_go_created[100] = "";
+	bool create_particle = false;
 
 };
 

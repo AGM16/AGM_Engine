@@ -88,6 +88,11 @@ update_status Editor::Update(float dt)
 				create_go = true;
 			}
 
+			if (ImGui::MenuItem("Particle Game Object"))
+			{
+				create_particle = true;
+			}
+
 			ImGui::EndMenu();
 		}
 
@@ -96,7 +101,7 @@ update_status Editor::Update(float dt)
 		{
 			if (ImGui::MenuItem("Add Transformation Component"))
 			{
-				if (App->go_manager->Get_Selected_GO()->Exist_Component(TRANSFORMATION) == false)
+				if (App->go_manager->Get_Selected_GO() != nullptr && App->go_manager->Get_Selected_GO()->Exist_Component(TRANSFORMATION) == false)
 					App->go_manager->Get_Selected_GO()->Add_Component_Transformation(float3::zero, float3::one, Quat::identity, float3::zero, true);
 				else
 					LOG("Thereis already a Transformation Component in this GO");
@@ -104,7 +109,7 @@ update_status Editor::Update(float dt)
 
 			if (ImGui::MenuItem("Add Mesh Component"))
 			{
-				if (App->go_manager->Get_Selected_GO()->Exist_Component(MESH) == false)
+				if (App->go_manager->Get_Selected_GO() != nullptr && App->go_manager->Get_Selected_GO()->Exist_Component(MESH) == false)
 					App->go_manager->Get_Selected_GO()->Add_Component_Mesh(nullptr, true);
 				else
 					LOG("Thereis already a Mesh Component in this GO");
@@ -114,7 +119,7 @@ update_status Editor::Update(float dt)
 
 			if (ImGui::MenuItem("Add Material Component"))
 			{
-				if (App->go_manager->Get_Selected_GO()->Exist_Component(MATERIAL) == false)
+				if (App->go_manager->Get_Selected_GO() != nullptr && App->go_manager->Get_Selected_GO()->Exist_Component(MATERIAL) == false)
 					App->go_manager->Get_Selected_GO()->Add_Component_Material(nullptr, nullptr, 0, 0, true);
 				else
 					LOG("Thereis already a Material Component in this GO");
@@ -122,13 +127,13 @@ update_status Editor::Update(float dt)
 
 			if (ImGui::MenuItem("Add Billboard Component"))
 			{
-				if (App->go_manager->Get_Selected_GO()->Exist_Component(BILLBOARD) == false)
+				if (App->go_manager->Get_Selected_GO() != nullptr && App->go_manager->Get_Selected_GO()->Exist_Component(BILLBOARD) == false)
 					App->go_manager->Get_Selected_GO()->Add_Component_Billboard(true);
 			}
 
 			if (ImGui::MenuItem("Add Emitter Component"))
 			{
-				if (App->go_manager->Get_Selected_GO()->Exist_Component(EMITTER) == false)
+				if (App->go_manager->Get_Selected_GO() != nullptr && App->go_manager->Get_Selected_GO()->Exist_Component(EMITTER) == false)
 					App->go_manager->Get_Selected_GO()->Add_Component_Emitter(true);
 			}
 
@@ -466,7 +471,7 @@ void Editor::Render_Panel_Time_Manager()
 
 void Editor::Render_Panel_Create_GO()
 {
-	if (create_go)
+	if (create_go || create_particle)
 	{
 		ImVec2 size_w;
 		float2 pos;
@@ -498,9 +503,17 @@ void Editor::Render_Panel_Create_GO()
 
 		if (ImGui::Button("Create", ImVec2(50, 20)))
 		{
-			App->go_manager->Create_Empty_Game_Object(name_go_created, nullptr);
+			if(create_particle)
+			{
+				App->go_manager->Create_Particle_Game_Object(name_go_created, nullptr);
+			}
+			else
+			{
+				App->go_manager->Create_Empty_Game_Object(name_go_created, nullptr);
+			}
 			clear = 0;
 			create_go = false;
+			create_particle = false;
 		}
 
 		ImGui::End();

@@ -350,6 +350,7 @@ void Component_Emitter::Render_Panel()
 						min_initial_velocity = rand.Random_Float_Vector(-20.f, 0.f);
 						max_initial_velocity = rand.Random_Float_Vector(1.f, 20.f);
 						force = rand.Random_Float_Vector(-20.f, 20.f);
+						lifetime = 15.f;
 						number_particles = rand.Random_int(1, 150);
 					}
 				}

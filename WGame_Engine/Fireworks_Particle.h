@@ -15,13 +15,11 @@ public:
 
 	//Getters
 	bool Has_To_Explode()const;
-	float Get_Lifetime_To_Explode()const;
 	unsigned int Get_Number_Child_Particles()const;
 	bool Is_Child()const;
 	bool Are_Children_Dead();
 
 	//Setters
-	void Set_Lifetime_Fireworks(float &new_lifetime);
 	void Set_NumParticles_Fireworks(unsigned int &amount);
 	void Set_Explode(bool on);
 	void Set_Child(bool on);
@@ -34,7 +32,6 @@ public:
 
 private:
 
-	float lifetime_to_explote;
 	unsigned int number_child_particles;
 	bool explode;
 	bool is_child;

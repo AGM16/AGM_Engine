@@ -35,7 +35,7 @@ void Fireworks_Particle::Update_Particle()
 			Set_Position(Get_Position() + new_position);
 
 			//Modify Size
-			float new_size = ((lifetime_to_explote + 5) - Get_Age()) * 2 / (lifetime_to_explote + 5);
+			float new_size = ((Get_Lifetime() + 5) - Get_Age()) * 2 / (Get_Lifetime() + 5);
 			Set_Scale(float3(new_size, new_size, 0.f));
 		}
 		else
@@ -215,11 +215,6 @@ bool Fireworks_Particle::Has_To_Explode()const
 	return explode;
 }
 
-float  Fireworks_Particle::Get_Lifetime_To_Explode()const
-{
-	return lifetime_to_explote;
-}
-
 unsigned int  Fireworks_Particle::Get_Number_Child_Particles()const
 {
 	return number_child_particles;
@@ -228,11 +223,6 @@ unsigned int  Fireworks_Particle::Get_Number_Child_Particles()const
 bool  Fireworks_Particle::Is_Child()const
 {
 	return is_child;
-}
-
-void  Fireworks_Particle::Set_Lifetime_Fireworks(float &new_lifetime)
-{
-	lifetime_to_explote = new_lifetime;
 }
 
 void  Fireworks_Particle::Set_NumParticles_Fireworks(unsigned int &amount)

@@ -110,6 +110,30 @@ GameObject* Module_Go_Manager::Create_Empty_Game_Object(const char* name_go, Gam
 	return new_game_object;
 }
 
+GameObject* Module_Go_Manager::Create_Particle_Game_Object(const char* name_go, GameObject* Parent)
+{
+	if (Parent == nullptr)
+	{
+		Parent = root_game_object;
+	}
+	Random rand;
+	GameObject* new_game_object = new GameObject(Parent, name_go, rand.Random_int(0, 2147483647));
+
+	//Add Child to the parent
+	Parent->Add_Child(new_game_object);
+	LOG("The GameObject %s has a new child : %s ", new_game_object->Get_Parent()->Get_Name(), new_game_object->Get_Name());
+
+	//Add Component Transformation
+	new_game_object->Add_Component_Transformation(float3::zero, float3::one, Quat::identity, float3::zero, false);
+	LOG("The GameObject %s has a new component : %s ", new_game_object->Get_Name(), "TRANSFORMATION");
+
+	//Add Component Emmitter
+	new_game_object->Add_Component_Emitter(false);
+	LOG("The GameObject %s has a new component : %s ", new_game_object->Get_Name(), "EMITTER");
+
+	return new_game_object;
+}
+
 update_status Module_Go_Manager::Update(float dt)
 {
 	//Render and Update Components

@@ -54,7 +54,7 @@ public:
 	float max_depth;
 	float initial_lifetime;
 	float3 force;
-	float3 position_emmitter = float3::zero;
+	float3 position_emitter = float3::zero;
 
 private:
 

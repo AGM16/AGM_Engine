@@ -534,6 +534,9 @@
     <ClInclude Include="Fireworks_Particle.h">
       <Filter>Sources\Helpers\Particles\Particles_Type</Filter>
     </ClInclude>
+    <ClInclude Include="Smoke_Particle.h">
+      <Filter>Sources\Helpers\Particles\Particles_Type</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="ModuleAudio.cpp">
@@ -771,6 +774,9 @@
       <Filter>Sources\Helpers\Particles</Filter>
     </ClCompile>
     <ClCompile Include="Fireworks_Particle.cpp">
+      <Filter>Sources\Helpers\Particles\Particles_Type</Filter>
+    </ClCompile>
+    <ClCompile Include="Smoke_Particle.cpp">
       <Filter>Sources\Helpers\Particles\Particles_Type</Filter>
     </ClCompile>
   </ItemGroup>

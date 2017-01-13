@@ -36,7 +36,6 @@ private:
 	bool explode;
 	bool is_child;
 	std::vector<Particle*> explosion_particles;
-	float3 force_children = float3::zero;
 	
 };
 #endif // !_FIREWORKS_PARTICLE_H_

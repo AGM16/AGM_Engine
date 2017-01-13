@@ -6,6 +6,7 @@
 #include "GameObject.h"
 #include "Particle.h"
 #include "Fireworks_Particle.h"
+#include "Smoke_Particle.h"
 #include "Random.h"
 
 using namespace std;
@@ -61,7 +62,7 @@ void Component_Emitter::Update()
 
 	//Renders
 	Render_Emmiter();
-	if (fireworks_behavior == false)
+	if (fireworks_behavior == false && smoke_behavior == false)
 	{
 		Render_Particles();
 	}
@@ -86,10 +87,9 @@ void Component_Emitter::Update()
 	vector<Particle*>::iterator tmp = particles_container.begin();
 	while (tmp != particles_container.end())
 	{
-		if (fireworks_behavior == false)
+		if (fireworks_behavior == false && smoke_behavior == false)
 		{
 			//Normal behavior particles
-			//Check tthe life
 			if ((*tmp)->Get_Lifetime() > (*tmp)->Get_Age())
 			{
 					//Update variables
@@ -109,12 +109,6 @@ void Component_Emitter::Update()
 			}
 			else
 			{
-				    if (smoke_behavior)
-					{
-						//Creation intial movement
-						Particle_Smoke_Behavior(*(*tmp));
-					}
-
 					//Realocate again the particles from the origin
 					if (smoke_behavior == false && fireworks_behavior == false)
 					{
@@ -142,7 +136,7 @@ void Component_Emitter::Update()
 		}
 		else
 		{
-			(*tmp)->position_emmitter = position_emitter;
+			(*tmp)->position_emitter = position_emitter;
 			(*tmp)->Update_Particle();
 		}
 
@@ -156,7 +150,7 @@ void Component_Emitter::Update()
 
 void Component_Emitter::Create_Particle()
 {
-	if (fireworks_behavior == false)
+	if (fireworks_behavior == false && smoke_behavior == false)
 	{
 		Particle* p = new Particle(position_emitter, float3::one, Quat::identity, float3::zero, min_width, max_width, min_height, max_height, min_depth, max_depth, lifetime, force);
 
@@ -188,6 +182,15 @@ void Component_Emitter::Create_Particle()
 		Fireworks_Particle* p = new Fireworks_Particle(position_emitter, float3::one, Quat::identity, float3::zero, min_width, max_width, min_height, max_height, min_depth, max_depth, lifetime, force);
 
 		p->Creation_Particle_Explosion(position_emitter);
+		particles_container.push_back((Particle*)p);
+	}
+
+
+	if (smoke_behavior)
+	{
+		Smoke_Particle* p = new Smoke_Particle(position_emitter, float3::one, Quat::identity, float3::zero, min_width, max_width, min_height, max_height, min_depth, max_depth, lifetime, force);
+
+		p->Create_Initial_Movement(position_emitter);
 		particles_container.push_back((Particle*)p);
 	}
 
@@ -303,9 +306,9 @@ void Component_Emitter::Render_Panel()
 
 					if (smoke_behavior)
 					{
-						//New values in the initial velocity to emulate smoke
-						min_initial_velocity = float3(-1.f, 0.f, -1.f);
-						max_initial_velocity = float3(1.f, 20.f, 1.f);
+						Clean_Up();
+						Create_Particle();
+						number_particles = 80;
 						force = float3(0.f, 20.f, 0.f);
 					}
 					else
@@ -333,14 +336,11 @@ void Component_Emitter::Render_Panel()
 					{	
 						Clean_Up();
 
-						min_initial_velocity = float3(-2.f, 100.f, -2.f);
-						max_initial_velocity = float3(2.f, 200.f, 2.f);
 						force = float3(0.f, 120.f, 0.f);
 						lifetime = 1.f;
 						size_particles = 2.f;
 
 						Create_Particle();
-
 						number_particles++;
 					}
 					else

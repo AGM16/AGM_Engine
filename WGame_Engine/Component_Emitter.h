@@ -18,13 +18,17 @@ public:
 	void Create_Particle();
 
 	void Render_Panel();
+	void Resize_Particles_Vector();
+	void Update_Particles_Billboarding();
+	void Render_Emmiter();
+	void Render_Particles();
 
 	//Checkbox bool
 	bool Is_Checkbox_Active()const;
 	void Set_Checkbox(bool on);
 
+	//Particles Behaviors
 	void Particle_Smoke_Behavior(Particle &p);
-
 
 private:
 
@@ -50,13 +54,15 @@ private:
 	std::vector<Particle*> particles_container;
 	unsigned int particles_alive = 0;
 
-
 	//Billboard variables
 	float3 localForward = float3(0, 0, 1);
 	float3 localUp = float3(0, 1, 0);
 
+	unsigned int intial_number_fireworkers = 0.f;
+
 	bool active_checkbox = false;
 	bool smoke_behavior = false;
+	bool fireworks_behavior = false;
 };
 
 #endif

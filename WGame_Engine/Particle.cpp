@@ -5,9 +5,21 @@
 
 using namespace std;
 
-Particle::Particle(float3 pos, float3 scale_, Quat rot_quat, float3 angles_) : position(pos), scale(scale_), quat_rotation(rot_quat), rotation_degrees(angles_)
+Particle::Particle(float3 pos, float3 scale_, Quat rot_quat, float3 angles_, float min_width_p, float max_width_p, float min_height_p, float max_height_p, float min_depth_p, float max_depth_p, float initial_lifetime_p, float3 force_p) : position(pos), scale(scale_), quat_rotation(rot_quat), rotation_degrees(angles_)
 {
-	
+	max_initial_velocity = float3::zero;
+	min_initial_velocity = float3::zero;
+
+	//Frustum Box
+	min_width = min_width_p;
+	max_width = max_width_p;
+	min_height = min_height_p;
+	max_height = max_height_p;
+    min_depth = min_depth_p;
+	max_depth = max_depth_p;
+	initial_lifetime = initial_lifetime_p;
+	force = force_p;
+
 	transformation_matrix = transformation_matrix.FromTRS(position, quat_rotation, scale);
 }
 
@@ -16,7 +28,12 @@ Particle::~Particle()
 
 }
 
-void Particle::Update_Particle(math::float3 force)
+void Particle::Update_Particle()
+{
+
+}
+
+void Particle::Render_Particles()
 {
 
 }
@@ -136,4 +153,3 @@ float Particle::Get_Lifetime()const
 {
 	return lifetime;
 }
-

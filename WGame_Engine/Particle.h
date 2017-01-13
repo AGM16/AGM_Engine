@@ -9,9 +9,11 @@ class Particle
 
 public:
 
-	Particle(float3 pos, float3 scale_, Quat rot_quat, float3 angles_);
+	Particle(float3 pos, float3 scale_, Quat rot_quat, float3 angles_, float min_width_p, float max_width_p, float min_height_p, float max_height_p, float min_depth_p, float max_depth_p, float initial_lifetime_p, float3 force_p);
 	~Particle();
-	void Update_Particle(math::float3 force);
+
+	virtual void Update_Particle();
+	virtual void Render_Particles();
 	void Destroy_Particle();
 
 	//Matrix transformation
@@ -38,6 +40,21 @@ public:
 	float Get_Age()const;
 	float Get_Lifetime()const;
 
+	
+	//Randomize variables
+	float3 max_initial_velocity;
+	float3 min_initial_velocity;
+
+	//Frustum Box
+	float min_width;
+	float max_width;
+	float min_height;
+	float max_height;
+	float min_depth;
+	float max_depth;
+	float initial_lifetime;
+	float3 force;
+	float3 position_emmitter = float3::zero;
 
 private:
 

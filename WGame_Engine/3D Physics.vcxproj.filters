@@ -58,6 +58,12 @@
     <Filter Include="Sources\Tools\PuguiXML">
       <UniqueIdentifier>{f83fbbd9-56be-40b6-ad8f-d4dc7bc45a01}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Sources\Helpers\Particles">
+      <UniqueIdentifier>{8a861e75-3129-48db-90e3-7d505c4a19d2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Sources\Helpers\Particles\Particles_Type">
+      <UniqueIdentifier>{eda37651-00c1-446c-8094-f07f40b55d09}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Module.h">
@@ -519,11 +525,14 @@
     <ClInclude Include="Component_Billboard.h">
       <Filter>Sources\GameObject\Components</Filter>
     </ClInclude>
-    <ClInclude Include="Particle.h">
-      <Filter>Sources\Helpers</Filter>
-    </ClInclude>
     <ClInclude Include="Component_Emitter.h">
       <Filter>Sources\GameObject\Components</Filter>
+    </ClInclude>
+    <ClInclude Include="Particle.h">
+      <Filter>Sources\Helpers\Particles</Filter>
+    </ClInclude>
+    <ClInclude Include="Fireworks_Particle.h">
+      <Filter>Sources\Helpers\Particles\Particles_Type</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -755,11 +764,14 @@
     <ClCompile Include="Component_Billboard.cpp">
       <Filter>Sources\GameObject\Components</Filter>
     </ClCompile>
-    <ClCompile Include="Particle.cpp">
-      <Filter>Sources\Helpers</Filter>
-    </ClCompile>
     <ClCompile Include="Component_Emitter.cpp">
       <Filter>Sources\GameObject\Components</Filter>
+    </ClCompile>
+    <ClCompile Include="Particle.cpp">
+      <Filter>Sources\Helpers\Particles</Filter>
+    </ClCompile>
+    <ClCompile Include="Fireworks_Particle.cpp">
+      <Filter>Sources\Helpers\Particles\Particles_Type</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

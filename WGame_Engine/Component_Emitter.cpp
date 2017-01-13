@@ -5,6 +5,7 @@
 #include "Components.h"
 #include "GameObject.h"
 #include "Particle.h"
+#include "Fireworks_Particle.h"
 #include "Random.h"
 
 using namespace std;
@@ -49,38 +50,29 @@ Component_Emitter::~Component_Emitter()
 
 void Component_Emitter::Update()
 {
+	//Update the number of particules
 	if (particles_container.size() > number_particles)
 	{
-		while (particles_container.size() > number_particles)
+		Resize_Particles_Vector();
+	}
+
+	//Update Billboarding
+	Update_Particles_Billboarding();
+
+	//Renders
+	Render_Emmiter();
+	if (fireworks_behavior == false)
+	{
+		Render_Particles();
+	}
+	else
+	{
+		vector<Particle*>::iterator tmp2 = particles_container.begin();
+		while (tmp2 != particles_container.end())
 		{
-			particles_container.pop_back();
+			(*tmp2)->Render_Particles();
+			tmp2++;
 		}
-	}
-
-	vector<Particle*>::iterator tmp3 = particles_container.begin();
-	while (tmp3 != particles_container.end())
-	{
-     	//Update Billboarding Particles
-		(*tmp3)->Update_Billboarding();
-
-		tmp3++;
-	}
-
-	//Debug Emitter
-	Component_Transformation* transformation = (Component_Transformation*)Get_Game_Object()->Get_Component(TRANSFORMATION);
-	position_emitter = transformation->Get_Position();
-	App->renderer3D->Debug_Emitter(transformation->Get_Tranformation_Matrix().Transposed(), max_width);
-
-
-	//Render Particles
-	vector<Particle*>::iterator tmp2 = particles_container.begin();
-	while (tmp2 != particles_container.end())
-	{
-
-		App->renderer3D->Render_Particles((*tmp2)->Get_Tranformation_Matrix().Transposed(), float3((*tmp2)->Get_Scale().x, (*tmp2)->Get_Scale().y, 0.f), 0);
-
-		tmp2++;
-
 	}
 
 	//Still creating Particles
@@ -89,94 +81,115 @@ void Component_Emitter::Update()
 		Create_Particle();
 	}
 
+
+	//Update info particles
 	vector<Particle*>::iterator tmp = particles_container.begin();
 	while (tmp != particles_container.end())
 	{
-		//Check the life
-		if ((*tmp)->Get_Lifetime() > (*tmp)->Get_Age())
+		if (fireworks_behavior == false)
 		{
-			//Update variables
-			float new_age = (*tmp)->Get_Age() + App->Get_Delta_Time();
-			(*tmp)->Set_Age(new_age);
-
-			float3 new_vel = (*tmp)->Get_Velocity() + (force * App->Get_Delta_Time() * 0.5f);
-			(*tmp)->Set_Velocity(new_vel);
-			float3 p_speed = (*tmp)->Get_Velocity();
-			float3 position = p_speed * App->Get_Delta_Time();
-			(*tmp)->Set_Position((*tmp)->Get_Position() + position);
-
-			//Modify Size
-			(*tmp)->Set_Age((*tmp)->Get_Age() + App->Get_Delta_Time());
-			float new_size = (((*tmp)->Get_Lifetime() - (*tmp)->Get_Age()) * size_particles / (*tmp)->Get_Lifetime());
-			(*tmp)->Set_Scale(float3(new_size, new_size, 0.f));
-		}
-		else
-		{
-			if (smoke_behavior)
+			//Normal behavior particles
+			//Check tthe life
+			if ((*tmp)->Get_Lifetime() > (*tmp)->Get_Age())
 			{
-				Particle_Smoke_Behavior(*(*tmp));
+					//Update variables
+					float new_age = (*tmp)->Get_Age() + App->Get_Delta_Time();
+					(*tmp)->Set_Age(new_age);
+
+					float3 new_vel = (*tmp)->Get_Velocity() + (force * App->Get_Delta_Time() * 0.5f);
+					(*tmp)->Set_Velocity(new_vel);
+					float3 p_speed = (*tmp)->Get_Velocity();
+					float3 position = p_speed * App->Get_Delta_Time();
+					(*tmp)->Set_Position((*tmp)->Get_Position() + position);
+
+					//Modify Size
+					float new_size = (((*tmp)->Get_Lifetime() - (*tmp)->Get_Age()) * size_particles / (*tmp)->Get_Lifetime());
+					(*tmp)->Set_Scale(float3(new_size, new_size, 0.f));
+
 			}
 			else
 			{
-				//Generate the particle from the origin of the emitter
-				Random rand;
-				float X = rand.RandRange(min_width, max_width);
-				float Y = rand.RandRange(min_height, max_height);
-				float Z = rand.RandRange(min_depth, max_depth);
+				    if (smoke_behavior)
+					{
+						//Creation intial movement
+						Particle_Smoke_Behavior(*(*tmp));
+					}
 
-				float new_lifetime = rand.RandRange(1.f, lifetime);
-				float speed_y = rand.Min_Max_Random(min_initial_velocity.y, max_initial_velocity.y);
-				float speed_x = rand.Min_Max_Random(min_initial_velocity.x, max_initial_velocity.x);
-				float speed_z = rand.Min_Max_Random(min_initial_velocity.z, max_initial_velocity.z);
+					//Realocate again the particles from the origin
+					if (smoke_behavior == false && fireworks_behavior == false)
+					{
+						//Generate the particle from the origin of the emitter
+						Random rand;
+						float X = rand.RandRange(min_width, max_width);
+						float Y = rand.RandRange(min_height, max_height);
+						float Z = rand.RandRange(min_depth, max_depth);
 
-				math::float3 random_vector(X, Y, Z);
+						float new_lifetime = rand.RandRange(1.f, lifetime);
+						float speed_y = rand.Min_Max_Random(min_initial_velocity.y, max_initial_velocity.y);
+						float speed_x = rand.Min_Max_Random(min_initial_velocity.x, max_initial_velocity.x);
+						float speed_z = rand.Min_Max_Random(min_initial_velocity.z, max_initial_velocity.z);
 
-				float3 pos = position_emitter + random_vector;
-				(*tmp)->Set_Position(pos);
-				(*tmp)->Set_Velocity(float3(random_vector.Normalized().x * speed_x, random_vector.Normalized().y * speed_y, random_vector.Normalized().z * speed_z));
-				(*tmp)->Set_Lifetime(new_lifetime);
-				(*tmp)->Set_Age(0);
-				(*tmp)->Set_Scale(float3(size_particles, size_particles, 0));
-			}
+						math::float3 random_vector(X, Y, Z);
+
+						float3 pos = position_emitter + random_vector;
+						(*tmp)->Set_Position(pos);
+						(*tmp)->Set_Velocity(float3(random_vector.Normalized().x * speed_x, random_vector.Normalized().y * speed_y, random_vector.Normalized().z * speed_z));
+						(*tmp)->Set_Lifetime(new_lifetime);
+						(*tmp)->Set_Age(0);
+						(*tmp)->Set_Scale(float3(size_particles, size_particles, 0));
+					}
+				}
+		}
+		else
+		{
+			(*tmp)->position_emmitter = position_emitter;
+			(*tmp)->Update_Particle();
 		}
 
 		tmp++;
 	}
-
+		
 	//Render panel with information
 	Render_Panel();
-
-	//Emulate smoke
-	//if (App->input->GetKey(SDL_SCANCODE_P) == KEY_UP)
-	
 
 }
 
 void Component_Emitter::Create_Particle()
 {
-	Particle* p = new Particle(position_emitter, float3::one, Quat::identity, float3::zero);
+	if (fireworks_behavior == false)
+	{
+		Particle* p = new Particle(position_emitter, float3::one, Quat::identity, float3::zero, min_width, max_width, min_height, max_height, min_depth, max_depth, lifetime, force);
 
-	//Random Values
-	Random rand;
-	float X = rand.RandRange(min_width, max_width);
-	float Y = rand.RandRange(min_height, max_height);
-	float Z = rand.RandRange(min_depth, max_depth);
+		//Random Values
+		Random rand;
+		float X = rand.RandRange(min_width, max_width);
+		float Y = rand.RandRange(min_height, max_height);
+		float Z = rand.RandRange(min_depth, max_depth);
 
-	float new_lifetime = rand.RandRange(1.f, lifetime);
-	float speed_y = rand.Min_Max_Random(min_initial_velocity.y, max_initial_velocity.y);
-	float speed_x = rand.Min_Max_Random(min_initial_velocity.x, max_initial_velocity.x);
-	float speed_z = rand.Min_Max_Random(min_initial_velocity.z, max_initial_velocity.z);
+		float new_lifetime = rand.RandRange(1.f, lifetime);
+		float speed_y = rand.Min_Max_Random(min_initial_velocity.y, max_initial_velocity.y);
+		float speed_x = rand.Min_Max_Random(min_initial_velocity.x, max_initial_velocity.x);
+		float speed_z = rand.Min_Max_Random(min_initial_velocity.z, max_initial_velocity.z);
 
-	math::float3 random_vector(X, Y, Z);
+		math::float3 random_vector(X, Y, Z);
 
-	//Add values
-	float3 pos = position_emitter + random_vector;
-	p->Set_Position(pos);
-	p->Set_Velocity(float3(random_vector.Normalized().x * speed_x, random_vector.Normalized().y * speed_y, random_vector.Normalized().z * speed_z));
-	p->Set_Lifetime(new_lifetime);
-	p->Set_Age(0);
-	p->Set_Scale(float3(size_particles, size_particles, 0));
-	particles_container.push_back(p);
+		//Add values
+		float3 pos = position_emitter + random_vector;
+		p->Set_Position(pos);
+		p->Set_Velocity(float3(random_vector.Normalized().x * speed_x, random_vector.Normalized().y * speed_y, random_vector.Normalized().z * speed_z));
+		p->Set_Lifetime(new_lifetime);
+		p->Set_Age(0);
+		p->Set_Scale(float3(size_particles, size_particles, 0));
+		particles_container.push_back(p);
+	}
+
+	if (fireworks_behavior)
+	{
+		Fireworks_Particle* p = new Fireworks_Particle(position_emitter, float3::one, Quat::identity, float3::zero, min_width, max_width, min_height, max_height, min_depth, max_depth, lifetime, force);
+
+		p->Creation_Particle_Explosion(position_emitter);
+		particles_container.push_back((Particle*)p);
+	}
 
 }
 
@@ -192,6 +205,7 @@ void Component_Emitter::Clean_Up()
 		}
 
 		particles_container.clear();
+		number_particles = 0;
 	}
 }
 
@@ -279,34 +293,78 @@ void Component_Emitter::Render_Panel()
 			}
 
 			ImGui::Checkbox("Deactivate##fccemiter", &active_checkbox);
-			if (ImGui::Button("Smoke"))
-			{
-				
-				smoke_behavior = !smoke_behavior;
 
-				if (smoke_behavior)
+			//----------------------Emulate smoke--------------------
+			if (fireworks_behavior == false)
+			{
+				if (ImGui::Button("Smoke"))
 				{
-					//New values in the initial velocity to emulate smoke
-					min_initial_velocity = float3(-1.f, 0.f, -1.f);
-					max_initial_velocity = float3(1.f, 10.f, 1.f);
-					force = float3(0.f, 20.f, 0.f);
+					smoke_behavior = !smoke_behavior;
+
+					if (smoke_behavior)
+					{
+						//New values in the initial velocity to emulate smoke
+						min_initial_velocity = float3(-1.f, 0.f, -1.f);
+						max_initial_velocity = float3(1.f, 20.f, 1.f);
+						force = float3(0.f, 20.f, 0.f);
+					}
+					else
+					{
+						//Random Values
+						Random rand;
+						min_initial_velocity = rand.Random_Float_Vector(-20.f, 0.f);
+						max_initial_velocity = rand.Random_Float_Vector(1.f, 20.f);
+						force = rand.Random_Float_Vector(-20.f, 20.f);
+					}
 				}
-				else
+			}
+			
+			
+
+			//----------------------Emulate Fireworks--------------------
+			ImGui::SameLine();
+			if (smoke_behavior == false)
+			{
+				if (ImGui::Button("Fireworks"))
 				{
-					//Random Values
-					Random rand;
-					min_initial_velocity = rand.Random_Float_Vector(-20.f, 0.f);
-					max_initial_velocity = rand.Random_Float_Vector(1.f, 20.f);
-					force = rand.Random_Float_Vector(-20.f, 20.f);
+					fireworks_behavior = !fireworks_behavior;
+
+					if (fireworks_behavior)
+					{	
+						Clean_Up();
+
+						min_initial_velocity = float3(-2.f, 100.f, -2.f);
+						max_initial_velocity = float3(2.f, 200.f, 2.f);
+						force = float3(0.f, 120.f, 0.f);
+						lifetime = 1.f;
+						size_particles = 2.f;
+
+						Create_Particle();
+
+						number_particles++;
+					}
+					else
+					{
+						//Random Values
+						Random rand;
+						min_initial_velocity = rand.Random_Float_Vector(-20.f, 0.f);
+						max_initial_velocity = rand.Random_Float_Vector(1.f, 20.f);
+						force = rand.Random_Float_Vector(-20.f, 20.f);
+						number_particles = rand.Random_int(1, 150);
+					}
 				}
 			}
 
+
+			if (fireworks_behavior)
+			{
+				ImGui::TextColored(ImVec4(1.f, 1.f, 0.f, 1.f), "Fireworks Activated");
+			}
+			
 			if (smoke_behavior)
 			{
 				ImGui::TextColored(ImVec4(1.f, 1.f, 0.f, 1.f), "Smoke Activated");
-			}
-
-		
+			}			
 		}
 	}
 }
@@ -336,6 +394,58 @@ void Component_Emitter::Particle_Smoke_Behavior( Particle &p)
 	p.Set_Age(0);
 	p.Set_Scale(float3(size_particles, size_particles, 0));
 
+}
+
+
+void Component_Emitter::Resize_Particles_Vector()
+{
+	while (particles_container.size() > number_particles)
+	{
+		particles_container.pop_back();
+	}
+}
+
+void Component_Emitter::Update_Particles_Billboarding()
+{
+	if (particles_container.size() > 0)
+	{
+		vector<Particle*>::iterator tmp3 = particles_container.begin();
+		while (tmp3 != particles_container.end())
+		{
+			//Update Billboarding Particles
+			(*tmp3)->Update_Billboarding();
+
+			tmp3++;
+		}
+	}
+}
+
+void  Component_Emitter::Render_Emmiter()
+{
+	if (Get_Game_Object()->Exist_Component(TRANSFORMATION))
+	{
+		//Render Emitter
+		Component_Transformation* transformation = (Component_Transformation*)Get_Game_Object()->Get_Component(TRANSFORMATION);
+		position_emitter = transformation->Get_Position();
+		App->renderer3D->Debug_Emitter(transformation->Get_Tranformation_Matrix().Transposed(), max_width);
+	}
+}
+
+void  Component_Emitter::Render_Particles()
+{
+	if (particles_container.size() > 0)
+	{
+		//Render Particles
+		vector<Particle*>::iterator tmp2 = particles_container.begin();
+		while (tmp2 != particles_container.end())
+		{
+
+			App->renderer3D->Render_Particles((*tmp2)->Get_Tranformation_Matrix().Transposed(), float3((*tmp2)->Get_Scale().x, (*tmp2)->Get_Scale().y, 0.f), 0);
+
+			tmp2++;
+
+		}
+	}
 }
 
 

@@ -28,8 +28,6 @@ public:
 	void Set_Checkbox(bool on);
 
 	//Particles Behaviors
-	void Particle_Smoke_Behavior(Particle &p);
-	
 	void Clean_Particles_List();
 
 	bool Is_Smoke_Behavior_Active()const;
@@ -37,24 +35,23 @@ public:
 
 private:
 
-	math::float3 position_emitter;
-	float3 max_initial_velocity;
-	float3 min_initial_velocity;
-	float size_particles;
-	float lifetime;
-	bool alive;
-	math::float3 force;
+	math::float3 position_emitter = float3::zero;
+	float3 max_initial_velocity = float3::zero;
+	float3 min_initial_velocity = float3::zero;
+	float size_particles = 0.f;
+	float lifetime = 0.f;
+	math::float3 force = float3::zero;
 
 	//Frustum Box
-	float min_width;
-	float max_width;
-	float min_height;
-	float max_height;
-	float min_depth;
-	float max_depth;
+	float min_width = 0.f;
+	float max_width = 0.f;
+	float min_height = 0.f;
+	float max_height = 0.f;
+	float min_depth = 0.f;
+	float max_depth = 0.f;
 
 	//Number of particles that we will have to create
-	int number_particles;
+	int number_particles = 0;
 
 	std::vector<Particle*> particles_container;
 
@@ -72,6 +69,7 @@ private:
 	float size_fireowks_children_particles = 0;
 	float lifetimefireowks_children = 0;
 	float3 force_firework_children = float3::zero;
+	bool draw_emmiter = false;
 };
 
 #endif

@@ -29,6 +29,8 @@ Module_Go_Manager::~Module_Go_Manager()
 
 	game_object_selected = nullptr;
 	last_game_object_selected = nullptr;
+	dir_particle_texture.clear();
+	
 }
 
 

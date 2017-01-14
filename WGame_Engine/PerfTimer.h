@@ -37,6 +37,8 @@ public:
 
 	void Set_Time_Scale(const float& new_time_scale);
 
+	bool Is_Game_Off()const;
+
 private:
 
 	//Rela Time Clock (since the application starts)
@@ -50,6 +52,7 @@ private:
 	bool running = false;
 	bool game_paused = false;
 	float time_game_clock = 0;
+	bool game_off = false;
 
 	float time_scale = 1.f;
 	uint frame_count = 0;

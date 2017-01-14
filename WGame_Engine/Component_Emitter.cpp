@@ -19,12 +19,12 @@ Component_Emitter::Component_Emitter(Components_Type type, GameObject* game_obje
 	number_particles = amount_particles;
 
 	//Establish emitter dimensions
-	min_width = -2;
-	max_width = 2;
-	min_height = -2;
-	max_height = 2;
-	min_depth = -2;
-	max_depth = 2;
+	min_width = -1;
+	max_width = 1;
+	min_height = -1;
+	max_height = 1;
+	min_depth = -1;
+	max_depth = 1;
 
 	//Particle Variables
 	max_initial_velocity.y = 20.f;
@@ -37,12 +37,8 @@ Component_Emitter::Component_Emitter(Components_Type type, GameObject* game_obje
 
 	lifetime = 15;
 	force = float3(0.f, 10.f, 0.f);
-	alive = true;
 	size_particles = 1.5f;
-
-
-	//Creation of the first Particle
-	Create_Particle();
+	draw_emmiter = false;
 
 }
 
@@ -56,8 +52,15 @@ bool Compare_Camera_Distance(const Particle* go_1, const Particle* go_2)
 
 void Component_Emitter::Update()
 {
-	//Renders
-	Render_Emmiter();
+	//Update position Emitter
+	Component_Transformation* transformation = (Component_Transformation*)Get_Game_Object()->Get_Component(TRANSFORMATION);
+	position_emitter = transformation->Get_Position();
+
+	if (draw_emmiter)
+	{
+		//Renders
+		Render_Emmiter();
+	}
 
 	if (App->Get_Time_Manager()->Is_Game_Clock_Running())
 	{
@@ -103,14 +106,14 @@ void Component_Emitter::Update()
 			}
 		}
 
-		//Still creating Particles
+		//Still creating Particles if is less than the amount that should be
 		if (particles_container.size() < number_particles)
 		{
 			Create_Particle();
 		}
 
 
-		//Update info of Normal Particles particles
+		//Update info of Normal Particles 
 		vector<Particle*>::iterator tmp = particles_container.begin();
 		while (tmp != particles_container.end())
 		{
@@ -137,7 +140,7 @@ void Component_Emitter::Update()
 				}
 				else
 				{
-					//Realocate again the particles from the origin
+					//Put again the particles from the origin
 					if (smoke_behavior == false && fireworks_behavior == false)
 					{
 						//Generate the particle from the origin of the emitter
@@ -199,7 +202,7 @@ void Component_Emitter::Update()
 
 				if ((*tmp)->Get_Type() == FIREWORKS)
 				{
-					//Update initial force, initial vel... of the children
+					//Update initial force, initial vel... of the  firework children
 					Fireworks_Particle* p = (Fireworks_Particle*)(*tmp);
 
 					if (p->Get_Child_Max_Initial_Velocity().Equals(max_fireowks_children_initial_velocity) == false)
@@ -236,7 +239,7 @@ void Component_Emitter::Update()
 		}
 	}
 	
-	if(App->Get_Time_Manager()->Is_Game_Clock_Paused())
+	if(App->Get_Time_Manager()->Is_Game_Off())
 	{
 		if (particles_container.size() > 0)
 		{
@@ -352,6 +355,7 @@ void Component_Emitter::Render_Panel()
 		{
 			if (active_checkbox == false)
 			{
+				ImGui::Checkbox("Activate Draw Emitter##fccdraw_emiter", &draw_emmiter);
 				//--------------------------------------------------------------------
 				ImGui::Text("                Initial Particle Velocity                  ");
 				ImGui::Text("                             Max Initial Velocity ");
@@ -529,10 +533,11 @@ void Component_Emitter::Render_Panel()
 						Clean_Up();
 						//New values in the initial velocity to emulate smoke
 						min_initial_velocity = float3(-1.f, 0.f, -1.f);
-						max_initial_velocity = float3(1.f, 20.f, 1.f);
-						force = float3(0.f, 20.f, 0.f);
+						max_initial_velocity = float3(1.f, 10.f, 1.f);
+						force = float3(0.f, 7.f, 0.f);
 						Create_Particle();
-						number_particles = 80;
+						number_particles = 50;
+						lifetime = 2.f;
 						
 					}
 					else
@@ -560,21 +565,21 @@ void Component_Emitter::Render_Panel()
 					{	
 						Clean_Up();
 
-						min_initial_velocity = float3(-2.f, 30.f, -2.f);
-						max_initial_velocity = float3(2.f, 50.f, 2.f);
-						force = float3(0.f, 50, 0.f);
-						lifetime = 1.f;
-						size_particles = 2.f;
+						min_initial_velocity = float3(-10.f, 10.f, -10.f);
+						max_initial_velocity = float3(10.f, 20, 10.f);
+						force = float3(0.f, 15, 0.f);
+						lifetime = 0.5f;
+						size_particles = 1.2f;
 
 						//Children Firework particles
-						max_fireowks_children_initial_velocity = float3(10.f, 15.f, 10.f);
-						min_fireowks_children_initial_velocity = float3(-10.f, 10.f, -10.f);
-						size_fireowks_children_particles = 1.5f;
+						max_fireowks_children_initial_velocity = float3(20.f, 15.f, 20.f);
+						min_fireowks_children_initial_velocity = float3(-20.f, 10.f, -20.f);
+						size_fireowks_children_particles = 1.f;
 						lifetimefireowks_children = 3.f;
 						force_firework_children = float3(0.f, -15.f, 0.f);
 
 						Create_Particle();
-						number_particles = 3;
+						number_particles = 4;
 					}
 					else
 					{
@@ -602,34 +607,6 @@ void Component_Emitter::Render_Panel()
 		}
 	}
 }
-
-void Component_Emitter::Particle_Smoke_Behavior( Particle &p)
-{
-	Random rand;
-	float X = rand.RandRange(min_width, max_width);
-	float Y = rand.RandRange(min_height, max_height);
-	float Z = rand.RandRange(min_depth, max_depth);
-
-	float new_lifetime = rand.RandRange(1.f, lifetime);
-	float speed_y = rand.Min_Max_Random(min_initial_velocity.y, max_initial_velocity.y);
-	float speed_x = rand.Min_Max_Random(min_initial_velocity.x, max_initial_velocity.x);
-	float speed_z = rand.Min_Max_Random(min_initial_velocity.z, max_initial_velocity.z);
-
-	math::float3 random_vector(X, Y, Z);
-
-	//Add values
-	float3 pos = position_emitter + random_vector;
-	p.Set_Position(pos);
-
-	// If we want that the smoke goes to the top the velocity in the axis "y" have to be alguais positive
-	p.Set_Velocity(float3(random_vector.Normalized().x * speed_x, random_vector.Normalized().Abs().y * speed_y, random_vector.Normalized().z * speed_z));
-
-	p.Set_Lifetime(new_lifetime);
-	p.Set_Age(0);
-	p.Set_Scale(float3(size_particles, size_particles, 0));
-
-}
-
 
 void Component_Emitter::Resize_Particles_Vector()
 {
@@ -660,7 +637,6 @@ void  Component_Emitter::Render_Emmiter()
 	{
 		//Render Emitter
 		Component_Transformation* transformation = (Component_Transformation*)Get_Game_Object()->Get_Component(TRANSFORMATION);
-		position_emitter = transformation->Get_Position();
 		App->renderer3D->Debug_Emitter(transformation->Get_Tranformation_Matrix().Transposed(), max_width);
 	}
 }

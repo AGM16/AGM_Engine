@@ -131,6 +131,7 @@ void PerfTimer::Play()
 	{
         running = true;
 		game_paused = false;
+		game_off = false;
 	}
 	else
 	{	
@@ -138,6 +139,8 @@ void PerfTimer::Play()
 		Start_Game_Clock();
 		if(!running)
 			running = true;
+
+		game_off = false;
 	}
 }
 
@@ -147,6 +150,7 @@ void PerfTimer::Stop()
 	game_paused = false;
 	game_clock_started_at = 0;
 	time_game_clock = 0;
+	game_off = true;
 }
 
 void PerfTimer::Pause()
@@ -180,6 +184,11 @@ float PerfTimer::Get_Frame_Count()const
 float PerfTimer::Get_Time_Scale()const
 {
 	return time_scale;
+}
+
+bool PerfTimer::Is_Game_Off()const
+{
+	return game_off;
 }
 
 void PerfTimer::Set_Time_Scale(const float& new_time_scale)

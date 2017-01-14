@@ -51,29 +51,28 @@ public:
 
 	
 	//Randomize variables
-	float3 max_initial_velocity;
-	float3 min_initial_velocity;
+	float3 max_initial_velocity = float3::zero;
+	float3 min_initial_velocity = float3::zero;
 
 	//Frustum Box
-	float min_width;
-	float max_width;
-	float min_height;
-	float max_height;
-	float min_depth;
-	float max_depth;
-	float initial_lifetime;
-	float3 force;
+	float min_width = 0;
+	float max_width = 0;
+	float min_height = 0;
+	float max_height = 0;
+	float min_depth = 0;
+	float max_depth = 0;
+	float initial_lifetime = 0;
+	float3 force = float3::zero;
 	float3 position_emitter = float3::zero;
 	float initial_size_particles = 0;
 
 private:
 
-	math::float3 velocity;
+	math::float3 velocity = float3::zero;
 	float camera_distance = 0;
-	unsigned int texture_id;
-	float age;
-	float lifetime;
-	bool alive;
+	float age = 0;
+	float lifetime = 0;
+	bool alive = 0;
 
 
 	//Coordenates of the particle

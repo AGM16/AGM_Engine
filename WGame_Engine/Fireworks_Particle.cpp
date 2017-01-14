@@ -122,8 +122,8 @@ void Fireworks_Particle::Creation_Particle_Explosion(float3 position)
 
 	//Firework variables
 	Set_Explode(true);
-	unsigned int amount = 30;
-    Set_NumParticles_Fireworks(amount);
+	unsigned int amount_children = 30;
+    Set_NumParticles_Fireworks(amount_children);
 }
 
 
@@ -221,11 +221,6 @@ unsigned int  Fireworks_Particle::Get_Number_Child_Particles()const
 	return number_child_particles;
 }
 
-bool  Fireworks_Particle::Is_Child()const
-{
-	return is_child;
-}
-
 float3 Fireworks_Particle::Get_Child_Force()const
 {
 	return force_children;
@@ -261,11 +256,6 @@ void  Fireworks_Particle::Set_NumParticles_Fireworks(unsigned int &amount)
 void  Fireworks_Particle::Set_Explode(bool on)
 {
 	explode = on;
-}
-
-void Fireworks_Particle::Set_Child(bool on)
-{
-	is_child = on;
 }
 
 void Fireworks_Particle::Set_Force_Child(float3 &new__force)

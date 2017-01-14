@@ -28,7 +28,8 @@ bool ModuleCamera3D::Init()
 	main_camera_go = App->go_manager->Create_Camera_Game_Object(nullptr, "Main_Camera");
 	camera_component = (Component_Camera*)main_camera_go->Get_Component(Components_Type::CAMERA);
 
-	camera_component->Get_Component_Transformation_Camera()->Set_Position(float3(0.f, 30.f, -100.f));
+	camera_component->Get_Component_Transformation_Camera()->Set_Position(float3(0.f, 50.f, 150.f));
+	camera_component->Get_Component_Transformation_Camera()->Set_Rotation(float3(-20.f, 180.f, 0.f));
 	camera_component->Set_Far_Plane(400.f);
 	
 	
@@ -59,25 +60,25 @@ update_status ModuleCamera3D::Update(float dt)
 	//Camera Controls
 	if (App->input->GetKey(SDL_SCANCODE_UP) == KEY_REPEAT)
 	{
-		camera_component->Get_Component_Transformation_Camera()->Set_Position(float3(0.f, 30.f, 100.f));
+		camera_component->Get_Component_Transformation_Camera()->Set_Position(float3(0.f, 50.f, 150.f));
 		camera_component->Get_Component_Transformation_Camera()->Set_Rotation(float3(-20.f, 180.f, 0.f));
 	}
 
 	if (App->input->GetKey(SDL_SCANCODE_DOWN) == KEY_REPEAT)
 	{
-		camera_component->Get_Component_Transformation_Camera()->Set_Position(float3(0.f, 30.f, -100.f));
+		camera_component->Get_Component_Transformation_Camera()->Set_Position(float3(0.f, 50.f, -150.f));
 		camera_component->Get_Component_Transformation_Camera()->Set_Rotation(float3(20.f, 0.f, 0.f));
 	}
 
 	if (App->input->GetKey(SDL_SCANCODE_LEFT) == KEY_REPEAT)
 	{
-		camera_component->Get_Component_Transformation_Camera()->Set_Position(float3(100.f, 20.f, 0.f));
+		camera_component->Get_Component_Transformation_Camera()->Set_Position(float3(150.f, 20.f, 0.f));
 		camera_component->Get_Component_Transformation_Camera()->Set_Rotation(float3(0.f, -90.f, 0.f));
 	}
 
 	if (App->input->GetKey(SDL_SCANCODE_RIGHT) == KEY_REPEAT)
 	{
-		camera_component->Get_Component_Transformation_Camera()->Set_Position(float3(-100.f, 20.f, 0.f));
+		camera_component->Get_Component_Transformation_Camera()->Set_Position(float3(-150.f, 20.f, 0.f));
 		camera_component->Get_Component_Transformation_Camera()->Set_Rotation(float3(0.f, 90.f, 0.f));
 	}
 

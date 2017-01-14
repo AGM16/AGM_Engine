@@ -16,7 +16,6 @@ public:
 	//Getters
 	bool Has_To_Explode()const;
 	unsigned int Get_Number_Child_Particles()const;
-	bool Is_Child()const;
 	bool Are_Children_Dead();
 	float3 Get_Child_Force()const;
 	float3 Get_Child_Max_Initial_Velocity()const;
@@ -27,7 +26,6 @@ public:
 	//Setters
 	void Set_NumParticles_Fireworks(unsigned int &amount);
 	void Set_Explode(bool on);
-	void Set_Child(bool on);
 	void Set_Force_Child(float3 &new__force);
 	void Set_Max_Initial_Child_Velocity(float3 &new__vel);
 	void Set_Min_Initial_Child_Velocity(float3 &new__vel);
@@ -42,17 +40,16 @@ public:
 
 private:
 
-	unsigned int number_child_particles;
-	bool explode;
-	bool is_child;
+	unsigned int number_child_particles = 0;
+	bool explode = false;
 	std::vector<Particle*> explosion_particles;
 
 	//Children Variables
-	float3 force_children;
-	float intial_size_children;
-	float3 min_initial_child_velocity;
-	float3 max_initial_child_velocity;
-	float intial_child_lifetime;
+	float3 force_children = float3::zero;
+	float intial_size_children = 0;
+	float3 min_initial_child_velocity = float3::zero;
+	float3 max_initial_child_velocity = float3::zero;
+	float intial_child_lifetime = 0;
 	
 };
 #endif // !_FIREWORKS_PARTICLE_H_

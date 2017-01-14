@@ -58,11 +58,9 @@ void Particle::Destroy_Particle()
 {
 	alive = false;
 	velocity = float3::zero;
-	texture_id = 0;
 	age = 0.f;
 	lifetime = 0.f;
-
-
+	camera_distance = 0;
 }
 
 math::float4x4 Particle::Get_Tranformation_Matrix()const

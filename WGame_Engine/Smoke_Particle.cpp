@@ -54,7 +54,7 @@ void Smoke_Particle::Create_Initial_Movement(float3 &position)
 	float Y = rand.RandRange(min_height, max_height);
 	float Z = rand.RandRange(min_depth, max_depth);
 
-	float new_lifetime = rand.RandRange(1.f, initial_lifetime);
+	float new_lifetime = rand.RandRange(0.1f, initial_lifetime);
 	float speed_y = rand.Min_Max_Random(min_initial_velocity.y, max_initial_velocity.y);
 	float speed_x = rand.Min_Max_Random(min_initial_velocity.x, max_initial_velocity.x);
 	float speed_z = rand.Min_Max_Random(min_initial_velocity.z, max_initial_velocity.z);

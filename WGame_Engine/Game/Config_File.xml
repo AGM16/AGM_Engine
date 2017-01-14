@@ -47,8 +47,10 @@
   <Scene_Intro>
   </Scene_Intro>
   
-  <Module_Go_Manager>
-  </Module_Go_Manager>
+  <Module_Go_Manager
+       smoke_texture = "Assets/Textures/smoke_p2.png"
+       firework_texture = "Assets/Textures/smoke_p2.png"
+  />
 
 </config>
 

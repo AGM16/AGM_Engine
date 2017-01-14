@@ -41,6 +41,7 @@ public:
 	float3 Get_Position()const;
 	const math::Frustum Get_Frustum()const;
 	bool Get_Draw_Frustum()const;
+	bool Get_Deactive_Qaudtree_Draw()const;
 
 	Component_Transformation* Get_Component_Transformation_Camera()const;
 	void Look_At(const math::float3 &position);
@@ -72,6 +73,7 @@ private:
 	bool active_all_aabb_bounding_boxes = false;
 	bool active_all_obb_bounding_boxes = false;
 	bool draw_frustum = false;
+	bool deactivate_quadtree_draw = false;
 
 };
 

@@ -56,10 +56,11 @@ void Component_Camera::Update()
 			}
 
 			ImGui::Text("Aspect_Ratio :  %f", aspect_ratio);
-			ImGui::Checkbox("Active Culling##foo1", &active_culling);
-			ImGui::Checkbox("Active AABB Bounding Boxes##fee2", &active_all_aabb_bounding_boxes);
-			ImGui::Checkbox("Active OBB Bounding Boxes##fee3", &active_all_obb_bounding_boxes);
-			ImGui::Checkbox("Active Draw Frustum##fee4", &draw_frustum);
+			ImGui::Checkbox("Activate Culling##foo1", &active_culling);
+			ImGui::Checkbox("Activate AABB Bounding Boxes##fee2", &active_all_aabb_bounding_boxes);
+			ImGui::Checkbox("Activate OBB Bounding Boxes##fee3", &active_all_obb_bounding_boxes);
+			ImGui::Checkbox("Activate Draw Frustum##fee4", &draw_frustum);
+			ImGui::Checkbox("Deactivate Quadtree Draw##fee62", &deactivate_quadtree_draw);
 		}
 
 		if (App->camera->camera_go_camera_test == Get_Game_Object())
@@ -298,6 +299,11 @@ void Component_Camera::Set_Draw_Frustum(bool on)
 bool Component_Camera::Get_Draw_Frustum()const
 {
 	return draw_frustum;
+}
+
+bool Component_Camera::Get_Deactive_Qaudtree_Draw()const
+{
+	return deactivate_quadtree_draw;
 }
 
 //Check Box that active all the bounding boxes

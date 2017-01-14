@@ -38,6 +38,7 @@ public:
 	//Particle propierties
 	void Set_Velocity(const math::float3 &vel);
 	void Set_Camera_Distance(const math::float3 &camera_pos);
+	void Reset_Camera_Distance();
 	void Set_Age(const float &new_age);
 	void Set_Lifetime(const float &life);
 
@@ -68,7 +69,7 @@ public:
 private:
 
 	math::float3 velocity;
-	float camera_distance;
+	float camera_distance = 0;
 	unsigned int texture_id;
 	float age;
 	float lifetime;

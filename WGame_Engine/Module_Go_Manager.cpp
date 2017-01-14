@@ -16,7 +16,7 @@ Module_Go_Manager::Module_Go_Manager( bool start_enabled) : Module(start_enabled
 	Random rand;
 	root_game_object = new GameObject(nullptr, "Root_Game_Objects", rand.Random_int(0, 2147483647));
 	root_game_object->Add_Component_Transformation(float3::zero, float3::one, Quat::identity, float3::zero, false);
-	root_game_object->Add_Component_Material("", "", 0, 0, false);
+	root_game_object->Add_Component_Material("", "", 0, 0, false,false);
 	
 	quadtree_go.Create(float2(100.f, 100.f), float2(0.f, 0.f));
 }
@@ -54,7 +54,7 @@ GameObject* Module_Go_Manager::Create_Game_Object( Mesh* m, GameObject* Parent)
 			LOG("The GameObject %s has a new component : %s ", new_game_object->Get_Name(), "MESH");
 
 			//Add Component Material
-			new_game_object->Add_Component_Material(m->name_texture.c_str(), m->dir_texture.c_str(), m->num_image_textures, m->id_image_texture, false);
+			new_game_object->Add_Component_Material(m->name_texture.c_str(), m->dir_texture.c_str(), m->num_image_textures, m->id_image_texture, false, false);
 			LOG("The GameObject %s has a new component : %s ", new_game_object->Get_Name(), "MaATERIAL");
 
 
@@ -83,7 +83,7 @@ GameObject* Module_Go_Manager::Create_Camera_Game_Object(GameObject* Parent, con
 
 	//Add Component Camera
 	new_game_object->Add_Component_Camera(name_camera);
-	LOG("The GameObject %s has a new component : %s ", new_game_object->Get_Name(), "TRANSFORMATION");
+	LOG("The GameObject %s has a new component : %s ", new_game_object->Get_Name(), "CAMERA");
 
 
 	return new_game_object;
@@ -126,6 +126,10 @@ GameObject* Module_Go_Manager::Create_Particle_Game_Object(const char* name_go, 
 	//Add Component Transformation
 	new_game_object->Add_Component_Transformation(float3::zero, float3::one, Quat::identity, float3::zero, false);
 	LOG("The GameObject %s has a new component : %s ", new_game_object->Get_Name(), "TRANSFORMATION");
+
+	//Add Component Material
+	new_game_object->Add_Component_Material("Particle Texture", dir_particle_texture.c_str(),1, 0, true, false);
+	LOG("The GameObject %s has a new component : %s ", new_game_object->Get_Name(), "MATERIAL");
 
 	//Add Component Emmitter
 	new_game_object->Add_Component_Emitter(false);
@@ -195,8 +199,11 @@ update_status Module_Go_Manager::Update(float dt)
 		last_game_object_selected = game_object_selected;
 	}
 
-	//Draw Quadtree
-	quadtree_go.Draw();
+	if (App->camera->camera_component_test->Get_Deactive_Qaudtree_Draw() == false)
+	{
+		//Draw Quadtree
+		quadtree_go.Draw();
+	}
 
 	//Update Camera Culling optimizated
 	App->go_manager->Intersect_Camera_Culling_Quadtree_Function(*App->camera->camera_component_test);
@@ -455,3 +462,14 @@ GameObject*  Module_Go_Manager::Get_Selected_GO()const
 	return game_object_selected;
 }
 
+
+std::string Module_Go_Manager::Get_Dir_Particle_Texture()const
+{
+	return dir_particle_texture;
+}
+
+void Module_Go_Manager::Set_Dir_Particle_Texture(const char* dir)
+{
+	dir_particle_texture.clear();
+	dir_particle_texture = dir;
+}

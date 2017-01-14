@@ -95,6 +95,7 @@ class ModuleGeometry : public Module
 	   bool Save(const Mesh& mesh, std::string& out_p, const char* name_mesh, const char* dir_scene);
 	   //LOAD
 	   bool Load_Mesh(Mesh* mesh, const char* file_path);
+	   void Load_Texture(std::string dir_tex, unsigned int &id_image);
 
 	   const char* Get_Scene()const;
 

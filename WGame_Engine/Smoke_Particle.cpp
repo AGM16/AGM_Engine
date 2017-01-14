@@ -30,6 +30,7 @@ void Smoke_Particle::Update_Particle()
 		float3 p_speed = Get_Velocity();
 		float3 position = p_speed * App->Get_Delta_Time();
 		Set_Position(Get_Position() + position);
+		Set_Camera_Distance(App->camera->Get_Camera_Position());
 
 		//Modify Size
 		float new_size = ((Get_Lifetime() - Get_Age()) * initial_size_particles / Get_Lifetime());
@@ -70,6 +71,7 @@ void Smoke_Particle::Create_Initial_Movement(float3 &position)
 	Set_Lifetime(new_lifetime);
 	Set_Age(0);
 	Set_Scale(float3( initial_size_particles, initial_size_particles, 0));
+	Reset_Camera_Distance();
 }
 
 void Smoke_Particle::Render_Particles()

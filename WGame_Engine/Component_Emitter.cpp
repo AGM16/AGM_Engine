@@ -49,6 +49,11 @@ Component_Emitter::Component_Emitter(Components_Type type, GameObject* game_obje
 Component_Emitter::~Component_Emitter()
 {}
 
+bool Compare_Camera_Distance(const Particle* go_1, const Particle* go_2)
+{
+	return go_1->Get_Distance() > go_2->Get_Distance();
+}
+
 void Component_Emitter::Update()
 {
 	//Renders
@@ -64,8 +69,12 @@ void Component_Emitter::Update()
 
 		//Update Billboarding
 		Update_Particles_Billboarding();
+	
+		//Order the particles according to the camera distance 
+		if(particles_container.size() > 1)
+			sort(particles_container.begin(), particles_container.end(), Compare_Camera_Distance);
 
-		
+		//Render Particles
 		if (fireworks_behavior == false && smoke_behavior == false)
 		{
 			Render_Particles();
@@ -87,7 +96,7 @@ void Component_Emitter::Update()
 		}
 
 
-		//Update info particles
+		//Update info of Normal Particles particles
 		vector<Particle*>::iterator tmp = particles_container.begin();
 		while (tmp != particles_container.end())
 		{
@@ -105,6 +114,7 @@ void Component_Emitter::Update()
 					float3 p_speed = (*tmp)->Get_Velocity();
 					float3 position = p_speed * App->Get_Delta_Time();
 					(*tmp)->Set_Position((*tmp)->Get_Position() + position);
+					(*tmp)->Set_Camera_Distance(App->camera->Get_Camera_Position());
 
 					//Modify Size
 					float new_size = (((*tmp)->Get_Lifetime() - (*tmp)->Get_Age()) * size_particles / (*tmp)->Get_Lifetime());
@@ -135,6 +145,7 @@ void Component_Emitter::Update()
 						(*tmp)->Set_Lifetime(new_lifetime);
 						(*tmp)->Set_Age(0);
 						(*tmp)->Set_Scale(float3(size_particles, size_particles, 0));
+						(*tmp)->Reset_Camera_Distance();
 					}
 				}
 			}
@@ -225,6 +236,9 @@ void Component_Emitter::Update()
 	
 
 }
+
+
+
 
 void Component_Emitter::Create_Particle()
 {
@@ -645,8 +659,18 @@ void  Component_Emitter::Render_Particles()
 		vector<Particle*>::iterator tmp2 = particles_container.begin();
 		while (tmp2 != particles_container.end())
 		{
-
-			App->renderer3D->Render_Particles((*tmp2)->Get_Tranformation_Matrix().Transposed(), float3((*tmp2)->Get_Scale().x, (*tmp2)->Get_Scale().y, 0.f), 0);
+			if (Get_Game_Object()->Exist_Component(MATERIAL))
+			{
+				Component_Material* material = (Component_Material*)Get_Game_Object()->Get_Component(MATERIAL);
+				if(material->Is_Checkbox_Active() == false)
+					App->renderer3D->Render_Particles((*tmp2)->Get_Tranformation_Matrix().Transposed(), float3((*tmp2)->Get_Scale().x, (*tmp2)->Get_Scale().y, 0.f), material->Get_Id_Texture());
+				else
+					App->renderer3D->Render_Particles((*tmp2)->Get_Tranformation_Matrix().Transposed(), float3((*tmp2)->Get_Scale().x, (*tmp2)->Get_Scale().y, 0.f), 0);
+			}
+			else
+			{
+				App->renderer3D->Render_Particles((*tmp2)->Get_Tranformation_Matrix().Transposed(), float3((*tmp2)->Get_Scale().x, (*tmp2)->Get_Scale().y, 0.f), 0);
+			}
 
 			tmp2++;
 

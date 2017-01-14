@@ -31,5 +31,4 @@ void Component_Billboard::Update_BillBoard(const float3 look_to_point, const flo
 			transform_go->Set_Rotation(RadToDeg(tmp.ToEulerXYZ()));
 		}
 	}
-
 }

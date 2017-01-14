@@ -377,16 +377,21 @@ void ModuleGeometry::Import_And_Load_Texture(Mesh* m, aiMesh* new_mesh, const ai
 			//Load Texture
 			if (path_.length > 0)
 			{
-				ILuint id;
-				ilGenImages(1, &id);
-				ilBindImage(id);
-				ilLoadImage(m->dir_texture.c_str());
-
-				m->id_image_texture = ilutGLBindTexImage();
+				Load_Texture(m->dir_texture.c_str(), m->id_image_texture);
 			}
 		}
 	}
 
+}
+
+void ModuleGeometry::Load_Texture(std::string dir_tex, unsigned int &id_image)
+{
+	ILuint id;
+	ilGenImages(1, &id);
+	ilBindImage(id);
+	ilLoadImage(dir_tex.c_str());
+
+	id_image = ilutGLBindTexImage();
 }
 
 

@@ -32,6 +32,7 @@ void Fireworks_Particle::Update_Particle()
 			float3 p_speed = Get_Velocity();
 			float3 new_position = p_speed * App->Get_Delta_Time();
 			Set_Position(Get_Position() + new_position);
+			Set_Camera_Distance(App->camera->Get_Camera_Position());
 
 			//Modify Size
 			float new_size = ((Get_Lifetime() + 5) - Get_Age()) * initial_size_particles / (Get_Lifetime() + 5);
@@ -70,6 +71,7 @@ void Fireworks_Particle::Update_Particle()
 				float3 p_speed = (*tmp2)->Get_Velocity();
 				float3 position = p_speed * App->Get_Delta_Time();
 				(*tmp2)->Set_Position((*tmp2)->Get_Position() + position);
+				(*tmp2)->Set_Camera_Distance(App->camera->Get_Camera_Position());
 
 				//Modify Size
 				float new_size = (((*tmp2)->Get_Lifetime() - (*tmp2)->Get_Age()) * intial_size_children / (*tmp2)->Get_Lifetime());
@@ -153,6 +155,7 @@ void Fireworks_Particle::Create_Children_Explosion()
 		p->Set_Lifetime(new_lifetime);
 		p->Set_Age(0);
 		p->Set_Scale(float3(p->initial_size_particles, p->initial_size_particles, 0));
+		p->Reset_Camera_Distance();
 
 		explosion_particles.push_back(p);
 	}

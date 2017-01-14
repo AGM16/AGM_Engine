@@ -46,7 +46,6 @@ private:
 	we create when we press the botton play of the Time Manager Panel*/
 	string name_tmp_file_saved;
 
-
 	bool create_go = false;
 	char name_go_created[100] = "";
 	bool create_particle = false;

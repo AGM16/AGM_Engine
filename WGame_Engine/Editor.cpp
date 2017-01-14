@@ -119,8 +119,11 @@ update_status Editor::Update(float dt)
 
 			if (ImGui::MenuItem("Add Material Component"))
 			{
-				if (App->go_manager->Get_Selected_GO() != nullptr && App->go_manager->Get_Selected_GO()->Exist_Component(MATERIAL) == false)
-					App->go_manager->Get_Selected_GO()->Add_Component_Material(nullptr, nullptr, 0, 0, true);
+				if (App->go_manager->Get_Selected_GO() != nullptr && App->go_manager->Get_Selected_GO()->Exist_Component(MATERIAL) == false && App->go_manager->Get_Selected_GO()->Exist_Component(EMITTER) == false)
+					App->go_manager->Get_Selected_GO()->Add_Component_Material(nullptr, nullptr, 0, 0, true, false);
+
+				if (App->go_manager->Get_Selected_GO() != nullptr && App->go_manager->Get_Selected_GO()->Exist_Component(MATERIAL) == false && App->go_manager->Get_Selected_GO()->Exist_Component(EMITTER))
+					App->go_manager->Get_Selected_GO()->Add_Component_Material(nullptr, nullptr, 0, 0, true, true);
 				else
 					LOG("Thereis already a Material Component in this GO");
 			}
@@ -489,7 +492,7 @@ void Editor::Render_Panel_Create_GO()
 		ImGui::SetNextWindowPos(ImVec2(App->window->Get_Screen_size().x - pos.x, pos.y));
 		ImGui::SetNextWindowSize(size_w);
 		bool open = true;
-		ImGui::Begin("Creation Empty GO", &open);
+		ImGui::Begin("Creation GO", &open);
 
 		//Clear buffer
 		static int clear = 0;
@@ -524,4 +527,6 @@ bool Editor::Is_Creating_GO()const
 {
 	return create_go;
 }
+
+
 

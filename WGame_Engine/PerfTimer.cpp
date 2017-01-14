@@ -130,7 +130,7 @@ void PerfTimer::Play()
 	if (running == false && game_paused == true)
 	{
         running = true;
-		game_paused == false;
+		game_paused = false;
 	}
 	else
 	{	

@@ -75,11 +75,11 @@ bool GameObject::Add_Component_Transformation(const math::float3 &pos, const mat
 }
 
 
-bool GameObject::Add_Component_Material(const char* name_textu, const char* path_texture, const unsigned int &num_textu, const unsigned int &id_textu, bool active)
+bool GameObject::Add_Component_Material(const char* name_textu, const char* path_texture, const unsigned int &num_textu, const unsigned int &id_textu, bool is_a_particle_tex, bool active)
 {
 	if (Exist_Component(MATERIAL) == false)
 	{
-		Components* new_component = new Component_Material(MATERIAL, this, name_textu, path_texture, num_textu, id_textu);
+		Components* new_component = new Component_Material(MATERIAL, this, name_textu, path_texture, num_textu, id_textu, is_a_particle_tex);
 		LOG("The GameObject %s component %s has been created", this->name, "MATERIAL");
 
 		if (active)

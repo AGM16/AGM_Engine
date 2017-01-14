@@ -120,6 +120,11 @@ void Particle::Set_Camera_Distance(const math::float3 &camera_pos)
 	camera_distance = distance.Length();
 }
 
+void Particle::Reset_Camera_Distance()
+{
+	camera_distance = 0;
+}
+
 void Particle::Set_Age(const float &new_age)
 {
 	age = new_age;
@@ -160,3 +165,5 @@ Particles_Type Particle::Get_Type()const
 {
 	return type;
 }
+
+

@@ -554,9 +554,10 @@ void Component_Emitter::Render_Panel()
 			
 
 			//----------------------Emulate Fireworks--------------------
-			ImGui::SameLine();
+			
 			if (smoke_behavior == false)
 			{
+				ImGui::SameLine();
 				if (ImGui::Button("Fireworks") || App->input->GetKey(SDL_SCANCODE_1) == KEY_UP)
 				{
 					fireworks_behavior = !fireworks_behavior;
@@ -597,12 +598,14 @@ void Component_Emitter::Render_Panel()
 
 			if (fireworks_behavior)
 			{
-				ImGui::TextColored(ImVec4(1.f, 1.f, 0.f, 1.f), "Fireworks Activated (Pulse the button or press 1 to deactivate)");
+				ImGui::TextColored(ImVec4(1.f, 1.f, 0.f, 1.f), "Fireworks Activated");
+				ImGui::TextColored(ImVec4(1.f, 1.f, 0.f, 1.f), "(Pulse the button or press 1 to deactivate)");
 			}
 			
 			if (smoke_behavior)
 			{
-				ImGui::TextColored(ImVec4(1.f, 1.f, 0.f, 1.f), "Smoke Activated (Pulse the button or press 0 to deactivate)");
+				ImGui::TextColored(ImVec4(1.f, 1.f, 0.f, 1.f), "Smoke Activated");
+				ImGui::TextColored(ImVec4(1.f, 1.f, 0.f, 1.f), "(Pulse the button or press 2 to deactivate)");
 			}			
 		}
 	}

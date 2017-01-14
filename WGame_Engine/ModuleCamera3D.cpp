@@ -58,28 +58,34 @@ bool ModuleCamera3D::CleanUp()
 update_status ModuleCamera3D::Update(float dt)
 {
 	//Camera Controls
-	if (App->input->GetKey(SDL_SCANCODE_UP) == KEY_REPEAT)
+	if (App->input->GetKey(SDL_SCANCODE_DOWN) == KEY_REPEAT)
 	{
 		camera_component->Get_Component_Transformation_Camera()->Set_Position(float3(0.f, 50.f, 150.f));
 		camera_component->Get_Component_Transformation_Camera()->Set_Rotation(float3(-20.f, 180.f, 0.f));
 	}
 
-	if (App->input->GetKey(SDL_SCANCODE_DOWN) == KEY_REPEAT)
+	if (App->input->GetKey(SDL_SCANCODE_UP) == KEY_REPEAT)
 	{
 		camera_component->Get_Component_Transformation_Camera()->Set_Position(float3(0.f, 50.f, -150.f));
 		camera_component->Get_Component_Transformation_Camera()->Set_Rotation(float3(20.f, 0.f, 0.f));
 	}
 
-	if (App->input->GetKey(SDL_SCANCODE_LEFT) == KEY_REPEAT)
+	if (App->input->GetKey(SDL_SCANCODE_RIGHT) == KEY_REPEAT)
 	{
 		camera_component->Get_Component_Transformation_Camera()->Set_Position(float3(150.f, 20.f, 0.f));
 		camera_component->Get_Component_Transformation_Camera()->Set_Rotation(float3(0.f, -90.f, 0.f));
 	}
 
-	if (App->input->GetKey(SDL_SCANCODE_RIGHT) == KEY_REPEAT)
+	if (App->input->GetKey(SDL_SCANCODE_LEFT) == KEY_REPEAT)
 	{
 		camera_component->Get_Component_Transformation_Camera()->Set_Position(float3(-150.f, 20.f, 0.f));
 		camera_component->Get_Component_Transformation_Camera()->Set_Rotation(float3(0.f, 90.f, 0.f));
+	}
+
+	if (App->input->GetKey(SDL_SCANCODE_SPACE) == KEY_REPEAT)
+	{
+		camera_component->Get_Component_Transformation_Camera()->Set_Position(float3(0.f, 190.f, 0.f));
+		camera_component->Get_Component_Transformation_Camera()->Set_Rotation(float3(90.f, 0.f, 0.f));
 	}
 
 	if (camera_component->Get_Component_Transformation_Camera()->Is_Checkbox_Active() == false && App->editor->Is_Saving() == false && App->editor->Is_Loading() == false && App->editor->Is_Creating_GO() == false)

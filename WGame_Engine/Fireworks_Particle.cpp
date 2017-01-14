@@ -13,7 +13,7 @@ Fireworks_Particle::Fireworks_Particle(Particles_Type type_p, float3 pos, float3
 
 Fireworks_Particle::~Fireworks_Particle()
 {
-
+	Delete_children();
 }
 
 void Fireworks_Particle::Update_Particle()

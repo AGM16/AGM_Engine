@@ -338,7 +338,7 @@ bool GameObject::Load(pugi::xml_node& node)
 	string name;
 	name = "Root_Game_Objects";
 	//Check if the node is RootNode, because his mesh is NULL
-	if (name.compare(Get_Name()) != 0 && Exist_Component(CAMERA) == false)
+	if (name.compare(Get_Name()) != 0 && Exist_Component(CAMERA) == false && Exist_Component(MESH) == true)
 	{
 		bool deactivate_checkbox = next_node.attribute("Checkbox_Deactive_Mesh").as_bool();
 		mesh->Set_Checkbox(deactivate_checkbox);
@@ -358,7 +358,7 @@ bool GameObject::Load(pugi::xml_node& node)
 	}
 
 	//--------------------MATERIAL-----------------------
-	if (name.compare(Get_Name()) != 0 && Exist_Component(CAMERA) == false)
+	if (name.compare(Get_Name()) != 0 && Exist_Component(CAMERA) == false && Exist_Component(MATERIAL) == true)
 	{
 		bool deactivate_checkbox_material = next_node.attribute("Checkbox_Deactive_Material").as_bool();
 		material->Set_Checkbox(deactivate_checkbox_material);
@@ -455,7 +455,7 @@ bool GameObject::Save(pugi::xml_node& node)const
 		//--------------------MESH-----------------------
 		string name = "Root_Game_Objects";
 		//Check if the node is RootNode, because his mesh is NULL
-		if (name.compare(Get_Name()) != 0 && Exist_Component(CAMERA) == false)
+		if (name.compare(Get_Name()) != 0 && Exist_Component(CAMERA) == false && Exist_Component(MESH) == true)
 		{
 			
 			//Is the mesh checkbox deactive active?
@@ -473,7 +473,7 @@ bool GameObject::Save(pugi::xml_node& node)const
 		}
 
 		//--------------------MATERIAL-----------------------
-		if (name.compare(Get_Name()) != 0 && Exist_Component(CAMERA) == false)
+		if (name.compare(Get_Name()) != 0 && Exist_Component(CAMERA) == false &&  Exist_Component(MATERIAL) == true)
 		{
 			node_mgo.append_attribute("Checkbox_Deactive_Material") = material->Is_Checkbox_Active();
 		}

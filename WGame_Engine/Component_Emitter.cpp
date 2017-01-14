@@ -51,47 +51,51 @@ Component_Emitter::~Component_Emitter()
 
 void Component_Emitter::Update()
 {
-	//Update the number of particules
-	if (particles_container.size() > number_particles)
-	{
-		Resize_Particles_Vector();
-	}
-
-	//Update Billboarding
-	Update_Particles_Billboarding();
-
 	//Renders
 	Render_Emmiter();
-	if (fireworks_behavior == false && smoke_behavior == false)
+
+	if (App->Get_Time_Manager()->Is_Game_Clock_Running())
 	{
-		Render_Particles();
-	}
-	else
-	{
-		vector<Particle*>::iterator tmp2 = particles_container.begin();
-		while (tmp2 != particles_container.end())
+		//Update the number of particules
+		if (particles_container.size() > number_particles)
 		{
-			(*tmp2)->Render_Particles();
-			tmp2++;
+			Resize_Particles_Vector();
 		}
-	}
 
-	//Still creating Particles
-	if (particles_container.size() < number_particles)
-	{
-		Create_Particle();
-	}
+		//Update Billboarding
+		Update_Particles_Billboarding();
 
-
-	//Update info particles
-	vector<Particle*>::iterator tmp = particles_container.begin();
-	while (tmp != particles_container.end())
-	{
+		
 		if (fireworks_behavior == false && smoke_behavior == false)
 		{
-			//Normal behavior particles
-			if ((*tmp)->Get_Lifetime() > (*tmp)->Get_Age())
+			Render_Particles();
+		}
+		else
+		{
+			vector<Particle*>::iterator tmp2 = particles_container.begin();
+			while (tmp2 != particles_container.end())
 			{
+				(*tmp2)->Render_Particles();
+				tmp2++;
+			}
+		}
+
+		//Still creating Particles
+		if (particles_container.size() < number_particles)
+		{
+			Create_Particle();
+		}
+
+
+		//Update info particles
+		vector<Particle*>::iterator tmp = particles_container.begin();
+		while (tmp != particles_container.end())
+		{
+			if (fireworks_behavior == false && smoke_behavior == false)
+			{
+				//Normal behavior particles
+				if ((*tmp)->Get_Lifetime() > (*tmp)->Get_Age())
+				{
 					//Update variables
 					float new_age = (*tmp)->Get_Age() + App->Get_Delta_Time();
 					(*tmp)->Set_Age(new_age);
@@ -106,9 +110,9 @@ void Component_Emitter::Update()
 					float new_size = (((*tmp)->Get_Lifetime() - (*tmp)->Get_Age()) * size_particles / (*tmp)->Get_Lifetime());
 					(*tmp)->Set_Scale(float3(new_size, new_size, 0.f));
 
-			}
-			else
-			{
+				}
+				else
+				{
 					//Realocate again the particles from the origin
 					if (smoke_behavior == false && fireworks_behavior == false)
 					{
@@ -133,81 +137,92 @@ void Component_Emitter::Update()
 						(*tmp)->Set_Scale(float3(size_particles, size_particles, 0));
 					}
 				}
+			}
+			else
+			{
+
+				//Update initial_vel,positionemitter,force,size... to Smoke and Fireworks Particles
+				if ((*tmp)->position_emitter.Equals(position_emitter) == false)
+				{
+					(*tmp)->position_emitter = position_emitter;
+				}
+
+				if ((*tmp)->force.Equals(force) == false)
+				{
+					(*tmp)->force = force;
+				}
+
+				if ((*tmp)->min_initial_velocity.Equals(min_initial_velocity) == false)
+				{
+					(*tmp)->min_initial_velocity = min_initial_velocity;
+				}
+
+				if ((*tmp)->max_initial_velocity.Equals(max_initial_velocity) == false)
+				{
+					(*tmp)->max_initial_velocity = max_initial_velocity;
+				}
+
+				if ((*tmp)->initial_size_particles != size_particles)
+				{
+					(*tmp)->initial_size_particles = size_particles;
+				}
+
+				if ((*tmp)->initial_lifetime != lifetime)
+				{
+					(*tmp)->initial_lifetime = lifetime;
+				}
+
+				if ((*tmp)->Get_Type() == FIREWORKS)
+				{
+					//Update initial force, initial vel... of the children
+					Fireworks_Particle* p = (Fireworks_Particle*)(*tmp);
+
+					if (p->Get_Child_Max_Initial_Velocity().Equals(max_fireowks_children_initial_velocity) == false)
+					{
+						p->Set_Max_Initial_Child_Velocity(max_fireowks_children_initial_velocity);
+					}
+
+					if (p->Get_Child_Min_Initial_Velocity().Equals(min_fireowks_children_initial_velocity) == false)
+					{
+						p->Set_Min_Initial_Child_Velocity(min_fireowks_children_initial_velocity);
+					}
+
+					if (p->Get_Child_Force().Equals(force_firework_children) == false)
+					{
+						p->Set_Force_Child(force_firework_children);
+					}
+
+					if (p->Get_Child_Size() != size_fireowks_children_particles)
+					{
+						p->Set_Size_Child(size_fireowks_children_particles);
+					}
+
+					if (p->Get_Child_Lifetime() != lifetimefireowks_children)
+					{
+						p->Set_Lifetime_Child(lifetimefireowks_children);
+					}
+				}
+
+				(*tmp)->Update_Particle();
+
+			}
+
+			tmp++;
 		}
-		else
-		{
-
-			//Update initial_vel,positionemitter,force,size... to Smoke and Fireworks Particles
-			if ((*tmp)->position_emitter.Equals(position_emitter) == false)
-			{
-				(*tmp)->position_emitter = position_emitter;
-			}
-
-			if ((*tmp)->force.Equals(force) == false)
-			{
-				(*tmp)->force = force;
-			}
-
-			if ((*tmp)->min_initial_velocity.Equals(min_initial_velocity) == false)
-			{
-				(*tmp)->min_initial_velocity = min_initial_velocity;
-			}
-
-			if((*tmp)->max_initial_velocity.Equals(max_initial_velocity) == false)
-			{
-				(*tmp)->max_initial_velocity = max_initial_velocity;
-			}
-
-			if ((*tmp)->initial_size_particles != size_particles)
-			{
-				(*tmp)->initial_size_particles = size_particles;
-			}
-
-			if ((*tmp)->initial_lifetime != lifetime)
-			{
-				(*tmp)->initial_lifetime = lifetime;
-			}
-
-			if ((*tmp)->Get_Type() == FIREWORKS)
-			{
-				//Update initial force, initial vel... of the children
-				Fireworks_Particle* p = (Fireworks_Particle*)(*tmp);
-
-				if (p->Get_Child_Max_Initial_Velocity().Equals(max_fireowks_children_initial_velocity) == false)
-				{
-					p->Set_Max_Initial_Child_Velocity(max_fireowks_children_initial_velocity);
-				}
-
-				if (p->Get_Child_Min_Initial_Velocity().Equals(min_fireowks_children_initial_velocity) == false)
-				{
-					p->Set_Min_Initial_Child_Velocity(min_fireowks_children_initial_velocity);
-				}
-
-				if (p->Get_Child_Force().Equals(force_firework_children) == false)
-				{
-					p->Set_Force_Child(force_firework_children);
-				}
-
-				if (p->Get_Child_Size() != size_fireowks_children_particles)
-				{
-					p->Set_Size_Child(size_fireowks_children_particles);
-				}
-
-				if (p->Get_Child_Lifetime() != lifetimefireowks_children)
-				{
-					p->Set_Lifetime_Child(lifetimefireowks_children);
-				}
-			}
-
-			(*tmp)->Update_Particle();
-
-		}
-
-		tmp++;
 	}
-		
-	//Render panel with information
-	Render_Panel();
+	
+	if(App->Get_Time_Manager()->Is_Game_Clock_Paused())
+	{
+		if (particles_container.size() > 0)
+		{
+			//Delete the list of particles
+			Clean_Particles_List();
+		}
+	}
+
+		//Render panel with information
+		Render_Panel();
+	
 
 }
 
@@ -282,6 +297,22 @@ void Component_Emitter::Clean_Up()
 
 		particles_container.clear();
 		number_particles = 0;
+	}
+}
+
+
+void Component_Emitter::Clean_Particles_List()
+{
+	if (particles_container.size() > 0)
+	{
+		vector<Particle*>::iterator tmp2 = particles_container.begin();
+		while (tmp2 != particles_container.end())
+		{
+			delete (*tmp2);
+			tmp2++;
+		}
+
+		particles_container.clear();
 	}
 }
 

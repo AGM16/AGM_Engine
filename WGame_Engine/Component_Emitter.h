@@ -29,6 +29,8 @@ public:
 
 	//Particles Behaviors
 	void Particle_Smoke_Behavior(Particle &p);
+	
+	void Clean_Particles_List();
 
 private:
 

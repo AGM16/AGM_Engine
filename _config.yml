@@ -1,1 +1,12 @@
 theme: jekyll-theme-hacker
+
+# WGame_Engine
+Author: Adrià Gómez
+
+A videogame engine created and developed by AGM16.
+
+Link Source Code: https://github.com/AGM16/WGame_Engine/tree/master/WGame_Engine
+
+To open correctly the source code programm from VS you have to go to Project->properties->Debugging->Working Directory-> and you have ti put this:"$(ProjectDir)Game/"
+
+License: https://github.com/AGM16/WGame_Engine/blob/master/LICENSE

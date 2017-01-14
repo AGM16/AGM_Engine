@@ -74,9 +74,9 @@ void Smoke_Particle::Create_Initial_Movement(float3 &position)
 	Reset_Camera_Distance();
 }
 
-void Smoke_Particle::Render_Particles()
+void Smoke_Particle::Render_Particles(unsigned int &id_texture)
 {
 	//Render the particle
 	if (Get_Lifetime() > Get_Age())
-		App->renderer3D->Render_Particles(Get_Tranformation_Matrix().Transposed(), float3(Get_Scale().x, Get_Scale().y, 0.f), 0);
+		App->renderer3D->Render_Particles(Get_Tranformation_Matrix().Transposed(), float3(Get_Scale().x, Get_Scale().y, 0.f), id_texture);
 }

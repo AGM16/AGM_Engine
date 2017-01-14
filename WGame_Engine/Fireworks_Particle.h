@@ -38,7 +38,7 @@ public:
 	bool Delete_children();
 	void Creation_Particle_Explosion(float3 position);
 	void Create_Children_Explosion();
-	void Render_Particles();
+	void Render_Particles(unsigned int &id_texture);
 
 private:
 

@@ -13,7 +13,7 @@ public:
 	void Update_Particle();
 
 	void Create_Initial_Movement(float3 &position);
-	void Smoke_Particle::Render_Particles();
+	void Render_Particles(unsigned int &id_texture);
 
 private:
 

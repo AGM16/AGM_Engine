@@ -49,7 +49,7 @@
   
   <Module_Go_Manager
        smoke_texture = "Assets/Textures/smoke_p2.png"
-       firework_texture = "Assets/Textures/smoke_p2.png"
+       firework_texture = "Assets/Textures/Firework1.png"
   />
 
 </config>

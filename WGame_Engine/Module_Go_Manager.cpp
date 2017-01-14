@@ -4,6 +4,7 @@
 #include "Components.h"
 #include "Component_Mesh.h"
 #include "Component_Transformation.h"
+#include "Component_Material.h"
 #include "Random.h"
 #include "p2Defs.h"
 #include "p2QuadTree.h"
@@ -128,8 +129,20 @@ GameObject* Module_Go_Manager::Create_Particle_Game_Object(const char* name_go, 
 	LOG("The GameObject %s has a new component : %s ", new_game_object->Get_Name(), "TRANSFORMATION");
 
 	//Add Component Material
-	new_game_object->Add_Component_Material("Particle Texture", dir_particle_texture.c_str(),1, 0, true, false);
+	vector<string>::iterator tmp = dir_particle_texture.begin();
+	new_game_object->Add_Component_Material("Particle Texture", (*tmp).c_str(),1, 0, true, false);
 	LOG("The GameObject %s has a new component : %s ", new_game_object->Get_Name(), "MATERIAL");
+
+	if (dir_particle_texture.size() > 1)
+	{
+		tmp++;
+		//Now we pass Firework Texture and load it
+		Component_Material* material = (Component_Material*)new_game_object->Get_Component(MATERIAL);
+		material->Set_Dir_Firework_Texture((*tmp).c_str());
+		unsigned int id_texture = 0;
+		App->geometry->Load_Texture(material->Get_Dir_Firework_Texture(), id_texture);
+		material->Set_Id_Firework_Texture(id_texture);
+	}
 
 	//Add Component Emmitter
 	new_game_object->Add_Component_Emitter(false);
@@ -463,13 +476,14 @@ GameObject*  Module_Go_Manager::Get_Selected_GO()const
 }
 
 
-std::string Module_Go_Manager::Get_Dir_Particle_Texture()const
+vector<string> Module_Go_Manager::Get_Dir_Particle_Texture()const
 {
 	return dir_particle_texture;
 }
 
 void Module_Go_Manager::Set_Dir_Particle_Texture(const char* dir)
 {
-	dir_particle_texture.clear();
-	dir_particle_texture = dir;
+	string tmp = dir;
+	//The first string of the vector will always be the somke texture dir
+	dir_particle_texture.push_back(dir);
 }

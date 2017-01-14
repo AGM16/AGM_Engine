@@ -32,6 +32,9 @@ public:
 	
 	void Clean_Particles_List();
 
+	bool Is_Smoke_Behavior_Active()const;
+	bool Is_Firework_Behavior_Active()const;
+
 private:
 
 	math::float3 position_emitter;

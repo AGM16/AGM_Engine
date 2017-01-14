@@ -77,14 +77,28 @@ void Component_Emitter::Update()
 		//Render Particles
 		if (fireworks_behavior == false && smoke_behavior == false)
 		{
+			//Render Normal Particles
 			Render_Particles();
 		}
 		else
 		{
+			//Render smoke or fireworks particles
 			vector<Particle*>::iterator tmp2 = particles_container.begin();
 			while (tmp2 != particles_container.end())
 			{
-				(*tmp2)->Render_Particles();
+				unsigned int id = 0;
+
+				if (Get_Game_Object()->Exist_Component(MATERIAL))
+				{
+					Component_Material* material = (Component_Material*)Get_Game_Object()->Get_Component(MATERIAL);
+					unsigned int id = material->Get_Id_Texture();
+					(*tmp2)->Render_Particles(id);
+				}
+				else
+				{
+					(*tmp2)->Render_Particles(id);
+				}
+
 				tmp2++;
 			}
 		}
@@ -506,7 +520,7 @@ void Component_Emitter::Render_Panel()
 			//----------------------Emulate smoke--------------------
 			if (fireworks_behavior == false)
 			{
-				if (ImGui::Button("Smoke"))
+				if (ImGui::Button("Smoke") || App->input->GetKey(SDL_SCANCODE_2) == KEY_UP)
 				{
 					smoke_behavior = !smoke_behavior;
 
@@ -538,7 +552,7 @@ void Component_Emitter::Render_Panel()
 			ImGui::SameLine();
 			if (smoke_behavior == false)
 			{
-				if (ImGui::Button("Fireworks"))
+				if (ImGui::Button("Fireworks") || App->input->GetKey(SDL_SCANCODE_1) == KEY_UP)
 				{
 					fireworks_behavior = !fireworks_behavior;
 
@@ -548,7 +562,7 @@ void Component_Emitter::Render_Panel()
 
 						min_initial_velocity = float3(-2.f, 30.f, -2.f);
 						max_initial_velocity = float3(2.f, 50.f, 2.f);
-						force = float3(0.f, 120.f, 0.f);
+						force = float3(0.f, 50, 0.f);
 						lifetime = 1.f;
 						size_particles = 2.f;
 
@@ -560,7 +574,7 @@ void Component_Emitter::Render_Panel()
 						force_firework_children = float3(0.f, -15.f, 0.f);
 
 						Create_Particle();
-						number_particles++;
+						number_particles = 3;
 					}
 					else
 					{
@@ -570,7 +584,7 @@ void Component_Emitter::Render_Panel()
 						max_initial_velocity = rand.Random_Float_Vector(1.f, 20.f);
 						force = rand.Random_Float_Vector(-20.f, 20.f);
 						lifetime = 15.f;
-						number_particles = rand.Random_int(1, 150);
+						number_particles = rand.Random_int(20, 150);
 					}
 				}
 			}
@@ -578,12 +592,12 @@ void Component_Emitter::Render_Panel()
 
 			if (fireworks_behavior)
 			{
-				ImGui::TextColored(ImVec4(1.f, 1.f, 0.f, 1.f), "Fireworks Activated");
+				ImGui::TextColored(ImVec4(1.f, 1.f, 0.f, 1.f), "Fireworks Activated (Pulse the button or press 1 to deactivate)");
 			}
 			
 			if (smoke_behavior)
 			{
-				ImGui::TextColored(ImVec4(1.f, 1.f, 0.f, 1.f), "Smoke Activated");
+				ImGui::TextColored(ImVec4(1.f, 1.f, 0.f, 1.f), "Smoke Activated (Pulse the button or press 0 to deactivate)");
 			}			
 		}
 	}
@@ -690,6 +704,15 @@ void Component_Emitter::Set_Checkbox(bool on)
 	active_checkbox = on;
 }
 
+bool Component_Emitter::Is_Smoke_Behavior_Active()const
+{
+	return smoke_behavior;
+}
+
+bool Component_Emitter::Is_Firework_Behavior_Active()const
+{
+	return fireworks_behavior;
+}
 
 
 

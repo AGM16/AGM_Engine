@@ -35,7 +35,7 @@ void Particle::Update_Particle()
 
 }
 
-void Particle::Render_Particles()
+void Particle::Render_Particles(unsigned int &id_texture)
 {
 
 }

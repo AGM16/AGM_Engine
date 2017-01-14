@@ -22,6 +22,10 @@ public:
 	bool Is_Checkbox_Active()const;
 	bool Set_Checkbox(bool on);
 
+	void Set_Dir_Firework_Texture(const char* new_dir);
+	void Set_Id_Firework_Texture(unsigned int id);
+	const char* Get_Dir_Firework_Texture()const;
+	unsigned int Get_id_Firework_Texture();
 
 private:
     

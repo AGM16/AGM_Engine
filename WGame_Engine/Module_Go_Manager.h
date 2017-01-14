@@ -52,7 +52,7 @@ public:
 
 	void Set_Game_Obj_Inserted(bool on);
 
-	std::string Get_Dir_Particle_Texture()const;
+	vector<string> Get_Dir_Particle_Texture()const;
 	void Set_Dir_Particle_Texture(const char* dir);
   
 private:
@@ -65,7 +65,7 @@ private:
 	/*To be sure that we only can insert the Go once. If we clear the Quadtree 
 	we can creater another Quadtree and insert new go*/
 	bool game_obj_Inserted = false;
-	std::string dir_particle_texture;
+	vector<string> dir_particle_texture;
 	
 };
 

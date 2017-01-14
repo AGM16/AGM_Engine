@@ -104,8 +104,11 @@ bool Application::Init()
 		console_exists = app_node.attribute("console_exists ").as_bool();
 
 		pugi::xml_node go_manager_node = root_node_config.child("Module_Go_Manager");
-		const char* dir_texture = go_manager_node.attribute("smoke_texture").as_string();
-		App->go_manager->Set_Dir_Particle_Texture(dir_texture);
+		const char* smoke_dir_texture = go_manager_node.attribute("smoke_texture").as_string();
+		const char* firework_dir_texture = go_manager_node.attribute("firework_texture").as_string();
+		App->go_manager->Set_Dir_Particle_Texture(smoke_dir_texture);
+		App->go_manager->Set_Dir_Particle_Texture(firework_dir_texture);
+
 	}
 
 

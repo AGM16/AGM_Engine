@@ -4,6 +4,7 @@
 #include "Components.h"
 #include "Component_Transformation.h"
 #include "Component_Mesh.h"
+#include "Component_Emitter.h"
 #include "GameObject.h"
 
 
@@ -77,7 +78,20 @@ void Component_Material::Update()
 
 unsigned int Component_Material::Get_Id_Texture()const
 {
-	return id_texture;
+	if (active_checkbox == false)
+	{
+		if (Get_Game_Object()->Exist_Component(EMITTER))
+		{
+			Component_Emitter* emitter = (Component_Emitter*)Get_Game_Object()->Get_Component(EMITTER);
+
+			if (emitter->Is_Firework_Behavior_Active() && emitter->Is_Smoke_Behavior_Active() == false)
+				return id_firework_texture;
+		}
+
+		return id_texture;
+	}
+	
+	return 0;
 }
 
 bool Component_Material::Is_Checkbox_Active()const
@@ -89,4 +103,24 @@ bool Component_Material::Set_Checkbox(bool on)
 {
 	active_checkbox = on;
 	return active_checkbox;
+}
+
+void Component_Material::Set_Dir_Firework_Texture(const char* new_dir)
+{
+	dir_path_firework_texture = new_dir;
+}
+
+const char* Component_Material::Get_Dir_Firework_Texture()const
+{
+	return dir_path_firework_texture;
+}
+
+void Component_Material::Set_Id_Firework_Texture(unsigned int id)
+{
+	id_firework_texture = id;
+}
+
+unsigned int Component_Material::Get_id_Firework_Texture()
+{
+	return id_firework_texture;
 }

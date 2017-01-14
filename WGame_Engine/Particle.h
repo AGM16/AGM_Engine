@@ -20,7 +20,7 @@ public:
 	~Particle();
 
 	virtual void Update_Particle();
-	virtual void Render_Particles();
+	virtual void Render_Particles(unsigned int &id_texture);
 	void Destroy_Particle();
 
 	//Matrix transformation

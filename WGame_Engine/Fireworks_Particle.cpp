@@ -191,11 +191,11 @@ bool Fireworks_Particle::Are_Children_Dead()
 	return true;
 }
 
-void Fireworks_Particle::Render_Particles()
+void Fireworks_Particle::Render_Particles(unsigned int &id_texture)
 {
 	//Render the particle
 	if(Has_To_Explode())
-		App->renderer3D->Render_Particles(Get_Tranformation_Matrix().Transposed(), float3(Get_Scale().x, Get_Scale().y, 0.f), 0);
+		App->renderer3D->Render_Particles(Get_Tranformation_Matrix().Transposed(), float3(Get_Scale().x, Get_Scale().y, 0.f), id_texture);
 
 	//Render the children
 	if (explosion_particles.size() > 0)
@@ -203,7 +203,7 @@ void Fireworks_Particle::Render_Particles()
 		vector<Particle*>::iterator tmp = explosion_particles.begin();
 		while (tmp != explosion_particles.end())
 		{
-			App->renderer3D->Render_Particles((*tmp)->Get_Tranformation_Matrix().Transposed(), float3((*tmp)->Get_Scale().x, (*tmp)->Get_Scale().y, 0.f), 0);
+			App->renderer3D->Render_Particles((*tmp)->Get_Tranformation_Matrix().Transposed(), float3((*tmp)->Get_Scale().x, (*tmp)->Get_Scale().y, 0.f), id_texture);
 			tmp++;
 		}
 	}

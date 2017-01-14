@@ -525,7 +525,10 @@ void Editor::Render_Panel_Create_GO()
 
 bool Editor::Is_Creating_GO()const
 {
-	return create_go;
+	if (create_go || create_particle)
+		return true;
+	else
+		return false;
 }
 
 

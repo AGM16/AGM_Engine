@@ -5,11 +5,10 @@
 
 using namespace std;
 
-Fireworks_Particle::Fireworks_Particle(float3 pos, float3 scale_, Quat rot_quat, float3 angles_, float min_width_p, float max_width_p, float min_height_p, float max_height_p, float min_depth_p, float max_depth_p, float initial_lifetime_p, float3 force_p) 
-: Particle(pos, scale_, rot_quat, angles_,  min_width_p,  max_width_p,  min_height_p,  max_height_p,  min_depth_p,  max_depth_p,  initial_lifetime_p,  force_p)
+Fireworks_Particle::Fireworks_Particle(Particles_Type type_p, float3 pos, float3 scale_, Quat rot_quat, float3 angles_, float min_width_p, float max_width_p, float min_height_p, float max_height_p, float min_depth_p, float max_depth_p, float initial_lifetime_p, float3 force_p, float initial_size_p)
+: Particle(type_p, pos, scale_, rot_quat, angles_,  min_width_p,  max_width_p,  min_height_p,  max_height_p,  min_depth_p,  max_depth_p,  initial_lifetime_p,  force_p, initial_size_p)
 {
-	min_initial_velocity = float3(-2.f, 30.f, -2.f);
-	max_initial_velocity = float3(2.f, 50.f, 2.f);
+
 }
 
 Fireworks_Particle::~Fireworks_Particle()
@@ -35,7 +34,7 @@ void Fireworks_Particle::Update_Particle()
 			Set_Position(Get_Position() + new_position);
 
 			//Modify Size
-			float new_size = ((Get_Lifetime() + 5) - Get_Age()) * 2 / (Get_Lifetime() + 5);
+			float new_size = ((Get_Lifetime() + 5) - Get_Age()) * initial_size_particles / (Get_Lifetime() + 5);
 			Set_Scale(float3(new_size, new_size, 0.f));
 		}
 		else
@@ -66,14 +65,14 @@ void Fireworks_Particle::Update_Particle()
 				float new_age = (*tmp2)->Get_Age() + App->Get_Delta_Time();
 				(*tmp2)->Set_Age(new_age);
 
-				float3 new_vel = (*tmp2)->Get_Velocity() + (float3(1, -15, 1) * App->Get_Delta_Time());
+				float3 new_vel = (*tmp2)->Get_Velocity() + (force_children * App->Get_Delta_Time());
 				(*tmp2)->Set_Velocity(new_vel);
 				float3 p_speed = (*tmp2)->Get_Velocity();
 				float3 position = p_speed * App->Get_Delta_Time();
 				(*tmp2)->Set_Position((*tmp2)->Get_Position() + position);
 
 				//Modify Size
-				float new_size = (((*tmp2)->Get_Lifetime() - (*tmp2)->Get_Age()) * 1.5f / (*tmp2)->Get_Lifetime());
+				float new_size = (((*tmp2)->Get_Lifetime() - (*tmp2)->Get_Age()) * intial_size_children / (*tmp2)->Get_Lifetime());
 				(*tmp2)->Set_Scale(float3(new_size, new_size, 0.f));
 			}
 
@@ -117,7 +116,7 @@ void Fireworks_Particle::Creation_Particle_Explosion(float3 position)
 	Set_Lifetime(0);
 	Set_Lifetime(time_to_explode);
 	Set_Age(0);
-	Set_Scale(float3(2, 2, 0));
+	Set_Scale(float3(initial_size_particles, initial_size_particles, 0));
 
 	//Firework variables
 	Set_Explode(true);
@@ -131,12 +130,10 @@ void Fireworks_Particle::Create_Children_Explosion()
 	for (int i = 0; i < number_child_particles; i++)
 	{
 
-		float3 force_children = float3(0.f, -15.f, 0.f);
-		
+		Particle* p = new Particle(FIREWORKS, Get_Position(), float3::one, Quat::identity, float3::zero, min_width, max_width, min_height, max_height, min_depth, max_depth, intial_child_lifetime, force_children, intial_size_children);
+		p->min_initial_velocity = min_initial_child_velocity;
+		p->max_initial_velocity = max_initial_child_velocity;
 
-		Particle* p = new Particle(Get_Position(), float3::one, Quat::identity, float3::zero, min_width, max_width, min_height, max_height, min_depth, max_depth, 3.f, force_children);
-        p->min_initial_velocity = float3(-10.f, 10.f, -10.f);
-		p->max_initial_velocity = float3(10.f, 15.f, 10.f);
 		//Generate the particle from the origin of the emitter
 		Random rand;
 		float X = rand.RandRange(min_width, max_width);
@@ -155,7 +152,7 @@ void Fireworks_Particle::Create_Children_Explosion()
 		p->Set_Velocity(float3(random_vector.Normalized().x * speed_x, random_vector.Normalized().y * speed_y, random_vector.Normalized().z * speed_z));
 		p->Set_Lifetime(new_lifetime);
 		p->Set_Age(0);
-		p->Set_Scale(float3(1.5f, 1.5f, 0));
+		p->Set_Scale(float3(p->initial_size_particles, p->initial_size_particles, 0));
 
 		explosion_particles.push_back(p);
 	}
@@ -210,6 +207,7 @@ void Fireworks_Particle::Render_Particles()
 
 }
 
+//Getters
 bool Fireworks_Particle::Has_To_Explode()const
 {
 	return explode;
@@ -225,6 +223,33 @@ bool  Fireworks_Particle::Is_Child()const
 	return is_child;
 }
 
+float3 Fireworks_Particle::Get_Child_Force()const
+{
+	return force_children;
+}
+
+float3 Fireworks_Particle::Get_Child_Max_Initial_Velocity()const
+{
+	return max_initial_child_velocity;
+}
+
+float3 Fireworks_Particle::Get_Child_Min_Initial_Velocity()const
+{
+	return min_initial_child_velocity;
+}
+
+float Fireworks_Particle::Get_Child_Size()const
+{
+	return intial_size_children;
+}
+
+float Fireworks_Particle::Get_Child_Lifetime()const
+{
+	return intial_child_lifetime;
+}
+
+
+//Setters
 void  Fireworks_Particle::Set_NumParticles_Fireworks(unsigned int &amount)
 {
 	number_child_particles = amount;
@@ -235,9 +260,34 @@ void  Fireworks_Particle::Set_Explode(bool on)
 	explode = on;
 }
 
-void  Fireworks_Particle::Set_Child(bool on)
+void Fireworks_Particle::Set_Child(bool on)
 {
 	is_child = on;
+}
+
+void Fireworks_Particle::Set_Force_Child(float3 &new__force)
+{
+	force_children = new__force;
+}
+
+void Fireworks_Particle::Set_Max_Initial_Child_Velocity(float3 &new__vel)
+{
+	max_initial_child_velocity = new__vel;
+}
+
+void Fireworks_Particle::Set_Min_Initial_Child_Velocity(float3 &new__vel)
+{
+	min_initial_child_velocity = new__vel;
+}
+
+void Fireworks_Particle::Set_Size_Child(float &new__size)
+{
+	intial_size_children = new__size;
+}
+
+void Fireworks_Particle::Set_Lifetime_Child(float &new_life)
+{
+	intial_child_lifetime = new_life;
 }
 
 bool  Fireworks_Particle::Delete_children()

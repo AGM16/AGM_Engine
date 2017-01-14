@@ -5,7 +5,7 @@
 
 using namespace std;
 
-Particle::Particle(float3 pos, float3 scale_, Quat rot_quat, float3 angles_, float min_width_p, float max_width_p, float min_height_p, float max_height_p, float min_depth_p, float max_depth_p, float initial_lifetime_p, float3 force_p) : position(pos), scale(scale_), quat_rotation(rot_quat), rotation_degrees(angles_)
+Particle::Particle(Particles_Type type_p, float3 pos, float3 scale_, Quat rot_quat, float3 angles_, float min_width_p, float max_width_p, float min_height_p, float max_height_p, float min_depth_p, float max_depth_p, float initial_lifetime_p, float3 force_p, float initial_size_p) : position(pos), scale(scale_), quat_rotation(rot_quat), rotation_degrees(angles_)
 {
 	max_initial_velocity = float3::zero;
 	min_initial_velocity = float3::zero;
@@ -21,6 +21,8 @@ Particle::Particle(float3 pos, float3 scale_, Quat rot_quat, float3 angles_, flo
 	force = force_p;
 
 	transformation_matrix = transformation_matrix.FromTRS(position, quat_rotation, scale);
+	type = type_p;
+	initial_size_particles = initial_size_p;
 }
 
 Particle::~Particle()
@@ -152,4 +154,9 @@ float Particle::Get_Age()const
 float Particle::Get_Lifetime()const
 {
 	return lifetime;
+}
+
+Particles_Type Particle::Get_Type()const
+{
+	return type;
 }

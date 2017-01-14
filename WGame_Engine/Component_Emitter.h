@@ -52,17 +52,21 @@ private:
 	int number_particles;
 
 	std::vector<Particle*> particles_container;
-	unsigned int particles_alive = 0;
 
 	//Billboard variables
 	float3 localForward = float3(0, 0, 1);
 	float3 localUp = float3(0, 1, 0);
 
-	unsigned int intial_number_fireworkers = 0.f;
-
 	bool active_checkbox = false;
 	bool smoke_behavior = false;
 	bool fireworks_behavior = false;
+
+	//Firework Particles
+	float3 max_fireowks_children_initial_velocity = float3::zero;
+	float3 min_fireowks_children_initial_velocity = float3::zero;
+	float size_fireowks_children_particles = 0;
+	float lifetimefireowks_children = 0;
+	float3 force_firework_children = float3::zero;
 };
 
 #endif

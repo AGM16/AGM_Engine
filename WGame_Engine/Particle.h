@@ -4,12 +4,19 @@
 #include "MathGeoLib\include\MathGeoLib.h"
 #include "Component_Transformation.h"
 
+enum Particles_Type
+{
+	FIREWORKS,
+	SMOKE,
+	NORMAL
+};
+
 class Particle
 {
 
 public:
 
-	Particle(float3 pos, float3 scale_, Quat rot_quat, float3 angles_, float min_width_p, float max_width_p, float min_height_p, float max_height_p, float min_depth_p, float max_depth_p, float initial_lifetime_p, float3 force_p);
+	Particle(Particles_Type type_p, float3 pos, float3 scale_, Quat rot_quat, float3 angles_, float min_width_p, float max_width_p, float min_height_p, float max_height_p, float min_depth_p, float max_depth_p, float initial_lifetime_p, float3 force_p, float initial_size_p);
 	~Particle();
 
 	virtual void Update_Particle();
@@ -39,6 +46,7 @@ public:
 	float Get_Distance()const;
 	float Get_Age()const;
 	float Get_Lifetime()const;
+	Particles_Type Get_Type()const;
 
 	
 	//Randomize variables
@@ -55,6 +63,7 @@ public:
 	float initial_lifetime;
 	float3 force;
 	float3 position_emitter = float3::zero;
+	float initial_size_particles = 0;
 
 private:
 
@@ -78,6 +87,8 @@ private:
 	//Billboarding varibales
 	float3 localForward = float3(0, 0, 1);
 	float3 localUp = float3(0, 1, 0);
+
+	Particles_Type type;
 
 };
 

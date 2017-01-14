@@ -136,8 +136,71 @@ void Component_Emitter::Update()
 		}
 		else
 		{
-			(*tmp)->position_emitter = position_emitter;
+
+			//Update initial_vel,positionemitter,force,size... to Smoke and Fireworks Particles
+			if ((*tmp)->position_emitter.Equals(position_emitter) == false)
+			{
+				(*tmp)->position_emitter = position_emitter;
+			}
+
+			if ((*tmp)->force.Equals(force) == false)
+			{
+				(*tmp)->force = force;
+			}
+
+			if ((*tmp)->min_initial_velocity.Equals(min_initial_velocity) == false)
+			{
+				(*tmp)->min_initial_velocity = min_initial_velocity;
+			}
+
+			if((*tmp)->max_initial_velocity.Equals(max_initial_velocity) == false)
+			{
+				(*tmp)->max_initial_velocity = max_initial_velocity;
+			}
+
+			if ((*tmp)->initial_size_particles != size_particles)
+			{
+				(*tmp)->initial_size_particles = size_particles;
+			}
+
+			if ((*tmp)->initial_lifetime != lifetime)
+			{
+				(*tmp)->initial_lifetime = lifetime;
+			}
+
+			if ((*tmp)->Get_Type() == FIREWORKS)
+			{
+				//Update initial force, initial vel... of the children
+				Fireworks_Particle* p = (Fireworks_Particle*)(*tmp);
+
+				if (p->Get_Child_Max_Initial_Velocity().Equals(max_fireowks_children_initial_velocity) == false)
+				{
+					p->Set_Max_Initial_Child_Velocity(max_fireowks_children_initial_velocity);
+				}
+
+				if (p->Get_Child_Min_Initial_Velocity().Equals(min_fireowks_children_initial_velocity) == false)
+				{
+					p->Set_Min_Initial_Child_Velocity(min_fireowks_children_initial_velocity);
+				}
+
+				if (p->Get_Child_Force().Equals(force_firework_children) == false)
+				{
+					p->Set_Force_Child(force_firework_children);
+				}
+
+				if (p->Get_Child_Size() != size_fireowks_children_particles)
+				{
+					p->Set_Size_Child(size_fireowks_children_particles);
+				}
+
+				if (p->Get_Child_Lifetime() != lifetimefireowks_children)
+				{
+					p->Set_Lifetime_Child(lifetimefireowks_children);
+				}
+			}
+
 			(*tmp)->Update_Particle();
+
 		}
 
 		tmp++;
@@ -152,7 +215,7 @@ void Component_Emitter::Create_Particle()
 {
 	if (fireworks_behavior == false && smoke_behavior == false)
 	{
-		Particle* p = new Particle(position_emitter, float3::one, Quat::identity, float3::zero, min_width, max_width, min_height, max_height, min_depth, max_depth, lifetime, force);
+		Particle* p = new Particle(NORMAL, position_emitter, float3::one, Quat::identity, float3::zero, min_width, max_width, min_height, max_height, min_depth, max_depth, lifetime, force, size_particles);
 
 		//Random Values
 		Random rand;
@@ -179,7 +242,16 @@ void Component_Emitter::Create_Particle()
 
 	if (fireworks_behavior)
 	{
-		Fireworks_Particle* p = new Fireworks_Particle(position_emitter, float3::one, Quat::identity, float3::zero, min_width, max_width, min_height, max_height, min_depth, max_depth, lifetime, force);
+		Fireworks_Particle* p = new Fireworks_Particle(FIREWORKS, position_emitter, float3::one, Quat::identity, float3::zero, min_width, max_width, min_height, max_height, min_depth, max_depth, lifetime, force, size_particles);
+
+		p->min_initial_velocity = min_initial_velocity;
+		p->max_initial_velocity = max_initial_velocity;
+
+		p->Set_Max_Initial_Child_Velocity(max_fireowks_children_initial_velocity);
+		p->Set_Min_Initial_Child_Velocity(min_fireowks_children_initial_velocity);
+		p->Set_Size_Child(size_fireowks_children_particles);
+		p->Set_Lifetime_Child(lifetimefireowks_children);
+		p->Set_Force_Child(force_firework_children);
 
 		p->Creation_Particle_Explosion(position_emitter);
 		particles_container.push_back((Particle*)p);
@@ -188,8 +260,9 @@ void Component_Emitter::Create_Particle()
 
 	if (smoke_behavior)
 	{
-		Smoke_Particle* p = new Smoke_Particle(position_emitter, float3::one, Quat::identity, float3::zero, min_width, max_width, min_height, max_height, min_depth, max_depth, lifetime, force);
-
+		Smoke_Particle* p = new Smoke_Particle(SMOKE, position_emitter, float3::one, Quat::identity, float3::zero, min_width, max_width, min_height, max_height, min_depth, max_depth, lifetime, force, size_particles);
+		p->min_initial_velocity = min_initial_velocity;
+		p->max_initial_velocity = max_initial_velocity;
 		p->Create_Initial_Movement(position_emitter);
 		particles_container.push_back((Particle*)p);
 	}
@@ -226,29 +299,52 @@ void Component_Emitter::Render_Panel()
 				ImGui::Text("Max Initial Velocity X : ");
 				ImGui::SameLine();
 				ImGui::DragFloat("##Drag_max1", &max_initial_velocity.x, 1.0f, min_initial_velocity.x, 200.f);
+				if (max_initial_velocity.x < min_initial_velocity.x)
+				{
+					max_initial_velocity.x = min_initial_velocity.x;
+				}
 
 				ImGui::Text("Max Initial Velocity Y : ");
 				ImGui::SameLine();
 				ImGui::DragFloat("##Drag_max2", &max_initial_velocity.y, 1.0f, min_initial_velocity.y, 200.f);
+				if (max_initial_velocity.y < min_initial_velocity.y)
+				{
+					max_initial_velocity.y = min_initial_velocity.y;
+				}
 
 				ImGui::Text("Max Initial Velocity Z : ");
 				ImGui::SameLine();
 				ImGui::DragFloat("##Drag_max3", &max_initial_velocity.z, 1.0f, min_initial_velocity.z, 200.f);
+				if (max_initial_velocity.z < min_initial_velocity.z)
+				{
+					max_initial_velocity.z = min_initial_velocity.z;
+				}
 
 
 				ImGui::Text("                             Min Initial Velocity ");
 				ImGui::Text("Min Initial Velocity X : ");
 				ImGui::SameLine();
 				ImGui::DragFloat("##Drag_min1", &min_initial_velocity.x, 1.0f, -200.f, max_initial_velocity.x);
+				if (min_initial_velocity.x > max_initial_velocity.x)
+				{
+					min_initial_velocity.x = max_initial_velocity.x;
+				}
 
 				ImGui::Text("Min Initial Velocity Y : ");
 				ImGui::SameLine();
 				ImGui::DragFloat("##Drag_min2", &min_initial_velocity.y, 1.0f, -200.f, max_initial_velocity.y);
+				if (min_initial_velocity.y > max_initial_velocity.y)
+				{
+					min_initial_velocity.y = max_initial_velocity.y;
+				}
 
 				ImGui::Text("Min Initial Velocity Z : ");
 				ImGui::SameLine();
 				ImGui::DragFloat("##Drag_min3", &min_initial_velocity.z, 1.0f, -200.f, max_initial_velocity.z);
-				
+				if (min_initial_velocity.z > max_initial_velocity.z)
+				{
+					min_initial_velocity.z = max_initial_velocity.z;
+				}
 
 				ImGui::Text("Lifetime Particle : ");
 				ImGui::DragFloat("##Drag_life", &lifetime, 1.0f, 1.0f, 50.f);
@@ -295,6 +391,71 @@ void Component_Emitter::Render_Panel()
 
 			}
 
+			if (fireworks_behavior)
+			{
+				//--------------------------------------------------------------------
+				ImGui::Text("                Fireworks Children Particles                  ");
+				ImGui::Text("                             Max Initial Velocity ");
+				ImGui::Text("Max Initial Velocity X : ");
+				ImGui::SameLine();
+				ImGui::DragFloat("##Drag_child_max1", &max_fireowks_children_initial_velocity.x, 1.0f, min_fireowks_children_initial_velocity.x, 200.f);
+				if (max_fireowks_children_initial_velocity.x < min_fireowks_children_initial_velocity.x)
+				{
+					max_fireowks_children_initial_velocity.x = min_fireowks_children_initial_velocity.x;
+				}
+
+				ImGui::Text("Max Initial Velocity Y : ");
+				ImGui::SameLine();
+				ImGui::DragFloat("##Drag_child_max2", &max_fireowks_children_initial_velocity.y, 1.0f, min_fireowks_children_initial_velocity.y, 200.f);
+				if (max_fireowks_children_initial_velocity.y < min_fireowks_children_initial_velocity.y)
+				{
+					max_fireowks_children_initial_velocity.y = min_fireowks_children_initial_velocity.y;
+				}
+
+				ImGui::Text("Max Initial Velocity Z : ");
+				ImGui::SameLine();
+				ImGui::DragFloat("##Drag_child_max3", &max_fireowks_children_initial_velocity.z, 1.0f, min_fireowks_children_initial_velocity.z, 200.f);
+				if (max_fireowks_children_initial_velocity.z < min_fireowks_children_initial_velocity.z)
+				{
+					max_fireowks_children_initial_velocity.z = min_fireowks_children_initial_velocity.z;
+				}
+
+				ImGui::Text("                             Min Initial Velocity ");
+				ImGui::Text("Min Initial Velocity X : ");
+				ImGui::SameLine();
+				ImGui::DragFloat("##Drag_child_min1", &min_fireowks_children_initial_velocity.x, 1.0f, -200.f, max_fireowks_children_initial_velocity.x);
+				if (min_fireowks_children_initial_velocity.x > max_fireowks_children_initial_velocity.x)
+				{
+					min_fireowks_children_initial_velocity.x = max_fireowks_children_initial_velocity.x;
+				}
+
+				ImGui::Text("Min Initial Velocity Y : ");
+				ImGui::SameLine();
+				ImGui::DragFloat("##Drag_child_min2", &min_fireowks_children_initial_velocity.y, 1.0f, -200.f, max_fireowks_children_initial_velocity.y);
+				if (min_fireowks_children_initial_velocity.y > max_fireowks_children_initial_velocity.y)
+				{
+					min_fireowks_children_initial_velocity.y = max_fireowks_children_initial_velocity.y;
+				}
+
+				ImGui::Text("Min Initial Velocity Z : ");
+				ImGui::SameLine();
+				ImGui::DragFloat("##Drag_child_min3", &min_fireowks_children_initial_velocity.z, 1.0f, -200.f, max_fireowks_children_initial_velocity.z);
+				if (min_fireowks_children_initial_velocity.z > max_fireowks_children_initial_velocity.z)
+				{
+					min_fireowks_children_initial_velocity.z = max_fireowks_children_initial_velocity.z;
+				}
+
+
+				ImGui::Text("Lifetime Particle : ");
+				ImGui::DragFloat("##Drag_child_life", &lifetimefireowks_children, 1.0f, 1.0f, 50.f);
+
+				ImGui::Text("Size Particle : ");
+				ImGui::DragFloat("##Drag_child_size", &size_fireowks_children_particles, 1.0f, 1.0f, 10.f);
+
+				ImGui::Text("Force Particle : ");
+				ImGui::DragFloat3("##Drag_child_force", force_firework_children.ptr());
+			}
+
 			ImGui::Checkbox("Deactivate##fccemiter", &active_checkbox);
 
 			//----------------------Emulate smoke--------------------
@@ -307,9 +468,13 @@ void Component_Emitter::Render_Panel()
 					if (smoke_behavior)
 					{
 						Clean_Up();
+						//New values in the initial velocity to emulate smoke
+						min_initial_velocity = float3(-1.f, 0.f, -1.f);
+						max_initial_velocity = float3(1.f, 20.f, 1.f);
+						force = float3(0.f, 20.f, 0.f);
 						Create_Particle();
 						number_particles = 80;
-						force = float3(0.f, 20.f, 0.f);
+						
 					}
 					else
 					{
@@ -336,9 +501,18 @@ void Component_Emitter::Render_Panel()
 					{	
 						Clean_Up();
 
+						min_initial_velocity = float3(-2.f, 30.f, -2.f);
+						max_initial_velocity = float3(2.f, 50.f, 2.f);
 						force = float3(0.f, 120.f, 0.f);
 						lifetime = 1.f;
 						size_particles = 2.f;
+
+						//Children Firework particles
+						max_fireowks_children_initial_velocity = float3(10.f, 15.f, 10.f);
+						min_fireowks_children_initial_velocity = float3(-10.f, 10.f, -10.f);
+						size_fireowks_children_particles = 1.5f;
+						lifetimefireowks_children = 3.f;
+						force_firework_children = float3(0.f, -15.f, 0.f);
 
 						Create_Particle();
 						number_particles++;

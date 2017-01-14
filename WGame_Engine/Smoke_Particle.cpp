@@ -4,12 +4,10 @@
 
 using namespace std;
 
-Smoke_Particle::Smoke_Particle(float3 pos, float3 scale_, Quat rot_quat, float3 angles_, float min_width_p, float max_width_p, float min_height_p, float max_height_p, float min_depth_p, float max_depth_p, float initial_lifetime_p, float3 force_p)
-: Particle(pos, scale_, rot_quat, angles_, min_width_p, max_width_p, min_height_p, max_height_p, min_depth_p, max_depth_p, initial_lifetime_p, force_p)
+Smoke_Particle::Smoke_Particle(Particles_Type type_p, float3 pos, float3 scale_, Quat rot_quat, float3 angles_, float min_width_p, float max_width_p, float min_height_p, float max_height_p, float min_depth_p, float max_depth_p, float initial_lifetime_p, float3 force_p, float initial_size_p)
+: Particle(type_p, pos, scale_, rot_quat, angles_, min_width_p, max_width_p, min_height_p, max_height_p, min_depth_p, max_depth_p, initial_lifetime_p, force_p, initial_size_p)
 {
-	//New values in the initial velocity to emulate smoke
-	min_initial_velocity = float3(-1.f, 0.f, -1.f);
-	max_initial_velocity = float3(1.f, 20.f, 1.f);
+
 }
 
 Smoke_Particle::~Smoke_Particle()
@@ -34,7 +32,7 @@ void Smoke_Particle::Update_Particle()
 		Set_Position(Get_Position() + position);
 
 		//Modify Size
-		float new_size = ((Get_Lifetime() - Get_Age()) * 1.f / Get_Lifetime());
+		float new_size = ((Get_Lifetime() - Get_Age()) * initial_size_particles / Get_Lifetime());
 		Set_Scale(float3(new_size, new_size, 0.f));
 
 	}
@@ -71,7 +69,7 @@ void Smoke_Particle::Create_Initial_Movement(float3 &position)
 
 	Set_Lifetime(new_lifetime);
 	Set_Age(0);
-	Set_Scale(float3(1.f, 1.f, 0));
+	Set_Scale(float3( initial_size_particles, initial_size_particles, 0));
 }
 
 void Smoke_Particle::Render_Particles()

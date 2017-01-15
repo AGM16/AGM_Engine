@@ -2,8 +2,8 @@ Custom enigne created for a subject at university. The engine uses OpenGL and SD
 
 **Author**: Adria
 
-[Repository]
+[Repository](https://github.com/AGM16/WGame_Engine)
 
-[License]
+[License](https://github.com/AGM16/WGame_Engine/blob/master/LICENSE)
 
 The following demo shows how to create water using shaders with the engine:

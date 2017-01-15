@@ -6,11 +6,16 @@ A videogame engine created and developed by AGM16.
 Link Source Code: https://github.com/AGM16/WGame_Engine/tree/master/WGame_Engine
 
 To open correctly the source code programm from VS you have to go to Project->properties->Debugging->Working Directory-> and you have ti put this:"$(ProjectDir)Game/"
+ 
 
 License: https://github.com/AGM16/WGame_Engine/blob/master/LICENSE
 
 # Instructions
+To see the Game Objects in the scene, you have to go to the camera_test and click "Insert Game Objects". Moreover, to deactivate the draw of the quadtree you have to click the "Deactivate Quadtree Draw" checkbox, which is located in the camera_test GO.
+
 Camera Movement: W(UP), A(LEFT), S(DOWN) and D(RIGHT). 
+
+Default views of the scene: If you click the arrow buttons(UP, DOWN, LEFT and RIGHT) the camera will be located in front,back, left and right of the scene looking the position(0,0,0). If you click "SPACE" button you will see the scene from the top.
 
 If you press "Shift" the velocity of the movement will increase.
 
@@ -49,5 +54,26 @@ Save: You will save all the information into the last xml file saved or loaded.
 
 Save as: to save new xml files.
 
+###Particle System Instructions:
+####Creation:
+To create a Particles GO you have to go to the option "Create" and click "Particle Game Object".
+To make visible the emitter cube, you have to click the particle GO that you have created and clikc into the "Activate Draw Emitter" checkbox.
+If you move the cube, the particles will always appear in the position of the emitter.
+
+####Start:
+To see the particles in action you have to click the button "PLAY". If you click the button "PAUSE" the particles will dessapear, but won't be eliminated. Therefore, if you click again "Play" the particles will continue their behavior at the same position that they had before.
+
+However, If you clcik "STOP" the particles will be deleted, because the game_clock has finalized, and the particles will start from the beginning the next time that we click "PLAY".
+
+####Smoke and Firework particles:
+
+To emulate/activate smoke we have to click the Particle GO and press the button "Smoke", located in the emitter panel, or press the button 2. To change to another particle behavior we have to click again "Smoke" or "2" to deactivate the smoke. 
+
+In the same way, to emulate/activate fireworks we have to click the Particle GO and press the button "Firework", located in the emitter panel, or press the button 1. To change to another particle behavior we have to click again "Firework" or "1" to deactivate the fireworks. 
+
+After deactivate smoke or fireworks the behavior of the particles will always be random (velocity, force, number_particles...etc).
+Finally, you can modify particles variables as velocity, size of the particles, the number of the particles...etc and activate or disactivate the texture to see squares of the particles.
+
+All the particles have billboarding and are drawn according to their distance to the camera. A good way to check the billboarding is pressing the arrow or space buttons.
 
 

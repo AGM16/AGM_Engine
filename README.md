@@ -65,7 +65,7 @@ To see the particles in action you have to click the button "PLAY". If you click
 
 However, If you clcik "STOP" the particles will be deleted, because the game_clock has finalized, and the particles will start from the beginning the next time that we click "PLAY".
 
-All the particles have a random behavior when we click the first time to the button "PLAY".
+All the particles have a random behavior when we click for the first time to the button "PLAY".
 
 ####Smoke and Firework particles:
 

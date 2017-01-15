@@ -37,7 +37,24 @@ void Component_Material::Update()
 		{
 			if (active_checkbox == false)
 			{
-				ImGui::Image((ImTextureID)id_texture, ImVec2(200, 200));
+				if (Get_Game_Object()->Exist_Component(EMITTER))
+				{
+					Component_Emitter* emitter = (Component_Emitter*)Get_Game_Object()->Get_Component(EMITTER);
+
+					if (emitter->Is_Firework_Behavior_Active() && emitter->Is_Smoke_Behavior_Active() == false)
+					{
+						ImGui::Image((ImTextureID)id_firework_texture, ImVec2(200, 200));
+					}
+					else
+					{
+						ImGui::Image((ImTextureID)id_texture, ImVec2(200, 200));
+					}
+
+				}
+				else
+				{
+					ImGui::Image((ImTextureID)id_texture, ImVec2(200, 200));
+				}
 
 				ImGui::Text("Texture name : ");
 				ImGui::SameLine();

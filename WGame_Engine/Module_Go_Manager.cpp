@@ -138,7 +138,7 @@ GameObject* Module_Go_Manager::Create_Particle_Game_Object(const char* name_go, 
 	if (dir_particle_texture.size() > 1)
 	{
 		tmp++;
-		//Now we pass Firework Texture and load it
+		//Now we pass and load the Firework Texture 
 		Component_Material* material = (Component_Material*)new_game_object->Get_Component(MATERIAL);
 		material->Set_Dir_Firework_Texture((*tmp).c_str());
 		unsigned int id_texture = 0;

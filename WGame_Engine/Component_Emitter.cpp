@@ -64,7 +64,7 @@ void Component_Emitter::Update()
 
 	if (App->Get_Time_Manager()->Is_Game_Clock_Running())
 	{
-		//Update the number of particules
+		//Update the number of particles
 		if (particles_container.size() > number_particles)
 		{
 			Resize_Particles_Vector();

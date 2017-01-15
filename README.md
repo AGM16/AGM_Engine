@@ -65,6 +65,8 @@ To see the particles in action you have to click the button "PLAY". If you click
 
 However, If you clcik "STOP" the particles will be deleted, because the game_clock has finalized, and the particles will start from the beginning the next time that we click "PLAY".
 
+All the particles have a random behavior when we click the first time to the button "PLAY".
+
 ####Smoke and Firework particles:
 
 To emulate/activate smoke we have to click the Particle GO and press the button "Smoke", located in the emitter panel, or press the button 2. To change to another particle behavior we have to click again "Smoke" or "2" to deactivate the smoke. 
